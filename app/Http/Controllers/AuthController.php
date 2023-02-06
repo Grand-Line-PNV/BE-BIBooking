@@ -9,6 +9,7 @@ use Carbon;
 use App\Http\Requests\RegisterRequest;
 use GuzzleHttp\Psr7\Message;
 use App\Models\Account;
+use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -30,5 +31,8 @@ class AuthController extends Controller
         ]);
         $account->save();
         return response()->json(['message' => "User has been registered"],200);
+    }
+    public function login(LoginRequest $request){
+
     }
 }
