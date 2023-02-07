@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Carbon;
+use Carbon\Carbon;
 use App\Http\Requests\RegisterRequest;
 use GuzzleHttp\Psr7\Message;
 use App\Models\Account;
@@ -30,9 +30,32 @@ class AuthController extends Controller
             'address_line4' => $request->address_line4,
         ]);
         $account->save();
-        return response()->json(['message' => "User has been registered"],200);
+        return response()->json(['message' => "User has been registered"], 200);
     }
-    public function login(LoginRequest $request){
-
+    public function login(LoginRequest $request)
+    {
+        $credentials = request(['email', 'password']);
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        // $account = $request->user();
+        // $tokenResult = $account->createToken('Personal Access Token');
+        // $token = $tokenResult->tokens();
+        // $token->expires_at = Carbon::now()->addWeek(1);
+        // $token->save();
+        // return response()->json([
+        //     'data' => [
+        //         'account' => Auth::account(),
+        //         'access_token' => $tokenResult->accessToken,
+        //         'token_type' => 'Bearer',
+        //         'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString(),
+        //     ]
+        // ]);
+        $token = $request->user()->createToken('Personal Access Token');
+        return response()->json([
+            'data' => [
+                'account' => Auth::user(),
+                'token'=>$token,            ]
+        ]);
     }
 }
