@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 use App\Http\Requests\RegisterRequest;
-use GuzzleHttp\Psr7\Message;
 use App\Models\Account;
 use App\Http\Requests\LoginRequest;
+use App\Traits\ApiResponse;
 
 class AuthController extends Controller
 {
+    use ApiResponse;
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
     public function register(RegisterRequest $request)
     {
         $account = new Account([
@@ -28,34 +32,34 @@ class AuthController extends Controller
             'address_line2' => $request->address_line2,
             'address_line3' => $request->address_line3,
             'address_line4' => $request->address_line4,
+            'otp'=>$request->otp,
         ]);
         $account->save();
-        return response()->json(['message' => "User has been registered"], 200);
+        // return response()->json(['message' => "User has been registered"], 200);
+        return $this->responseSuccess();
     }
     public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        // $account = $request->user();
-        // $tokenResult = $account->createToken('Personal Access Token');
-        // $token = $tokenResult->tokens();
-        // $token->expires_at = Carbon::now()->addWeek(1);
-        // $token->save();
-        // return response()->json([
-        //     'data' => [
-        //         'account' => Auth::account(),
-        //         'access_token' => $tokenResult->accessToken,
-        //         'token_type' => 'Bearer',
-        //         'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString(),
-        //     ]
-        // ]);
-        $token = $request->user()->createToken('Personal Access Token');
+        return $this->createNewToken($token);
+    }
+
+    protected function createNewToken($token){
         return response()->json([
-            'data' => [
-                'account' => Auth::user(),
-                'token'=>$token,            ]
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'account' => auth()->user()
         ]);
     }
+    // public function logout()
+    // {
+        // $request->tokens()->delete();
+    //     auth()->logout();
+    //     return response()->json(['message' => 'User successfully signed out']);
+    // }
 }
