@@ -29,28 +29,28 @@ Route::group([
         Route::get('/', [DashboardController::class, "index"])->name('dashboard.index');
     });
 
-    Route::group(["prefix" => "brand"], function () {
-        Route::get('/', [BrandController::class, "index"])->name('brand.index');
+    Route::group(["prefix" => "dashboard"], function () {
+        Route::get('/', [BrandController::class, "index"])->name('dashboard.index');
     });
 
-    Route::group(["prefix" => "influencer"], function () {
-        Route::get('/', [InfluencerController::class, "index"])->name('influencer.index');
+    Route::group(["prefix" => "dashboard"], function () {
+        Route::get('/', [Inf::class, "index"])->name('dashboard.index');
     });
 
-    Route::group(["prefix" => "booking"], function () {
-        Route::get('/', [BookingController::class, "index"])->name('booking.index');
+    Route::group(["prefix" => "dashboard"], function () {
+        Route::get('/', [DashboardController::class, "index"])->name('dashboard.index');
     });
 
-    Route::group(["prefix" => "apply"], function () {
-        Route::get('/', [ApplyController::class, "index"])->name('apply.index');
+    Route::group(["prefix" => "dashboard"], function () {
+        Route::get('/', [DashboardController::class, "index"])->name('dashboard.index');
     });
 
-    Route::group(["prefix" => "revenue"], function () {
-        Route::get('/', [RevenueController::class, "index"])->name('revenue.index');
+    Route::group(["prefix" => "dashboard"], function () {
+        Route::get('/', [DashboardController::class, "index"])->name('dashboard.index');
     });
 
-    Route::group(["prefix" => "report"], function () {
-        Route::get('/', [ReportController::class, "index"])->name('report.index');
+    Route::group(["prefix" => "dashboard"], function () {
+        Route::get('/', [DashboardController::class, "index"])->name('dashboard.index');
     });
 });
 

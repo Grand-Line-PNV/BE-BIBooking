@@ -1,0 +1,23 @@
+.xdsoft_datetimepicker .xdsoft_calendar td:hover,
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+    color: #fff !important;
+    background: #049087 !important;
+    box-shadow: none !important;
+}
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_default,
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current,
+.xdsoft_datetimepicker
+    .xdsoft_timepicker
+    .xdsoft_time_box
+    > div
+    > div.xdsoft_current 
+{
+    background: #0060a9;
+    box-shadow: #0060A9 1px 3px 0 inset;
+    color: #fff;
+    font-weight: 700;
+}
+.calendarIcon {
+    width: 20px;
+    height: 20px;
+}

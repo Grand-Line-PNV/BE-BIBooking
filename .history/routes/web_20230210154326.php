@@ -49,7 +49,7 @@ Route::group([
         Route::get('/', [RevenueController::class, "index"])->name('revenue.index');
     });
 
-    Route::group(["prefix" => "report"], function () {
+    Route::group(["prefix" => "dashboard"], function () {
         Route::get('/', [ReportController::class, "index"])->name('report.index');
     });
 });
