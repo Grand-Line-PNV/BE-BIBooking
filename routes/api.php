@@ -39,8 +39,8 @@ Route::group(
         'prefix' => 'influencer'
     ],
     function () {
-        Route::post('/create', [InfluencerProfileController::class, 'create']);
-        Route::get('/view', [InfluencerProfileController::class, 'view']);
+        Route::post('/create/{account_id}', [InfluencerProfileController::class, 'create']);
+        Route::get('/view/{account_id}', [InfluencerProfileController::class, 'view']);
     },
 );
 Route::group(
@@ -48,8 +48,8 @@ Route::group(
         'prefix' => 'brand'
     ],
     function () {
-        Route::post('/create', [BrandProfileController::class, 'create']);
-        Route::get('/view', [BrandProfileController::class, 'view']);
+        Route::post('/create/{account_id}', [BrandProfileController::class, 'create']);
+        Route::get('/view/{account_id}', [BrandProfileController::class, 'view']);
     },
 );
 

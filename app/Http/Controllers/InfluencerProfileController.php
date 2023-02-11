@@ -23,8 +23,6 @@ class InfluencerProfileController extends Controller
             'startedWork' => $request->startedWork,
             'link'=>$request->link,
             'file_id'=> $request->file_id,
-            'website'=>'',
-            'brandName'=>''
         ]);
         // $credential->save();
         // DB::table('credential')->where('account_id',4)->insert([

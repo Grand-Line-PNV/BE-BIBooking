@@ -11,18 +11,11 @@ use Illuminate\Support\Facades\DB;
 class BrandProfileController extends Controller
 {    
     use ApiResponse;
-    public function create(BrandProfileRequest $request,)
+    public function create(BrandProfileRequest $request,int $account_id)
     {
         $credential = new Credential([
-            'account_id'=>$request->account_id,
-            'nickname' => '',
-            'dob' => '2002-5-2',
-            'followers' => 0,
-            'bookingPrice' => 0,
+            'account_id'=>$account_id,
             'industry' => $request->industry,
-            'marialStatus' => 'single',
-            'contentTopic' => '',
-            'startedWork' => '2002-5-2',
             'link'=>$request->link,
             'file_id'=> $request->file_id,
             'brandName'=>$request->brandName,
