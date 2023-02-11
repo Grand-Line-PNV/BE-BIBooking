@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 class InfluencerProfileController extends Controller
 {    
     use ApiResponse;
-    public function create(InfluProfileRequest $request)
+    public function create(InfluProfileRequest $request,$account_id)
     {
         $credential = new Credential([
-            'account_id' => $request->account_id,
+            'account_id' => $account_id,
             'nickname' => $request->nickname,
             'dob' => $request->dob,
             'followers' => $request->followers,
