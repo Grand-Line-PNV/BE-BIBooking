@@ -41,6 +41,8 @@ Route::group(
     function () {
         Route::post('/create/{account_id}', [InfluencerProfileController::class, 'create']);
         Route::get('/view/{account_id}', [InfluencerProfileController::class, 'view']);
+        Route::get('/viewAccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
+
     },
 );
 Route::group(
@@ -50,6 +52,8 @@ Route::group(
     function () {
         Route::post('/create/{account_id}', [BrandProfileController::class, 'create']);
         Route::get('/view/{account_id}', [BrandProfileController::class, 'view']);
+        Route::get('/viewAccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
+
     },
 );
 

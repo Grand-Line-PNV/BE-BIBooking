@@ -37,9 +37,9 @@ class InfluencerProfileController extends Controller
         );
         return $this->responseSuccess();
     }
-    public function view($account_id)
-    {
-        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->where('account_id',$account_id)->get();
-        return $credential;
-    }
+    public function viewAccount($account_id)
+        {
+            return DB::table('accounts')->where('account_id',$account_id)->get();
+        }
+    
 }
