@@ -2,8 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InfluencerProfileController;
+use App\Http\Controllers\BrandProfileController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +33,23 @@ Route::group(
         Route::post('/login', [AuthController::class, 'login']);
     },
 
+);
+Route::group(
+    [
+        'prefix' => 'influencer'
+    ],
+    function () {
+        Route::post('/create', [InfluencerProfileController::class, 'create']);
+        Route::get('/view', [InfluencerProfileController::class, 'view']);
+    },
+);
+Route::group(
+    [
+        'prefix' => 'brand'
+    ],
+    function () {
+        Route::post('/create', [BrandProfileController::class, 'create']);
+        Route::get('/view', [BrandProfileController::class, 'view']);
+    },
 );
 

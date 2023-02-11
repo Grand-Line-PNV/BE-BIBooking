@@ -17,7 +17,7 @@ class Account extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'username', 'fullname', 'email', 'password',
-        'phone_number', 'gender', 'address_line1', 'address_line2', 'address_line3', 'address_line4', 'role_id', 'file_id',
+        'phone_number', 'gender', 'address_line1', 'address_line2', 'address_line3', 'address_line4', 'role_id',
     ];
 
     protected $hidden = [
@@ -27,10 +27,6 @@ class Account extends Authenticatable implements JWTSubject
     public function role()
     {
         return $this->hasOne(\App\Models\Role::class, 'role_id');
-    }
-    public function file()
-    {
-        return $this->hasMany(\App\Models\File::class, 'file_id');
     }
     public function credential()
     {
