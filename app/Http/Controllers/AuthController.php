@@ -23,15 +23,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'fullname' => $request->fullname,
             'role_id' => $request->role_id,
-            'gender' => $request->gender,
-            'phone_number' => $request->phone_number,
-            'address_line1' => $request->address_line1,
-            'address_line2' => $request->address_line2,
-            'address_line3' => $request->address_line3,
-            'address_line4' => $request->address_line4,
-            'otp' => $request->otp,
         ]);
         $account->save();
         return $this->responseSuccess();
@@ -50,7 +42,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'account' => auth()->user()
         ]);

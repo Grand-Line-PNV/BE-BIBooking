@@ -22,6 +22,15 @@ class BrandProfileController extends Controller
             'website'=>$request->website
         ]);
         $credential->save();
+        DB::table('accounts')->where('id',$account_id)->update([
+            'fullname' => $request->fullname,
+            'gender' => $request->gender,
+            'phone_number' => $request->phone_number,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'address_line3' => $request->address_line3,
+            'address_line4' => $request->address_line4]
+        );
         return $this->responseSuccess();
     }
     public function view($account_id)

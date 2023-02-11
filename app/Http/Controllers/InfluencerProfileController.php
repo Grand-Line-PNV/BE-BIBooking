@@ -23,23 +23,18 @@ class InfluencerProfileController extends Controller
             'startedWork' => $request->startedWork,
             'link'=>$request->link,
             'file_id'=> $request->file_id,
+            
         ]);
-        // $credential->save();
-        // DB::table('credential')->where('account_id',4)->insert([
-        //     ['nickname' => $request->nickname],
-        //     ['dob' => $request->dob],
-        //     ['followers' => $request->followers],
-        //     ['bookingPrice' => $request->bookingPrice],
-        //     ['industry' => $request->industry],
-        //     ['marialStatus' => $request->marialStatus],
-        //     ['contentTopic' => $request->contentTopic],
-        //     ['startedWork' => $request->startedWork],
-        //     ['link'=>$request->link],
-        //     [ 'file_id'=> $request->file_id],
-        //     ['website'=>''],
-        //     ['brandName'=>'']
-        // ])
-        ;
+        $credential->save();
+        DB::table('accounts')->where('id',$account_id)->update([
+            'fullname' => $request->fullname,
+            'gender' => $request->gender,
+            'phone_number' => $request->phone_number,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'address_line3' => $request->address_line3,
+            'address_line4' => $request->address_line4]
+        );
         return $this->responseSuccess();
     }
     public function view($account_id)
