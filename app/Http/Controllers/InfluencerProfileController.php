@@ -39,7 +39,7 @@ class InfluencerProfileController extends Controller
     }
     public function viewAccount($account_id)
         {
-            return DB::table('accounts')->where('account_id',$account_id)->get();
+            return DB::table('accounts')->where('id',$account_id)->get();
         }
     
 }
