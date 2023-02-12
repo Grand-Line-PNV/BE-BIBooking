@@ -6,8 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InfluencerProfileController;
 use App\Http\Controllers\BrandProfileController;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,7 +20,6 @@ use App\Http\Controllers\BrandProfileController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::group(
     [
         'middleware' => 'api',
@@ -31,9 +28,10 @@ Route::group(
     function () {
         Route::post('/register', [AuthController::class, 'register'])->name('users.register');
         Route::post('/login', [AuthController::class, 'login']);
-    },
-
+    }
 );
+Route::post('/request_otp', [AuthController::class, 'requestOtp']);
+Route::post('/verify_otp', [AuthController::class, 'verifyOtp']);     
 Route::group(
     [
         'prefix' => 'influencer'
