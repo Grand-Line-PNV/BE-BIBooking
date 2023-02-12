@@ -8,10 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
     use HasFactory;
-    public function account()
-    {
-        return $this->belongsTo(\App\Models\Account::class, 'file_id');
-    } 
     public function campaign_detail()
     {
         return $this->belongsTo(\App\Models\Campaign_detail::class, 'file_id');
@@ -24,5 +20,9 @@ class File extends Model
     {
         return $this->belongsTo(\App\Models\Feedback::class, 'file_id');
     } 
+    public function credential()
+    {
+        return $this->belongsTo(\App\Models\Credential::class, 'file_id');
+    }
 }
 
