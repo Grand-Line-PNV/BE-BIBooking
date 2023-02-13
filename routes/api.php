@@ -23,37 +23,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(
-    [
-        'middleware' => 'api',
-        'prefix' => 'auth'
-    ],
-    function () {
-        Route::post('/register', [AuthController::class, 'register'])->name('users.register');
-        Route::post('/login', [AuthController::class, 'login']);
-    },
+Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
+    Route::post('/register', [AuthController::class, 'register'])->name('users.register');
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
-);
-Route::group(
-    [
-        'prefix' => 'influencer'
-    ],
-    function () {
-        Route::post('/create/{account_id}', [InfluencerProfileController::class, 'create']);
-        Route::get('/view/{account_id}', [InfluencerProfileController::class, 'view']);
-        Route::get('/viewAccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
+Route::group(['prefix' => 'influencer'], function () {
+    Route::post('/create/{account_id}', [InfluencerProfileController::class, 'create']);
+    Route::get('/view/{account_id}', [InfluencerProfileController::class, 'view']);
+    Route::get('/view-account/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
+});
 
-    },
-);
-Route::group(
-    [
-        'prefix' => 'brand'
-    ],
-    function () {
-        Route::post('/create/{account_id}', [BrandProfileController::class, 'create']);
-        Route::get('/view/{account_id}', [BrandProfileController::class, 'view']);
-        Route::get('/viewAccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
-
-    },
-);
+Route::group(['prefix' => 'brand'], function () {
+    Route::post('/create/{account_id}', [BrandProfileController::class, 'create']);
+    Route::get('/view/{account_id}', [BrandProfileController::class, 'view']);
+    Route::get('/view-account/{account_id}', [BrandProfileController::class, 'viewAccount']);
+});
 

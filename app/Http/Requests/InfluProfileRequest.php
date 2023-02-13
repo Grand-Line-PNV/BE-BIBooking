@@ -32,15 +32,14 @@ class InfluProfileRequest extends FormRequest
             'contentTopic' => 'required',
             'marialStatus' => 'required',
             'startedWork' => 'required|date',
-            'file_id' => 'required',
-            'link' => 'required',
             'fullname' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
-            'phone_number' => 'required||string|max:255',
-            'address_line1' => 'required||string|max:255',
-            'address_line2' => 'required||string|max:255',
-            'address_line3' => 'required||string|max:255',
-            'address_line4' => 'required||string|max:255',
+            'phone_number' => 'required|string',
+            'address_line1' => 'required|string|max:255',
+            'address_line2' => 'required|string|max:255',
+            'address_line3' => 'required|string|max:255',
+            'address_line4' => 'required|string|max:255',
+            'image'=>'required|file'
         ];
     }
 }
