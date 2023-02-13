@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\RegisterRequest;
@@ -13,23 +12,15 @@ use App\Mail\OTPEmail;
 use App\Traits\ApiResponse;
 
 
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Validator;
-
 class AuthController extends Controller
 {
     use ApiResponse;
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'requestOtp']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'requestOtp', 'verifyOtp']]);
     }
-    // public function generateOTP()
-    // {
-    //     $otp = mt_rand(1000, 9999);
-    //     return $otp;
-    // }
+
     public function requestOtp(OTPRequest $request)
     {
         $otp = rand(100000, 999900);
@@ -39,23 +30,23 @@ class AuthController extends Controller
 
             $otpMail = new OTPEmail($user, $otp);
             Mail::to($user->email)->send($otpMail);
-            
+
             Account::where('email', $request->email)->update(["otp" => $otp]);
             return $this->responseSuccessWithData(["message" => "OTP sent successfully"]);
         } else {
             return $this->responseErrorWithData(["message" => 'Invalid'], 401);
         }
     }
-    public function verifyOtp(OTPRequest $request){
-    
-        $user  = Account::where([['email','=',$request->email],['otp','=',$request->otp]])->first();
-        if($user){
-            Account::where('email','=',$request->email)->update(['otp' => null]);
+    public function verifyOtp(OTPRequest $request)
+    {
 
-            return response(["status" => 200, "message" => "Success", 'user' ]);
-        }
-        else{
-            return response(["status" => 401, 'message' => 'Invalid']);
+        $user  = Account::where([['email', $request->email], ['otp', $request->otp]])->first();
+        if ($user) {
+            Account::where('email', $request->email)->update(['verified' => true]);
+
+            return $this->responseSuccessWithData(["message" => "Success"]);
+        } else {
+            return $this->responseErrorWithData(["message" => 'Invalid'], 401);
         }
     }
     public function register(RegisterRequest $request)
@@ -67,23 +58,25 @@ class AuthController extends Controller
             'role_id' => $request->role_id,
         ]);
 
-        // $otp = $this->generateOTP();
-        // $otpMail = new OTPEmail($account, $otp);
-        // Mail::to($account->email)->send($otpMail);
         $account->save();
         return $this->responseSuccess();
     }
-    // public function verifyOTP(OTPRequest $request){
 
-    // }
     public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password', 'role_id']);
+        $user = Account::where('email', $request->email)->first();
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return $this->createNewToken($token);
+        if ($user['verified'] == true) {
+
+            return $this->createNewToken($token);
+        }
+        else {
+            return $this->responseErrorWithData(["message" => 'Invalid'], 401);
+        }
     }
 
     protected function createNewToken($token)

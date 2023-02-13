@@ -25,7 +25,7 @@ return new class extends Migration
            $table->string('fullname',50);
            $table->string('email',100)->unique;
            $table->string('phone_number');
-        //    $table->boolean('confirm');
+           $table->boolean('verified')->default(false);
            $table->integer('otp')->default(000000);
         //    $table->dateTime('confirmation_code_expired_in')->default(NULL);
            $table->string('address_line1');
