@@ -23,11 +23,6 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
-        $requirable = 'nullable';
-        if ($this->routeIs('users.update')) {
-            $requirable = 'required';
-        }
-
         return [
             'username' => 'required|string|max:20|min:8|unique:accounts',
             'email' => 'required|email|max:50|unique:accounts',

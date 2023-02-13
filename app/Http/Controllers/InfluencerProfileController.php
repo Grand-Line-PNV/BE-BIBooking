@@ -5,12 +5,14 @@ use App\Http\Requests\InfluProfileRequest;
 use App\Models\Credential;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\FileHelper;
 
 class InfluencerProfileController extends Controller
 {    
     use ApiResponse;
     public function create(InfluProfileRequest $request,$account_id)
     {
+        $userImage = FileHelper::uploadFileToS3($request->image,'influencers');
         $credential = new Credential([
             'account_id' => $account_id,
             'nickname' => $request->nickname,
@@ -21,9 +23,7 @@ class InfluencerProfileController extends Controller
             'marialStatus' => $request->marialStatus,
             'contentTopic' => $request->contentTopic,
             'startedWork' => $request->startedWork,
-            'link'=>$request->link,
-            'file_id'=> $request->file_id,
-            
+            'file_id'=> $userImage->id,     
         ]);
         $credential->save();
         DB::table('accounts')->where('id',$account_id)->update([
@@ -36,15 +36,14 @@ class InfluencerProfileController extends Controller
             'address_line4' => $request->address_line4]
         );
         return $this->responseSuccess();
-    }
+    }   
     public function view($account_id)
     {
-        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->where('account_id',$account_id)->get();
+        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id',$account_id)->get()->first();
         return $credential;
     }
     public function viewAccount($account_id)
         {
             return DB::table('accounts')->where('id',$account_id)->get();
-        }
-    
+        }  
 }

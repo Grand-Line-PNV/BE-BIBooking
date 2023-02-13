@@ -27,14 +27,14 @@ class BrandProfileRequest extends FormRequest
             'brandName' => 'required|string|max:50|min:8',
             'website' => 'required|string',
             'industry'=>'required',
-            'file_id'=>'required',
+            'image'=>'required|file',
             'fullname' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
-            'phone_number' => 'required||string|max:255',
-            'address_line1' => 'required||string|max:255',
-            'address_line2' => 'required||string|max:255',
-            'address_line3' => 'required||string|max:255',
-            'address_line4' => 'required||string|max:255',
+            'phone_number' => 'required|string',
+            'address_line1' => 'required|string|max:255',
+            'address_line2' => 'required|string|max:255',
+            'address_line3' => 'required|string|max:255',
+            'address_line4' => 'required|string|max:255',
         ];
     }
 }
