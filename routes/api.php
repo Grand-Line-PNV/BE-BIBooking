@@ -29,14 +29,14 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'influencer'], function () {
-    Route::post('/create/{account_id}', [InfluencerProfileController::class, 'create']);
-    Route::get('/view/{account_id}', [InfluencerProfileController::class, 'view']);
-    Route::get('/view-account/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
+    Route::post('/create-info/{account_id}', [InfluencerProfileController::class, 'create']);
+    Route::get('/view-myinfo/{account_id}', [InfluencerProfileController::class, 'view']);
+    Route::get('/view-myaccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
 });
 
 Route::group(['prefix' => 'brand'], function () {
-    Route::post('/create/{account_id}', [BrandProfileController::class, 'create']);
-    Route::get('/view/{account_id}', [BrandProfileController::class, 'view']);
-    Route::get('/view-account/{account_id}', [BrandProfileController::class, 'viewAccount']);
+    Route::post('/create-info/{account_id}', [BrandProfileController::class, 'create']);
+    Route::get('/view-myinfo/{account_id}', [BrandProfileController::class, 'view']);
+    Route::get('/view-myaccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
 });
 
