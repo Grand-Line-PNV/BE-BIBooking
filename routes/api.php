@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InfluencerProfileController;
 use App\Http\Controllers\BrandProfileController;
-
-
+use App\Http\Controllers\EditAccountController;
+use App\Http\Controllers\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +28,11 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+Route::post('/verify-otp', [VerificationController::class, 'verifyOtp']);
+Route::post('/send-email-to-change-password', [EditAccountController::class, 'sendEmailForgotPassword']);
+Route::post('/change-password', [EditAccountController::class, 'changePassword']);
+
+
 Route::group(['prefix' => 'influencer'], function () {
     Route::post('/create-info/{account_id}', [InfluencerProfileController::class, 'create']);
     Route::get('/view-myinfo/{account_id}', [InfluencerProfileController::class, 'view']);
@@ -39,4 +44,3 @@ Route::group(['prefix' => 'brand'], function () {
     Route::get('/view-myinfo/{account_id}', [BrandProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
 });
-
