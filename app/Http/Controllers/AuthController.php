@@ -8,6 +8,9 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\Account;
 use App\Http\Requests\LoginRequest;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OTPEmail;
+use App\Http\Controllers\VerificationController;
 
 class AuthController extends Controller
 {
@@ -17,6 +20,8 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
+    
+
     public function register(RegisterRequest $request)
     {
         $account = new Account([
@@ -25,19 +30,28 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
         ]);
+
         $account->save();
+        VerificationController::sendEmailToConfirmAccount($account, VerificationController::generateOtp());
         return $this->responseSuccess();
     }
+
     public function login(LoginRequest $request)
     {
-        $credentials = request(['email', 'password','role_id']);
+        $credentials = request(['email', 'password', 'role_id']);
+        $user = Account::where('email', $request->email)->first();
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return $this->createNewToken($token);
-    }
+        if ($user['verified'] == true) {
 
+            return $this->createNewToken($token);
+        }
+        else {
+            return $this->responseErrorWithData(["message" => 'Invalid'], 401);
+        }
+    }
     protected function createNewToken($token)
     {
         return response()->json([
