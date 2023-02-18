@@ -54,7 +54,7 @@ class FileHelper
     /**
      * Get file path
      */
-    private static function getFilePath(File $file)
+    private static function getFilePath($file)
     {
         return $file->path . '/' . $file->name;
     }

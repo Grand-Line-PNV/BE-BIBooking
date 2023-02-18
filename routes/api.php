@@ -7,6 +7,10 @@ use App\Http\Controllers\InfluencerProfileController;
 use App\Http\Controllers\BrandProfileController;
 use App\Http\Controllers\EditAccountController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\AddressController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +47,12 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('/create-info/{account_id}', [BrandProfileController::class, 'create']);
     Route::get('/view-myinfo/{account_id}', [BrandProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
-});
+    Route::post('/create-campaign', [CampaignController::class, 'create']);
+    Route::delete('/delete-campaign/{campaignDetailId}', [CampaignController::class, 'destroy']);
+    Route::post('/edit-campaign/{campaignDetailId}', [CampaignController::class, 'update']);
+ });
+
+ Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
+ Route::get('/districts/{province_code}', [AddressController::class, 'loaddistrict'])->name('address.districts');
+ Route::get('/wards/{district_code}', [AddressController::class, 'loadward'])->name('address.wards');
+ Route::get('/locations/{user_id}/{ward_code}', [AddressController::class, 'loaduserlocation'])->name('address.userlocation');

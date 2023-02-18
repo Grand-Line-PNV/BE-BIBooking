@@ -22,9 +22,9 @@ trait ApiResponse
     {
         return $this->response($data, 'success', $status);
     }
-    public function responseError(int $status = 400)
+    public function responseError(string $messages = '', int $status = 400)
     {
-        return $this->response([], 'error', $status);
+        return $this->response([], $messages ?? 'error', $status);
     }
     public function responseErrorWithData(array $data = [], int $status = 400)
     {
