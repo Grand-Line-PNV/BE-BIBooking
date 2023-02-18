@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Campaign extends Model
 {
     protected $fillable = [
-        'brand_id','campaign_status',
+        'brand_id','campaign_status','name','description','price','started_date',
+        'ended_date','industry','hashtag','socialChannel','amount','require','interest',
     ];
     use HasFactory;
 
-    // "apply","approve","submit","evaluate","closed"
     public const STATUS_APPLY = 'apply';
     public const STATUS_APPROVE = 'approve';
     public const STATUS_SUBMIT= 'submit';
@@ -23,9 +23,9 @@ class Campaign extends Model
     {
         return $this->belongsTo(\App\Models\Account::class, 'brand_id');
     }
-    public function campaign_detail()
+    public function files()
     {
-        return $this->hasOne(\App\Models\CampaignDetail::class);
+        return $this->hasMany(\App\Models\File::class);
     }
     public function booking_campaign()
     {

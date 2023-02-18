@@ -48,8 +48,10 @@ Route::group(['prefix' => 'brand'], function () {
     Route::get('/view-myinfo/{account_id}', [BrandProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
     Route::post('/create-campaign', [CampaignController::class, 'create']);
-    Route::delete('/delete-campaign/{campaignDetailId}', [CampaignController::class, 'destroy']);
-    Route::post('/edit-campaign/{campaignDetailId}', [CampaignController::class, 'update']);
+    Route::delete('/delete-campaign/{campaignId}', [CampaignController::class, 'destroy']);
+    Route::post('/edit-campaign/{campaignId}', [CampaignController::class, 'update']);
+    Route::get('/view-detail-campaign/{campaignId}', [CampaignController::class, 'viewDetailCampaign']);
+    Route::get('/view-all-campaigns', [CampaignController::class, 'viewCampaigns']);
  });
 
  Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
