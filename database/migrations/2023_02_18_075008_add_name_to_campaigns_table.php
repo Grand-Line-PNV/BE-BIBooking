@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->enum('campaign_status', array("apply","approve","submit","evaluate","closed"));
-            $table->dropColumn('status');
+            $table->string('name')->after('brand_id');
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -25,7 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('campaigns', function (Blueprint $table) {            
+        Schema::table('campaigns', function (Blueprint $table) {
+            //
         });
     }
 };

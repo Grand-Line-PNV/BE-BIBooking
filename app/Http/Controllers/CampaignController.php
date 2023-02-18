@@ -4,22 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignRequest;
 use App\Models\Campaign;
-use App\Models\CampaignDetail;
 use App\Traits\ApiResponse;
 use App\Helpers\FileHelper;
+
 class CampaignController extends Controller
 {
     use ApiResponse;
     public function create(CampaignRequest $request)
     {
+
         $campaign = new Campaign([
             'brand_id' => $request->brand_id,
             'campaign_status' => Campaign::STATUS_APPLY,
-        ]);
-        $campaign->save();
-
-        $campaignDetail = new CampaignDetail([
-            'campaign_id' => $campaign->id,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
@@ -32,12 +28,12 @@ class CampaignController extends Controller
             'require' => $request->require,
             'interest' => $request->interest,
         ]);
-        $campaignDetail->save();
+        $campaign->save();
 
         if ($request->hasfile('campaignImages')) {
             foreach ($request->file('campaignImages') as $file) {
                 $campaignImage = FileHelper::uploadFileToS3($file, 'campaigns');
-                $campaignImage->campaign_detail_id = $campaignDetail->id;
+                $campaignImage->campaign_id = $campaign->id;
                 $campaignImage->save();
             }
         }
@@ -45,7 +41,7 @@ class CampaignController extends Controller
         if ($request->hasfile('productImages')) {
             foreach ($request->file('productImages') as $file) {
                 $productImage = FileHelper::uploadFileToS3($file, 'products');
-                $productImage->campaign_detail_id = $campaignDetail->id;
+                $productImage->campaign_id = $campaign->id;
                 $productImage->save();
             }
         }
@@ -60,8 +56,7 @@ class CampaignController extends Controller
             return $this->responseError('Campaign does not exist!');
         }
 
-        $campaignDetail = CampaignDetail::where('campaign_id', $campaign->id)->first();
-        $campaignDetail->update([
+        $campaign->update([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
@@ -75,8 +70,8 @@ class CampaignController extends Controller
             'interest' => $request->interest,
         ]);
 
-        $campaignDetailFiles = CampaignDetail::with('files')->findOrFail($campaignDetail->id);
-        foreach ($campaignDetailFiles->files as $file) {
+        $campaignFiles = Campaign::with('files')->findOrFail($campaign->id);
+        foreach ($campaignFiles->files as $file) {
             FileHelper::removeFileFromS3($file);
             $file->delete();
         }
@@ -84,7 +79,7 @@ class CampaignController extends Controller
         if ($request->hasfile('campaignImages')) {
             foreach ($request->file('campaignImages') as $file) {
                 $campaignImage = FileHelper::uploadFileToS3($file, 'campaigns');
-                $campaignImage->campaign_detail_id = $campaignDetail->id;
+                $campaignImage->campaign_id = $campaign->id;
                 $campaignImage->save();
             }
         }
@@ -92,7 +87,7 @@ class CampaignController extends Controller
         if ($request->hasfile('productImages')) {
             foreach ($request->file('productImages') as $file) {
                 $productImage = FileHelper::uploadFileToS3($file, 'products');
-                $productImage->campaign_detail_id = $campaignDetail->id;
+                $productImage->campaign_id = $campaign->id;
                 $productImage->save();
             }
         }
@@ -106,24 +101,26 @@ class CampaignController extends Controller
             return $this->responseError('Campaign does not exist!');
         }
 
-        $campaignDetails = CampaignDetail::with('files')->where('campaign_id', $campaign->id)->first();
-        foreach ($campaignDetails->files as $file) {
+        $campaign = Campaign::with('files')->where('id', $campaignId)->first();
+        foreach ($campaign->files as $file) {
             FileHelper::removeFileFromS3($file);
             $file->delete();
         }
 
-        $campaignDetails->delete();
         $campaign->delete();
 
         return $this->responseSuccess();
-
-        // social_infos
-        // credential_id
-        // type: ig, fb, titkok
-        // url
     }
 
-    public function viewDetailCampaign($campaign_id)
+    public function viewDetailCampaign($campaignId)
     {
+        $campaign = Campaign::with('files')->where('id', $campaignId)->first();
+        return $campaign;
+    }
+
+    public function viewCampaigns()
+    {
+        $campaign = Campaign::with('files')->get();
+        return $campaign;
     }
 }

@@ -24,9 +24,9 @@ class File extends Model
     {
         return $this->belongsTo(\App\Models\Credential::class, 'file_id');
     }
-    public function campaignDetail()
+    public function campaign()
     {
-        return $this->belongsTo(\App\Models\CampaignDetail::class);
+        return $this->belongsTo(\App\Models\Campaign::class);
     }
 
 }
