@@ -24,7 +24,7 @@ class InfluProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'nickname' => 'required|string|max:50|min:8',
+            'nickname' => 'required|string|max:50',
             'dob' => 'required|date',
             'followers' => 'required|numeric',
             'bookingPrice' => 'required|numeric',

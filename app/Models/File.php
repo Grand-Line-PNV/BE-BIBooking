@@ -9,13 +9,9 @@ class File extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'url', 'file_type', 'name', 'path',
+        'url', 'file_type', 'name', 'path','campaign_detail_id'
     ];
 
-    public function campaign_detail()
-    {
-        return $this->belongsTo(\App\Models\Campaign_detail::class, 'file_id');
-    }
     public function booking_detail()
     {
         return $this->belongsTo(\App\Models\Booking_detail::class, 'file_id');
@@ -28,4 +24,9 @@ class File extends Model
     {
         return $this->belongsTo(\App\Models\Credential::class, 'file_id');
     }
+    public function campaignDetail()
+    {
+        return $this->belongsTo(\App\Models\CampaignDetail::class);
+    }
+
 }

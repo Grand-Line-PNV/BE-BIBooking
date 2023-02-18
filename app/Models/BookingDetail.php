@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Booking_detail extends Model
+class BookingDetail extends Model
 {
     use HasFactory;
+    protected $table = 'booking_details';
+
     public function booking_detail()
     {
         return $this->belongsTo(\App\Models\Booking::class, 'booking_id');
