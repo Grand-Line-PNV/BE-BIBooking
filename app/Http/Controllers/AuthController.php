@@ -45,20 +45,26 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         if ($user['verified'] == true) {
+            $userData = [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'account' => auth()->user()
+            ];
 
-            return $this->createNewToken($token);
+            return $this->commonResponse($userData, "Login successfully!");
         }
         else {
             return $this->responseErrorWithData(["message" => 'Invalid'], 401);
         }
     }
-    protected function createNewToken($token)
+
+    protected function commonResponse($data, $message = "", $code = 200)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
-            'account' => auth()->user()
+            'code' => $code,
+            'message' => $message,
+            'data' => $data,
         ]);
     }
 }

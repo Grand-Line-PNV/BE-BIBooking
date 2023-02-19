@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('path')->nullable();
             $table->unsignedInteger('campaign_id')->after('id')->nullable();
-           $table->foreign('campaign_id')->references('id')->on('campaigns')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('campaign_id')->references('id')->on('campaigns')->onUpdate('cascade')->onDelete('cascade');
         });
     }
     /**
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('files', function (Blueprint $table) {            
+        Schema::table('files', function (Blueprint $table) {
         });
     }
 };
