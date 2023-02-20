@@ -21,14 +21,10 @@ class Campaign extends Model
 
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'brand_id');
+        return $this->belongsTo(\App\Models\Account::class);
     }
     public function files()
     {
         return $this->hasMany(\App\Models\File::class);
-    }
-    public function booking_campaign()
-    {
-        return $this->hasMany(\App\Models\Booking_campaign::class, 'campaign_id');
     }
 }

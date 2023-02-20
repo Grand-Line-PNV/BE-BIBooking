@@ -32,7 +32,7 @@ class Account extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(\App\Models\Credential::class, 'account_id');
     }
-    public function campaign()
+    public function campaigns()
     {
         return $this->hasMany(\App\Models\Campaign::class, 'brand_id');
     }

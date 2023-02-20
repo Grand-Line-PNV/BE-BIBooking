@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('url');
             $table->string('type');
-            $table->unsignedInteger('credential_id')->after('id')->nullable();
+            $table->unsignedInteger('credential_id')->nullable();
             $table->foreign('credential_id')->references('id')->on('credentials')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

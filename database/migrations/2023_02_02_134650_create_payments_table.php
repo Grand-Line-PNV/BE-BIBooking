@@ -18,7 +18,7 @@ return new class extends Migration
     Schema::create('payments', function (Blueprint $table) {
         $table->increments("id", true);
         $table->string('name');
-        $table->enum('tranfer_type', ['NEFT', 'RTGS', 'IMPS', 'UPI', 'Others']);
+        $table->string('tranfer_type');
         $table->string('description');
         $table->timestamps();
     });

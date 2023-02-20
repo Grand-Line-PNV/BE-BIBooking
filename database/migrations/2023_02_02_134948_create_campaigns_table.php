@@ -19,7 +19,7 @@ return new class extends Migration
             $table->increments("id", true);
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
-            $table->enum('campaign_status', array("apply","approve","submit","evaluate","closed"));
+            $table->string('campaign_status');
             $table->string('industry');
             $table->string('hashtag');
             $table->string('socialChannel');
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->date('started_date');
             $table->date('ended_date');
             $table->double('price');
+            $table->integer('applied_number')->default(0);
             $table->timestamps();
         });
     }
