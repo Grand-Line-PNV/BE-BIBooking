@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('files', function (Blueprint $table) {
-            $table->string('name')->nullable();
-            $table->string('path')->nullable();
-            $table->unsignedInteger('campaign_id')->after('id')->nullable();
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->unsignedInteger('campaign_id')->after('id');
             $table->foreign('campaign_id')->references('id')->on('campaigns')->onUpdate('cascade')->onDelete('cascade');
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -27,7 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('files', function (Blueprint $table) {
+        Schema::table('bookings', function (Blueprint $table) {
+            //
         });
     }
 };

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'influencer_id','status','campaign_id'
+    ];
     public function account()
     {
         return $this->belongsTo(\App\Models\Account::class, 'influencer_id');
@@ -19,10 +22,6 @@ class Booking extends Model
     public function booking_detail()
     {
         return $this->hasOne(\App\Models\Booking_detail::class, 'booking_id');
-    }
-    public function booking_campaign()
-    {
-        return $this->hasMany(\App\Models\Booking_campaign::class, 'booking_id');
     }
 
 }

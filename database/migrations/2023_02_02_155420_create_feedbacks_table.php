@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments("id", true);
-            $table->unsignedInteger('booking_id');
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedInteger('booking_detail_id');
+            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('file_id');
             $table->foreign('file_id')->references('id')->on('files')->onUpdate('cascade')->onDelete('cascade');
             $table->string('from_type');

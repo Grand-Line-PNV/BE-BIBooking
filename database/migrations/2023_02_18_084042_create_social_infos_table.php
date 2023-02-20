@@ -1,10 +1,8 @@
 <?php
 
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 
 return new class extends Migration
 {
@@ -15,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bookings', function (Blueprint $table) {
-            $table->increments("id", true);
-            $table->unsignedInteger('influencer_id');
-            $table->enum("status", array('Todo', 'Doing', 'Done'));
+        Schema::create('social_infos', function (Blueprint $table) {
+            $table->id();
+            $table->string('url');
+            $table->string('type');
+            $table->unsignedInteger('credential_id')->nullable();
+            $table->foreign('credential_id')->references('id')->on('credentials')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('social_infos');
     }
 };

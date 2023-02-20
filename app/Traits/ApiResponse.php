@@ -8,39 +8,35 @@ trait ApiResponse
     {
         return response()->json(
             [
+                'data' => $data,
+                'status' =>$status,
                 'message' => $message,
-                'data' => $data
-            ],
-            $status
+            ], 
         );
     }
+
     public function responseSuccess(int $status = 200)
     {
         return $this->response([], 'success', $status);
     }
-    public function responseSuccessWithData(array $data = [], int $status = 200)
+
+    public function responseSuccessWithData(array $data = [], string $message = 'success',int $status = 200)
     {
-        return $this->response($data, 'success', $status);
+        return $this->response($data, $message, $status);
     }
+
     public function responseError(string $messages = '', int $status = 400)
     {
         return $this->response([], $messages ?? 'error', $status);
     }
+
     public function responseErrorWithData(array $data = [], int $status = 400)
     {
         return $this->response($data, 'error', $status);
     }
+
     public function responseErrorUnauthorized(int $status = 401)
     {
-        return $this->response([], "Unauthorized", $status);
-    }
-    protected function respondWithToken($token)
-    {
-        $data = [
-            'token' => $token,
-            'type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ];
-        return $this->response($data, 'success', 200);
+        return $this->response([], "unauthorized", $status);
     }
 };

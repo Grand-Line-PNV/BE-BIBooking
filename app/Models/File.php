@@ -11,11 +11,6 @@ class File extends Model
     protected $fillable = [
         'url', 'file_type', 'name', 'path','campaign_detail_id'
     ];
-
-    public function booking_detail()
-    {
-        return $this->belongsTo(\App\Models\Booking_detail::class, 'file_id');
-    }
     public function feedback()
     {
         return $this->belongsTo(\App\Models\Feedback::class, 'file_id');

@@ -31,16 +31,17 @@ class BrandProfileController extends Controller
             'address_line3' => $request->address_line3,
             'address_line4' => $request->address_line4]
         );
-        return $this->responseSuccessWithData();
+        return $this->responseSuccess();
     }
     public function view($account_id)
     {
         $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id',$account_id)->get()->first();
-        return $credential;
+        return $this->responseSuccessWithData($credential->toArray());
     }
     public function viewAccount($account_id){
         {
-            return DB::table('accounts')->where('id',$account_id)->get();
+            $account = DB::table('accounts')->where('id',$account_id)->get();
+            return $this->responseSuccessWithData($account->toArray());
         }
     }
 }

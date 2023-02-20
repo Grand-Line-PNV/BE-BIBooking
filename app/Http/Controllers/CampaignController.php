@@ -114,13 +114,17 @@ class CampaignController extends Controller
 
     public function viewDetailCampaign($campaignId)
     {
+        $campaign = Campaign::find($campaignId);
+        if (empty($campaign)) {
+            return $this->responseError('Campaign does not exist!');
+        }
         $campaign = Campaign::with('files')->where('id', $campaignId)->first();
-        return $campaign;
+        return $this->responseSuccessWithData($campaign->toArray());
     }
 
     public function viewCampaigns()
     {
         $campaign = Campaign::with('files')->get();
-        return $campaign;
+        return $this->responseSuccessWithData($campaign->toArray());
     }
 }
