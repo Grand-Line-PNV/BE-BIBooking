@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('top_ages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('account_id');
             $table->foreign('account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->double('level1');
             $table->double('level2');
