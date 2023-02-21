@@ -9,15 +9,16 @@ class Credential extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'account_id', 'nickname', 'dob', 'followers',
-        'bookingPrice', 'industry', 'contentTopic', 'marialStatus', 'startedWork', 'file_id', 'link','brandName','website'
+        'account_id', 'nickname', 'dob','fullname','nickname',
+        'booking_price', 'industry', 'content_topic', 'experiences','website',
+        'phone_number', 'gender', 'address_line1', 'address_line2', 'address_line3', 'address_line4','job','description','title_for_job'
     ];
     public function account()
     {
         return $this->belongsTo(\App\Models\Account::class, 'account_id');
     }
-    public function file()
+    public function files()
     {
-        return $this->hasMany(\App\Models\File::class, 'file_id');
+        return $this->hasMany(\App\Models\File::class);
     }
 }

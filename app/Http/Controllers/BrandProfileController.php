@@ -9,38 +9,40 @@ use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\DB;
 
 class BrandProfileController extends Controller
-{    
+{
     use ApiResponse;
-    public function create(BrandProfileRequest $request,int $account_id)
+    public function create(BrandProfileRequest $request)
     {
-        $userImage = FileHelper::uploadFileToS3($request->image,'brands');
-        $credential = new Credential([
-            'account_id'=>$account_id,
-            'industry' => $request->industry,
-            'file_id'=> $userImage->id,
-            'brandName'=>$request->brandName,
-            'website'=>$request->website
-        ]);
-        $credential->save();
-        DB::table('accounts')->where('id',$account_id)->update([
-            'fullname' => $request->fullname,
-            'gender' => $request->gender,
-            'phone_number' => $request->phone_number,
-            'address_line1' => $request->address_line1,
-            'address_line2' => $request->address_line2,
-            'address_line3' => $request->address_line3,
-            'address_line4' => $request->address_line4]
+        $credential = new Credential(
+            [
+                'account_id' => $request->brand_id,
+                'gender' => $request->gender,
+                'phone_number' => $request->phone_number,
+                'address_line1' => $request->address_line1,
+                'address_line2' => $request->address_line2,
+                'address_line3' => $request->address_line3,
+                'address_line4' => $request->address_line4,
+                'nickname' => $request->brand_name,
+                'dob' => $request->dob,
+                'industry' => $request->industry,
+                'website' => $request->website,
+                'fullname' => $request->fullname,             
+            ]
         );
+        $credential->save();
+        $brandImage = FileHelper::uploadFileToS3($request->image, 'brands');
+        $brandImage->account_id = $credential->account_id;
+        $brandImage->save();
         return $this->responseSuccess();
     }
     public function view($account_id)
     {
-        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id',$account_id)->get()->first();
+        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id', $account_id)->get()->first();
         return $this->responseSuccessWithData($credential->toArray());
     }
-    public function viewAccount($account_id){
-        {
-            $account = DB::table('accounts')->where('id',$account_id)->get();
+    public function viewAccount($account_id)
+    { {
+            $account = DB::table('accounts')->where('id', $account_id)->get();
             return $this->responseSuccessWithData($account->toArray());
         }
     }
