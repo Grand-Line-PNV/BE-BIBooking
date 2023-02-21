@@ -9,7 +9,7 @@ class File extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'url', 'file_type', 'name', 'path','campaign_detail_id'
+        'url', 'file_type', 'name', 'path','campaign_detail_id','account_id'
     ];
     public function feedback()
     {
@@ -23,5 +23,8 @@ class File extends Model
     {
         return $this->belongsTo(\App\Models\Campaign::class);
     }
-
+    public function account()
+    {
+        return $this->belongsTo(\App\Models\Account::class);
+    }
 }

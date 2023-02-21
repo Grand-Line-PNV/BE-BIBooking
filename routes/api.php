@@ -44,7 +44,7 @@ Route::group(['prefix' => 'influencer'], function () {
 });
 
 Route::group(['prefix' => 'brand'], function () {
-    Route::post('/create-info/{account_id}', [BrandProfileController::class, 'create']);
+    Route::post('/create-info', [BrandProfileController::class, 'create']);
     Route::get('/view-myinfo/{account_id}', [BrandProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [BrandProfileController::class, 'viewAccount']);
     Route::post('/create-campaign', [CampaignController::class, 'create']);

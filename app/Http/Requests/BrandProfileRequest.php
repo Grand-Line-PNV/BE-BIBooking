@@ -24,13 +24,14 @@ class BrandProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'brandName' => 'required|string|max:50',
+            'brand_name' => 'required|string|max:50',
             'website' => 'required|url',
             'industry'=>'required',
             'image'=>'required|file',
             'fullname' => 'required|string|max:255',
             'gender' => 'required|string|max:255',
             'phone_number' => 'required|string',
+            'dob'=>'date|required',
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'required|string|max:255',
             'address_line3' => 'required|string|max:255',

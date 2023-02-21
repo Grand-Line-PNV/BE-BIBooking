@@ -17,7 +17,7 @@ class Account extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'username', 'fullname', 'email', 'password',
-        'phone_number', 'gender', 'address_line1', 'address_line2', 'address_line3', 'address_line4', 'role_id',
+        'role_id','otp','verified'
     ];
 
     protected $hidden = [
@@ -35,6 +35,10 @@ class Account extends Authenticatable implements JWTSubject
     public function campaigns()
     {
         return $this->hasMany(\App\Models\Campaign::class, 'brand_id');
+    }
+    public function files()
+    {
+        return $this->hasMany(\App\Models\File::class);
     }
     public function booking()
     {
