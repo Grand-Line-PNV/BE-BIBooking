@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('gender_ratios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('account_id');
             $table->foreign('account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->double('male');
             $table->double('female');
