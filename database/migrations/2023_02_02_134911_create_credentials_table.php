@@ -19,10 +19,16 @@ return new class extends Migration
                 $table->increments("id", true);
                 $table->unsignedInteger('account_id');
                 $table->foreign('account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
+                $table->string('gender');
+                $table->string('phone_number');
+                $table->string('address_line1');
+                $table->string('address_line2');
+                $table->string('address_line3');
+                $table->string('address_line4');
                 $table->string('nickname');
-                $table->integer('followers');
+                $table->string('job')->nullable();
                 $table->double('booking_price');
-                $table->date('started_working_date');
+                $table->integer('experiences')->nullable();
                 $table->timestamps();
             });
         }

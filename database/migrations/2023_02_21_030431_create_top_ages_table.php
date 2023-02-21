@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('social_infos', function (Blueprint $table) {
+        Schema::create('top_ages', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('account_id')->nullable();
             $table->foreign('account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name');
-            $table->string('username');
-            $table->string('fullname');
-            $table->integer('avg_interactions');
-            $table->string('link');
-            $table->integer('subcribers');
+            $table->double('level1');
+            $table->double('level2');
+            $table->double('level3');
+            $table->double('others');
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('social_infos');
+        Schema::dropIfExists('top_ages');
     }
 };
