@@ -22,13 +22,7 @@ return new class extends Migration
            $table->unsignedInteger('file_id');
            $table->foreign('file_id')->references('id')->on('files')->onUpdate('cascade')->onDelete('cascade');        
            $table->string('username');
-           $table->string('fullname',50);
-           $table->string('email',100)->unique;
-           $table->string('phone_number');
-           $table->string('address_line1');
-           $table->string('address_line2');
-           $table->string('address_line3');
-           $table->string('address_line4');
+           $table->string('email',100)->unique;  
            $table->timestamps();
        });
    }

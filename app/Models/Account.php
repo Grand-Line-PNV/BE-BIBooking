@@ -40,6 +40,22 @@ class Account extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(\App\Models\Booking::class, 'influencer_id');
     }
+    public function socialInfo()
+    {
+        return $this->hasMany(\App\Models\SocialInfo::class);
+    }
+    public function topAges()
+    {
+        return $this->hasMany(\App\Models\TopAge::class);
+    }
+    public function genderRatios()
+    {
+        return $this->hasMany(\App\Models\GenderRatio::class);
+    }
+    public function cityInfos()
+    {
+        return $this->hasmany(\App\Models\CityInfo::class);
+    }
     /**
      * @param string|array $roles
      */
