@@ -16,18 +16,20 @@ class BrandProfileController extends Controller
     {
         $credential = new Credential(
             [
-                'account_id' => $request->brand_id,
+                'account_id' => $request->account_id,
                 'gender' => $request->gender,
                 'phone_number' => $request->phone_number,
                 'address_line1' => $request->address_line1,
                 'address_line2' => $request->address_line2,
                 'address_line3' => $request->address_line3,
                 'address_line4' => $request->address_line4,
-                'nickname' => $request->brand_name,
+                'nickname' => $request->nickname,
                 'dob' => $request->dob,
                 'industry' => $request->industry,
                 'website' => $request->website,
-                'fullname' => $request->fullname,             
+                'fullname' => $request->fullname,      
+                'description' => $request->description,  
+                'brand_name'=>$request->brand_name,   
             ]
         );
         $credential->save();
@@ -50,11 +52,13 @@ class BrandProfileController extends Controller
                 'address_line2' => $request->address_line2,
                 'address_line3' => $request->address_line3,
                 'address_line4' => $request->address_line4,
-                'nickname' => $request->brand_name,
+                'nickname' => $request->nickname,
                 'dob' => $request->dob,
                 'industry' => $request->industry,
                 'website' => $request->website,
-                'fullname' => $request->fullname,             
+                'fullname' => $request->fullname,      
+                'description' => $request->description,  
+                'brand_name'=>$request->brand_name,      
             ]);
         // $credential->save();
         $file = Account::with('files')->where('id', $brandId)->first();
@@ -67,7 +71,11 @@ class BrandProfileController extends Controller
     }
     public function view($account_id)
     {
-        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'credentials.id', '=', 'files.credential_id')->where('account_id', $account_id)->get()->first();
-        return $this->responseSuccessWithData($credential->toArray());
+        $credential = DB::table('accounts')
+        ->join('credentials', 'accounts.id', '=', 'credentials.account_id')
+        ->join('files', 'accounts.id', '=', 'files.account_id')
+        ->where('accounts.id', $account_id)
+        ->get()->toArray();
+        return $credential;
     }
 }
