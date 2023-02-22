@@ -76,6 +76,6 @@ class BrandProfileController extends Controller
         ->join('files', 'accounts.id', '=', 'files.account_id')
         ->where('accounts.id', $account_id)
         ->get()->toArray();
-        return $credential;
+        return $this->responseSuccessWithData($credential);
     }
 }
