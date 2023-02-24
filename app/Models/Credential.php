@@ -16,7 +16,7 @@ class Credential extends Model
     ];
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'account_id');
+        return $this->belongsTo(\App\Models\Account::class);
     }
     public function files()
     {

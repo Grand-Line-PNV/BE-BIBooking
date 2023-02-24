@@ -9,6 +9,8 @@ use App\Http\Controllers\EditAccountController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\BookingController;
+
 
 
 
@@ -30,11 +32,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register'])->name('users.register');
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/verify-otp', [VerificationController::class, 'verifyOtp']);
+    Route::post('/send-email-to-change-password', [EditAccountController::class, 'sendEmailForgotPassword']);
+    Route::post('/change-password', [EditAccountController::class, 'changePassword']);
 });
-
-Route::post('/verify-otp', [VerificationController::class, 'verifyOtp']);
-Route::post('/send-email-to-change-password', [EditAccountController::class, 'sendEmailForgotPassword']);
-Route::post('/change-password', [EditAccountController::class, 'changePassword']);
 
 
 Route::group(['prefix' => 'influencer'], function () {
@@ -52,9 +54,17 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('/edit-campaign/{campaignId}', [CampaignController::class, 'update']);
     Route::get('/view-detail-campaign/{campaignId}', [CampaignController::class, 'viewDetailCampaign']);
     Route::get('/view-all-campaigns', [CampaignController::class, 'viewCampaigns']);
- });
+});
 
- Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
- Route::get('/districts/{province_code}', [AddressController::class, 'loaddistrict'])->name('address.districts');
- Route::get('/wards/{district_code}', [AddressController::class, 'loadward'])->name('address.wards');
- Route::get('/locations/{user_id}/{ward_code}', [AddressController::class, 'loaduserlocation'])->name('address.userlocation');
+Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
+Route::get('/districts/{province_code}', [AddressController::class, 'loaddistrict'])->name('address.districts');
+Route::get('/wards/{district_code}', [AddressController::class, 'loadward'])->name('address.wards');
+Route::get('/locations/{user_id}/{ward_code}', [AddressController::class, 'loaduserlocation'])->name('address.userlocation');
+
+Route::group(['prefix' => 'bookings'], function () {
+    Route::post('/create', [BookingController::class, 'store']);
+    Route::get('/get-detail/{bookingId}', [BookingController::class, 'show']);
+    Route::get('/get-list', [BookingController::class, 'index']);
+    Route::post('/update/{bookingId}', [BookingController::class, 'update'])->name('booking.update');
+    Route::delete('/delete/{bookingId}', [BookingController::class, 'destroy']);
+});
