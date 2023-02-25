@@ -23,7 +23,12 @@ class CampaignRequest extends FormRequest
      */
     public function rules()
     {
+        $requirable = 'required';
+        if ($this->routeIs('campaign.update')) {
+            $requirable = 'nullable';
+        }
         return [
+            'brand_id'=> $requirable . '|integer',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',

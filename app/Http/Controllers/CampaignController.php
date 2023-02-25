@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignRequest;
+use App\Http\Requests\BrandIdRequest;
 use App\Models\Campaign;
 use App\Traits\ApiResponse;
 use App\Helpers\FileHelper;
+use Illuminate\Http\Request;
 
 class CampaignController extends Controller
 {
@@ -119,12 +121,12 @@ class CampaignController extends Controller
             return $this->responseError('Campaign does not exist!');
         }
         $campaign = Campaign::with('files')->where('id', $campaignId)->first();
-        return $this->responseSuccessWithData($campaign->toArray());
+        return $this->commonResponse($campaign);
     }
 
-    public function viewCampaigns()
+    public function viewCampaigns(Request $request)
     {
-        $campaign = Campaign::with('files')->get();
-        return $this->responseSuccessWithData($campaign->toArray());
+        $campaigns = Campaign::with('files')->where('brand_id', $request->brand_id)->get();
+        return $this->commonResponse($campaigns);
     }
 }
