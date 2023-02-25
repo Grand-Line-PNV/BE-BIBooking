@@ -20,7 +20,7 @@ class VerificationController extends Controller
         Mail::to($account->email)->send($otpMail);
         Account::where('email', $account->email)->update(["otp" => $otp]);
     }
-    
+
     public static function generateOtp(): int
     {
         return rand(100000, 999900);
@@ -28,12 +28,12 @@ class VerificationController extends Controller
     public function verifyOtp(OtpRequest $request)
     {
         $user  = Account::where([['email', $request->email], ['otp', $request->otp]])->first();
+
         if ($user) {
             Account::where('email', $request->email)->update(['verified' => true]);
-
-            return $this->responseSuccess();
+            return $this->commonResponse($user);
         } else {
-            return $this->responseSuccess();
+            return $this->commonResponse([], 'Your OTP is wrong', 401);
         }
     }
 }
