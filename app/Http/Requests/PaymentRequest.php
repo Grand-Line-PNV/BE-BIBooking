@@ -28,6 +28,10 @@ class PaymentRequest extends FormRequest
             'name' => 'required|string',
             'tranfer_type' => 'required|string',
             'description' => 'required|string',
+            'bank_account' => 'required|integer|numeric',
+            'date' => 'required|date',
+            'number' => 'required|numeric',
+            'evidence' =>'required'
         ];
     }
 }

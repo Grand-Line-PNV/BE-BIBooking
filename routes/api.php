@@ -10,9 +10,7 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BookingController;
-
-
-
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,3 +66,5 @@ Route::group(['prefix' => 'bookings'], function () {
     Route::post('/update/{bookingId}', [BookingController::class, 'update'])->name('booking.update');
     Route::delete('/delete/{bookingId}', [BookingController::class, 'destroy']);
 });
+
+Route::post('/create-payment', [PaymentController::class, 'store']);

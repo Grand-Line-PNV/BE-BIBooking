@@ -31,4 +31,9 @@ class File extends Model
     {
         return $this->belongsTo(\App\Models\Feedback::class);
     }
+
+    public function payment()
+    {
+        return $this->belongsTo(\App\Models\Payment::class);
+    }
 }
