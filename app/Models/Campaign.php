@@ -27,4 +27,8 @@ class Campaign extends Model
     {
         return $this->hasMany(\App\Models\File::class);
     }
+    public function booking()
+    {
+        return $this->hasOne(\App\Models\Booking::class);
+    }
 }

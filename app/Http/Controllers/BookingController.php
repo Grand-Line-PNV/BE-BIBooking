@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderBooking;
 use App\Models\Booking;
 use App\Models\Campaign;
 use App\Http\Requests\BookingRequest;
@@ -37,7 +38,9 @@ class BookingController extends Controller
             'payment_status' => 0,
         ]);
 
-        return $this->commonResponse($booking);
+        // return $this->commonResponse($booking);
+
+        OrderBooking::dispatch($booking);
     }
 
     public function show($id)
