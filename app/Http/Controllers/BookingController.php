@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BookingActions;
+use App\Events\BookingNotifications;
 use App\Models\Booking;
 use App\Models\Campaign;
 use App\Http\Requests\BookingRequest;
 use App\Models\Account;
-
+use Carbon\Carbon;
+use App\Helpers\NotificationHelper;
 
 class BookingController extends Controller
 {
@@ -37,6 +40,25 @@ class BookingController extends Controller
             'payment_status' => 0,
         ]);
 
+        event(new BookingActions($booking));
+
+        // $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . 'state now!';
+        // NotificationHelper::saveNotification($influencer->id, $influencerNotifyContent);
+        // event(new BookingNotifications([
+        //     'time' => Carbon::now(),
+        //     'message' => $influencerNotifyContent,
+        //     'userId' => $influencer->id,
+        // ]));
+
+        // $brand = Account::where(['id' => $campaign->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
+        // $brandContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . 'state now!';
+        // NotificationHelper::saveNotification($brand->id, $brandContent);
+        // event(new BookingNotifications([
+        //     'time' => Carbon::now(),
+        //     'message' => $brandContent,
+        //     'userId' => $brand->id,
+        // ]));
+
         return $this->commonResponse($booking);
     }
 
@@ -53,7 +75,6 @@ class BookingController extends Controller
             'status' => $request->status ?? $booking->status,
             'started_date' => $request->started_date ?? $booking->started_date ?? null,
             'ended_date' => $request->ended_date ?? $booking->ended_date ?? null,
-            // 'payment_status' => $request->payment_status ?? $booking->payment_status ?? 0,
         ]);
 
         return $this->commonResponse($booking);
@@ -72,6 +93,4 @@ class BookingController extends Controller
 
         $this->commonResponse([], "Booking has deleted success.");
     }
-
-
 }

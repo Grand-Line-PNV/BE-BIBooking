@@ -16,8 +16,6 @@ class BookingRequest extends FormRequest
     {
         return true;
     }
-
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,6 +27,7 @@ class BookingRequest extends FormRequest
         if ($this->routeIs('booking.update')) {
             $requirable = 'nullable';
         }
+
         return [
             'campaign_id' => $requirable . '|integer',
             'influencer_id' => $requirable . '|integer',

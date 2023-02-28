@@ -59,6 +59,7 @@ class CampaignController extends Controller
         }
 
         $campaign->update([
+            'campaign_status' => $request->campaign_status ?? $campaign->campaign_status,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,

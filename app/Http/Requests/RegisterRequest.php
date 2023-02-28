@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Account;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -28,6 +30,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|email|max:50|unique:accounts',
             'password' => 'required|min:8|max:50',
             'password_confirmation' => 'required|same:password',
+            'role_id' => 'required|int|in:' . implode(',', Account::ROLES),
         ];
     }
 }

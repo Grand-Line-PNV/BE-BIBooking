@@ -46,4 +46,8 @@ class Booking extends Model
     {
         return $this->hasOne(\App\Models\Payment::class);
     }
+    public function campaign()
+    {
+        return $this->belongsTo(\App\Models\Campaign::class);
+    }
 }

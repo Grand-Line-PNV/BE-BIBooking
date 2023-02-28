@@ -11,7 +11,7 @@
 <body>
     <div>
 
-        The body of your message.<br>
+        Welcome to B&I Booking platform.<br>
         Welcome {{$user->username}}<br>
         Your OTP is <strong style="color:'blue'">{{$otp}}</strong> will be expired for 60 seconds
 

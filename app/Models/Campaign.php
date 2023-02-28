@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Campaign extends Model
 {
     protected $fillable = [
-        'brand_id','campaign_status','name','description','price','started_date',
-        'ended_date','industry','hashtag','socialChannel','amount','require','interest',
+        'brand_id', 'campaign_status', 'name', 'description', 'price', 'started_date',
+        'ended_date', 'industry', 'hashtag', 'socialChannel', 'amount', 'require', 'interest',
     ];
     use HasFactory;
 
@@ -19,6 +19,14 @@ class Campaign extends Model
     public const STATUS_EVALUATE = 'evaluate';
     public const STATUS_CLOSED = 'closed';
 
+    public const CAMPAIGN_STATUS =[
+        self::STATUS_APPLY,
+        self::STATUS_APPROVE,
+        self::STATUS_SUBMIT,
+        self::STATUS_EVALUATE,
+        self::STATUS_CLOSED,
+    ];
+
     public function account()
     {
         return $this->belongsTo(\App\Models\Account::class);
@@ -26,5 +34,9 @@ class Campaign extends Model
     public function files()
     {
         return $this->hasMany(\App\Models\File::class);
+    }
+    public function booking()
+    {
+        return $this->hasOne(\App\Models\Booking::class);
     }
 }
