@@ -9,9 +9,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Booking;
 
-class OrderBooking
+class BookingActions
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,8 +21,18 @@ class OrderBooking
      *
      * @return void
      */
-    public function __construct(Booking $booking)
+    public function __construct($booking)
     {
         $this->booking = $booking;
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new PrivateChannel('booking-actions');
     }
 }

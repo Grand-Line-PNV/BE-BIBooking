@@ -14,6 +14,14 @@ class Account extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ROLE_ADMIN = 0;
+    const ROLE_BRAND = 1;
+    const ROLE_INFLUENCER = 2;
+    const ROLES = [
+        self::ROLE_ADMIN,
+        self::ROLE_BRAND,
+        self::ROLE_INFLUENCER,
+    ];
 
     protected $fillable = [
         'username', 'fullname', 'email', 'password','role_id', 'otp', 'verified'
@@ -27,38 +35,47 @@ class Account extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(\App\Models\Role::class);
     }
+    
     public function credential()
     {
         return $this->hasOne(\App\Models\Credential::class);
     }
+
     public function campaigns()
     {
         return $this->hasMany(\App\Models\Campaign::class, 'brand_id');
     }
+
     public function files()
     {
         return $this->hasMany(\App\Models\File::class);
     }
+
     public function bookings()
     {
         return $this->hasMany(\App\Models\Booking::class, 'influencer_id');
     }
+
     public function socialInfo()
     {
         return $this->hasMany(\App\Models\SocialInfo::class);
     }
+
     public function topAges()
     {
         return $this->hasMany(\App\Models\TopAge::class);
     }
+
     public function genderRatios()
     {
         return $this->hasMany(\App\Models\GenderRatio::class);
     }
+
     public function cityInfos()
     {
         return $this->hasmany(\App\Models\CityInfo::class);
     }
+  
     /**
      * @param string|array $roles
      */
@@ -67,10 +84,7 @@ class Account extends Authenticatable implements JWTSubject
         return $this->hasRole($roles) ||
             abort(401, 'This action is unauthorized.');
     }
-    /**
-     * Check multiple roles
-     * @param array $roles
-     */
+
     /**
      * Check one role
      * @param string $role
@@ -79,6 +93,7 @@ class Account extends Authenticatable implements JWTSubject
     {
         return null !== $this->role()->where("name", $role)->first();
     }
+
     public function getJWTIdentifier() {
         return $this->getKey();
     }

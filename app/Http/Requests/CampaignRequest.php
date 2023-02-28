@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Campaign;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CampaignRequest extends FormRequest
@@ -28,6 +29,7 @@ class CampaignRequest extends FormRequest
             $requirable = 'nullable';
         }
         return [
+            'campaign_status' => 'string|in:' . implode(',', Campaign::CAMPAIGN_STATUS),
             'brand_id'=> $requirable . '|integer',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
