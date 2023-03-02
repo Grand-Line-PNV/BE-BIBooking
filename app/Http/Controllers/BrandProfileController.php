@@ -69,13 +69,18 @@ class BrandProfileController extends Controller
         $brandImage->save();
         return $this->responseSuccess();
     }
-    public function view($account_id)
+    public function view($id)
     {
-        $credential = DB::table('accounts')
-        ->join('credentials', 'accounts.id', '=', 'credentials.account_id')
-        ->join('files', 'accounts.id', '=', 'files.account_id')
-        ->where('accounts.id', $account_id)
-        ->get()->toArray();
-        return $this->responseSuccessWithData($credential);
+        $credential = Account::with('credential','files')->where('id',$id)->first();
+        return $this->commonResponse($credential);
     }
+    public function delete($id)
+    {
+        Credential::where('account_id',$id)->delete();
+        $file = Account::with('files')->where('id', $id)->first();
+        FileHelper::removeFileFromS3($file);
+        $file->files()->delete();
+        return $this->commonResponse([], "Credential has deleted success.");
+    }
+
 }
