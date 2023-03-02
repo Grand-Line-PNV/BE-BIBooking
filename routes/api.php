@@ -48,6 +48,7 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('/create-info', [BrandProfileController::class, 'create']);
     Route::post('/edit-info/{brandId}', [BrandProfileController::class, 'update']);
     Route::get('/view-myinfo/{account_id}', [BrandProfileController::class, 'view']);
+    Route::delete('/delete-myinfo/{id}', [BrandProfileController::class, 'delete']);
     Route::post('/create-campaign', [CampaignController::class, 'create']);
     Route::delete('/delete-campaign/{campaignId}', [CampaignController::class, 'destroy']);
     Route::post('/edit-campaign/{campaignId}', [CampaignController::class, 'update'])->name('campaign.update');
