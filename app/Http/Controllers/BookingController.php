@@ -40,24 +40,25 @@ class BookingController extends Controller
             'payment_status' => 0,
         ]);
 
+        //send emails and notifations
         event(new BookingActions($booking));
 
-        // $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . 'state now!';
-        // NotificationHelper::saveNotification($influencer->id, $influencerNotifyContent);
-        // event(new BookingNotifications([
-        //     'time' => Carbon::now(),
-        //     'message' => $influencerNotifyContent,
-        //     'userId' => $influencer->id,
-        // ]));
+        $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . 'state now!';
+        NotificationHelper::saveNotification($influencer->id, $influencerNotifyContent);
+        event(new BookingNotifications([
+            'time' => Carbon::now(),
+            'message' => $influencerNotifyContent,
+            'userId' => $influencer->id,
+        ]));
 
-        // $brand = Account::where(['id' => $campaign->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
-        // $brandContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . 'state now!';
-        // NotificationHelper::saveNotification($brand->id, $brandContent);
-        // event(new BookingNotifications([
-        //     'time' => Carbon::now(),
-        //     'message' => $brandContent,
-        //     'userId' => $brand->id,
-        // ]));
+        $brand = Account::where(['id' => $campaign->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
+        $brandContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . 'state now!';
+        NotificationHelper::saveNotification($brand->id, $brandContent);
+        event(new BookingNotifications([
+            'time' => Carbon::now(),
+            'message' => $brandContent,
+            'userId' => $brand->id,
+        ]));
 
         return $this->commonResponse($booking);
     }
@@ -68,14 +69,48 @@ class BookingController extends Controller
         return $this->commonResponse($booking);
     }
 
+    //update: cancel, reject, confirmed, doingg
     public function update(BookingRequest $request, $id)
     {
+
         $booking = Booking::findOrFail($id);
         $booking->update([
             'status' => $request->status ?? $booking->status,
             'started_date' => $request->started_date ?? $booking->started_date ?? null,
             'ended_date' => $request->ended_date ?? $booking->ended_date ?? null,
         ]);
+
+        $campaign = Campaign::find($booking->campaign_id);
+
+        //update campaign status 
+        if ($booking->status == Booking::STATUS_CONFIRMED){
+            $campaign->update ([
+                'applied_number' => $campaign->applied_number + 1
+            ]);
+        }
+
+        $influencer = Account::find($request->influencer_id);
+
+        //send emails and notifications for both brands and influencera
+        event(new BookingActions($booking));
+
+        $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . 'state now!';
+        NotificationHelper::saveNotification($influencer->id, $influencerNotifyContent);
+        event(new BookingNotifications([
+            'time' => Carbon::now(),
+            'message' => $influencerNotifyContent,
+            'userId' => $influencer->id,
+        ]));
+
+        $brand = Account::where(['id' => $campaign->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
+        $brandContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . 'state now!';
+        NotificationHelper::saveNotification($brand->id, $brandContent);
+        event(new BookingNotifications([
+            'time' => Carbon::now(),
+            'message' => $brandContent,
+            'userId' => $brand->id,
+        ]));
+
 
         return $this->commonResponse($booking);
     }
@@ -93,4 +128,5 @@ class BookingController extends Controller
 
         $this->commonResponse([], "Booking has deleted success.");
     }
+    
 }

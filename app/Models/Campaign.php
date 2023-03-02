@@ -9,7 +9,7 @@ class Campaign extends Model
 {
     protected $fillable = [
         'brand_id', 'campaign_status', 'name', 'description', 'price', 'started_date',
-        'ended_date', 'industry', 'hashtag', 'socialChannel', 'amount', 'require', 'interest',
+        'ended_date', 'industry', 'hashtag', 'socialChannel', 'amount', 'require', 'interest', 'applied_number'
     ];
     use HasFactory;
 

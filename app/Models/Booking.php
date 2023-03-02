@@ -50,4 +50,8 @@ class Booking extends Model
     {
         return $this->belongsTo(\App\Models\Campaign::class);
     }
+    public function tasksLinks()
+    {
+        return $this->hasMany(\App\Models\TaskLink::class);
+    }
 }

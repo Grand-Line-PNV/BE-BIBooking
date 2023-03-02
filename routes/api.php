@@ -11,6 +11,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TasksLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,3 +69,9 @@ Route::group(['prefix' => 'bookings'], function () {
 });
 
 Route::post('/create-payment', [PaymentController::class, 'store']);
+
+Route::group(['prefix' => 'tasks'], function () {
+    Route::post('/create', [TasksLinkController::class, 'store']);
+    Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
+
+});

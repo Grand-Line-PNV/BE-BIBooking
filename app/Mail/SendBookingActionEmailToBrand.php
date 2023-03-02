@@ -18,10 +18,11 @@ class SendBookingActionEmailToBrand extends Mailable
     use Queueable, SerializesModels;
 
     public $booking;
-    
+
     public $influencer;
 
     public $campaign;
+
     public $brand;
 
 
@@ -37,7 +38,6 @@ class SendBookingActionEmailToBrand extends Mailable
         $this->influencer = $influencer;
         $this->campaign = $campaign;
         $this->brand = $brand;
-
     }
 
     /**
@@ -107,7 +107,6 @@ class SendBookingActionEmailToBrand extends Mailable
             default:
                 $template;
         }
-
         return $template;
     }
 }
