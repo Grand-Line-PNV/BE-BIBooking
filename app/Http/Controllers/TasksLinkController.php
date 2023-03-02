@@ -2,43 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PaymentRequest;
-use App\Models\Payment;
-use App\Helpers\FileHelper;
+use App\Http\Requests\TasksLinkRequest;
 use App\Models\Booking;
+use App\Models\TasksLink;
+use Carbon\Carbon;
+use App\Helpers\NotificationHelper;
 use App\Events\BookingActions;
 use App\Events\BookingNotifications;
 use App\Models\Account;
 use App\Models\Campaign;
-use App\Helpers\NotificationHelper;
-use Carbon\Carbon;
 
-
-class PaymentController extends Controller
+class TasksLinkController extends Controller
 {
-    public function store(PaymentRequest $request)
+    public function store(TasksLinkRequest $request)
     {
-        $payment = Payment::create([
+        $tasksLink = TasksLink::create([
             'booking_id' => $request->booking_id,
-            'name' => $request->name,
-            'tranfer_type' => $request->tranfer_type,
+            'link' => $request->link,
             'description' => $request->description,
-            'bank_account' => $request->bank_account,
-            'number' => $request->number,
-            'date' => $request->date
+            'submitted_date' => Carbon::now(),
         ]);
 
-        $paymentImage = FileHelper::uploadFileToS3($request->evidence, 'payments');
-        $paymentImage->payment_id = $payment->id;
-        $paymentImage->save();
-
-        $booking = Booking::find($payment->booking_id);
+        $booking = Booking::find($tasksLink->booking_id);
         $booking->update([
-            'payment_status' => 1,
-            'status' => Booking::STATUS_PAID,
+            'status' => Booking::STATUS_DONE,
         ]);
 
-        //send email and notification - paid status 
+        //send email and notification - done rui
         event(new BookingActions($booking));
 
         $influencer = Account::find($booking->influencer_id);
@@ -62,6 +52,28 @@ class PaymentController extends Controller
             'userId' => $brand->id,
         ]));
 
-        return $this->commonResponse($payment);
+
+        return $this->commonResponse($tasksLink);
+    }
+    public function edit(TasksLinkRequest $request,$id)
+    {
+        $tasksLink = TasksLink::findOrFail($id);
+
+        $tasksLink -> update([
+            'link' => $request->link,
+            'description' => $request->description,
+            'submitted_date' => Carbon::now(),
+        ]);
+
+        return $this->commonResponse($tasksLink);
+    }
+
+    public function destroy($id)
+    {
+        $tasksLink = TasksLink::findOrFail($id);
+
+        $tasksLink -> delete();
+
+        $this->commonResponse([], "Task has been deleted success.");
     }
 }

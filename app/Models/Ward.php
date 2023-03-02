@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Ward extends Model
 {
     use HasFactory;
+    /**
+     * Relationship
+     */
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_code', 'code');
+    }
 }

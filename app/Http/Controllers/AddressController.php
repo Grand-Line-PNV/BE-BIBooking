@@ -34,9 +34,7 @@ class AddressController extends Controller
 
     public function loadUserLocation(int $userId, string $wardCode)
     {
-        $ward = Ward::where('code', '=', $wardCode)->first();
-        $district = District::where('code', '=', $ward->district_code)->first();
-        $province = Province::where('code', '=', $district->province_code)->first();
+        $ward = Ward::with(['district', 'district.province'])->firstWhere('code', $wardCode);
 
         $location = Account::select(
             'address_line4 AS provinceCode',
@@ -47,9 +45,9 @@ class AddressController extends Controller
             'id' => $userId,
             'address_line2' => $wardCode
         ])->first();
-    
-        $locationInDetail = implode(", ", [$location->houseNumber, $ward->full_name, $district->full_name, $province->full_name]);
-        
+
+        $locationInDetail = implode(", ", [$location->houseNumber, $ward->full_name, $ward->district->full_name, $ward->district->province->full_name]);
+
         return new AddressResource([
             'locationInDetail' => $locationInDetail,
             'addressCodes' => $location,

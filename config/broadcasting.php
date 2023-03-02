@@ -64,6 +64,10 @@ return [
         'null' => [
             'driver' => 'null',
         ],
+        'options' => [
+            'cluster' => 'sa1',
+            'useTLS' => true
+        ],
 
     ],
 
