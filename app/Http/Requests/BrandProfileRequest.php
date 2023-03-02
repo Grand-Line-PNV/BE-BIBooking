@@ -23,7 +23,12 @@ class BrandProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $requirable = 'required';
+        if ($this->routeIs('brand.update')) {
+            $requirable = 'nullable';
+        }
         return [
+            'account_id' => $requirable . '|integer',
             'brand_name' => 'required|string|max:50',
             'website' => 'required|url',
             'industry'=>'required',
