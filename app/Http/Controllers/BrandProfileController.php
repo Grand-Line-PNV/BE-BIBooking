@@ -40,7 +40,7 @@ class BrandProfileController extends Controller
     }
     public function update(BrandProfileRequest $request,$id)
     {
-        $credential = Credential::where('account_id',$id)->first();
+        $credential = Credential::where('account_id', $id)->first();
         if (empty($credential)) {
             return $this->responseError('Brand does not exist!');
         }
@@ -71,12 +71,12 @@ class BrandProfileController extends Controller
     }
     public function view($id)
     {
-        $credential = Account::with('credential','files')->where('id',$id)->first();
+        $credential = Account::with('credential', 'files')->where('id', $id)->first();
         return $this->commonResponse($credential);
     }
     public function delete($id)
     {
-        Credential::where('account_id',$id)->delete();
+        Credential::where('account_id', $id)->delete();
         $file = Account::with('files')->where('id', $id)->first();
         FileHelper::removeFileFromS3($file);
         $file->files()->delete();

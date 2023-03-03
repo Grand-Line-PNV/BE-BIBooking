@@ -57,8 +57,8 @@
         <ul>
           <li><strong>You have apply a campaign from Brand with ID:</strong> {{$booking->brand_id}}</li>
           <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
-          <li><strong>Started date:</strong> {{$booking->started_date}}</li>
-          <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
+          <li><strong>Started date:</strong> {{$booking->started_date ?? ''}}</li>
+          <li><strong>Ended date:</strong> {{$booking->ended_date ?? ''}}</li>
           <li><strong>Booking status:</strong> {{$booking->status}}</li>
         </ul>
         <br>
