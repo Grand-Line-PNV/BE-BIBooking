@@ -44,23 +44,12 @@ class PaymentController extends Controller
         $influencer = Account::find($booking->influencer_id);
         $campaign = Campaign::find($booking->campaign_id);
 
-
-        $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . 'state now!';
-        NotificationHelper::saveNotification($influencer->id, $influencerNotifyContent);
-        event(new BookingNotifications([
-            'time' => Carbon::now(),
-            'message' => $influencerNotifyContent,
-            'userId' => $influencer->id,
-        ]));
+        $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . ' state now!';
+        $this->sendNotification($influencer->id, $influencerNotifyContent);
 
         $brand = Account::where(['id' => $campaign->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
-        $brandContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . 'state now!';
-        NotificationHelper::saveNotification($brand->id, $brandContent);
-        event(new BookingNotifications([
-            'time' => Carbon::now(),
-            'message' => $brandContent,
-            'userId' => $brand->id,
-        ]));
+        $brandNotifyContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . ' state now!';
+        $this->sendNotification($brand->id, $brandNotifyContent);
 
         return $this->commonResponse($payment);
     }

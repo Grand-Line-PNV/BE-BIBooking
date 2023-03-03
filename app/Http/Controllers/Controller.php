@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
-use App\Models\Booking;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -12,7 +10,6 @@ use App\Traits\ApiResponse;
 use Carbon\Carbon;
 use App\Helpers\NotificationHelper;
 use App\Events\BookingNotifications;
-
 
 class Controller extends BaseController
 {
@@ -26,5 +23,13 @@ class Controller extends BaseController
             'data' => $data,
         ]);
     }
-    
+
+    public function sendNotification($consumerId, $msgContent) {
+        NotificationHelper::saveNotification($consumerId, $msgContent);
+        event(new BookingNotifications([
+            'time' => Carbon::now(),
+            'message' => $msgContent,
+            'userId' => $consumerId,
+        ]));
+    }
 }
