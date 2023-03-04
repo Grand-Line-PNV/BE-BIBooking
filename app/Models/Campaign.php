@@ -31,10 +31,12 @@ class Campaign extends Model
     {
         return $this->belongsTo(\App\Models\Account::class);
     }
+
     public function files()
     {
         return $this->hasMany(\App\Models\File::class);
     }
+
     public function booking()
     {
         return $this->hasOne(\App\Models\Booking::class);
@@ -56,6 +58,7 @@ class Campaign extends Model
         }
         return $query;
     }
+
     public function scopeMinCast($query, $request)
     {
         if ($request->has('minCast')) {
@@ -63,6 +66,7 @@ class Campaign extends Model
         }
         return $query;
     }
+
     public function scopeMaxCast($query, $request)
     {
         if ($request->has('maxCast')) {
