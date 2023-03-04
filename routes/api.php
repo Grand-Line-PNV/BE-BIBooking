@@ -10,6 +10,8 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FilterCampaignController;
+use App\Http\Controllers\FilterInfluencerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TasksLinkController;
 
@@ -76,3 +78,7 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
 
 });
+
+Route::post('/filter-campaign', [FilterCampaignController::class, 'index']);
+Route::post('/filter-influencer', [FilterInfluencerController::class, 'index']);
+
