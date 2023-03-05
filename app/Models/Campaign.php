@@ -15,11 +15,11 @@ class Campaign extends Model
 
     public const STATUS_APPLY = 'apply';
     public const STATUS_APPROVE = 'approve';
-    public const STATUS_SUBMIT= 'submit';
+    public const STATUS_SUBMIT = 'submit';
     public const STATUS_EVALUATE = 'evaluate';
     public const STATUS_CLOSED = 'closed';
 
-    public const CAMPAIGN_STATUS =[
+    public const CAMPAIGN_STATUS = [
         self::STATUS_APPLY,
         self::STATUS_APPROVE,
         self::STATUS_SUBMIT,
@@ -31,12 +31,47 @@ class Campaign extends Model
     {
         return $this->belongsTo(\App\Models\Account::class);
     }
+
     public function files()
     {
         return $this->hasMany(\App\Models\File::class);
     }
+
     public function booking()
     {
         return $this->hasOne(\App\Models\Booking::class);
+    }
+
+    public function scopeKeyword($query, $request)
+    {
+        if ($request->has('keyword')) {
+            $query->where('name', 'LIKE', '%' . $request->keyword . '%')
+                ->orWhere('hashtag', 'LIKE', '%' . $request->keyword . '%');
+        }
+        return $query;
+    }
+
+    public function scopeIndustry($query, $request)
+    {
+        if ($request->has('industry')) {
+            $query->where('industry', $request->industry);
+        }
+        return $query;
+    }
+
+    public function scopeMinCast($query, $request)
+    {
+        if ($request->has('minCast')) {
+            $query->where('price', '>=', $request->minCast);
+        }
+        return $query;
+    }
+
+    public function scopeMaxCast($query, $request)
+    {
+        if ($request->has('maxCast')) {
+            $query->where('price', '<=', $request->maxCast);
+        }
+        return $query;
     }
 }

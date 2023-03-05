@@ -10,6 +10,9 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FilterCampaignController;
+use App\Http\Controllers\FilterInfluencerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TasksLinkController;
 
@@ -74,5 +77,15 @@ Route::post('/create-payment', [PaymentController::class, 'store']);
 Route::group(['prefix' => 'tasks'], function () {
     Route::post('/create', [TasksLinkController::class, 'store']);
     Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
-
 });
+
+Route::post('/filter-campaign', [CampaignController::class, 'filter']);
+Route::post('/filter-influencer', [FilterInfluencerController::class, 'index']);
+
+Route::group(
+    ['prefix' => 'feedback'], function () {
+        Route::post('/create', [FeedbackController::class, 'store']);
+        Route::post('/update/{id}', [FeedbackController::class, 'edit'])->name('feedback.update');
+        Route::delete('/delete/{id}', [FeedbackController::class, 'destroy']);
+    }
+);
