@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignRequest;
-use App\Http\Requests\BrandIdRequest;
 use App\Models\Campaign;
 use App\Traits\ApiResponse;
 use App\Helpers\FileHelper;
+use App\Http\Requests\FilterRequest;
 use Illuminate\Http\Request;
 
 class CampaignController extends Controller
@@ -129,5 +129,20 @@ class CampaignController extends Controller
     {
         $campaigns = Campaign::with('files')->where('brand_id', $request->brand_id)->get();
         return $this->commonResponse($campaigns);
+    }
+
+    public function filter(FilterRequest $request)
+    {
+        $campaigns = Campaign::query()
+            ->keyword($request)
+            ->industry($request)
+            ->minCast($request)
+            ->maxCast($request);
+
+        if (!$campaigns->exists()) {
+            return $this->commonResponse([], "There are no campaings that match your search", 404);
+        }
+
+        return $this->commonResponse($campaigns->get());
     }
 }

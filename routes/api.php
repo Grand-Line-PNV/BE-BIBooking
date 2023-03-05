@@ -79,7 +79,7 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
 });
 
-Route::post('/filter-campaign', [FilterCampaignController::class, 'index']);
+Route::post('/filter-campaign', [CampaignController::class, 'filter']);
 Route::post('/filter-influencer', [FilterInfluencerController::class, 'index']);
 
 Route::group(
