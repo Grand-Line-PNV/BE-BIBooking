@@ -133,7 +133,7 @@ class CampaignController extends Controller
 
     public function filter(FilterRequest $request)
     {
-        $campaigns = Campaign::query()
+        $campaigns = Campaign::with('files')
             ->keyword($request)
             ->industry($request)
             ->minCast($request)
