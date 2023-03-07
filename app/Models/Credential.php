@@ -28,16 +28,8 @@ class Credential extends Model
     public function scopeKeyword($query, $request)
     {
         if ($request->has('keyword')) {
-            $query->Where('nickname', 'LIKE', '%' . $request->keyword . '%')
+            $query->orWhere('nickname', 'LIKE', '%' . $request->keyword . '%')
                 ->orWhere('fullname', 'LIKE', '%' . $request->keyword . '%');
-        }
-        return $query;
-    }
-
-    public function scopeJob($query, $request)
-    {
-        if ($request->has('job')) {
-            $query->orWhere('job', $request->job);
         }
 
         return $query;
@@ -46,7 +38,16 @@ class Credential extends Model
     public function scopeGender($query, $request)
     {
         if ($request->has('gender')) {
-            $query->orWhere('gender', $request->gender);
+            $query->where('gender', $request->gender);
+        }
+
+        return $query;
+    }
+
+    public function scopeJob($query, $request)
+    {
+        if ($request->has('job')) {
+            $query->orWhere('job', $request->job);
         }
 
         return $query;
