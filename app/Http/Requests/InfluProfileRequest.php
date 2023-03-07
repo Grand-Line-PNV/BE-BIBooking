@@ -25,21 +25,21 @@ class InfluProfileRequest extends FormRequest
     {
         return [
             'nickname' => 'required|string|max:50',
+            'fullname' =>'required|string|max:255',
             'dob' => 'required|date',
-            'followers' => 'required|numeric',
-            'bookingPrice' => 'required|numeric',
-            'industry' => 'required',
-            'contentTopic' => 'required',
-            'marialStatus' => 'required',
-            'startedWork' => 'required|date',
-            'fullname' => 'required|string|max:255',
+            'phone_number'=>'required|string',
             'gender' => 'required|string|max:255',
-            'phone_number' => 'required|string',
+            'job' => 'required|string|max:255',
+            'title_for_job' =>'required',
+            'description' => 'required',
+            'experiences' => 'required',
+            'content_topic'=>'required',
+            'booking_price' =>'required|numeric',
             'address_line1' => 'required|string|max:255',
             'address_line2' => 'required|string|max:255',
             'address_line3' => 'required|string|max:255',
             'address_line4' => 'required|string|max:255',
-            'image'=>'required|file'
+
         ];
     }
 }

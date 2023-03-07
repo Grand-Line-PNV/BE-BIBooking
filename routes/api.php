@@ -42,7 +42,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
 
 
 Route::group(['prefix' => 'influencer'], function () {
-    Route::post('/create-info/{account_id}', [InfluencerProfileController::class, 'create']);
+    Route::post('/create-info', [InfluencerProfileController::class, 'createInfluencerProfile']);
     Route::get('/view-myinfo/{account_id}', [InfluencerProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
 });
@@ -57,6 +57,7 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('/edit-campaign/{campaignId}', [CampaignController::class, 'update'])->name('campaign.update');
     Route::get('/get-detail-campaign/{campaignId}', [CampaignController::class, 'viewDetailCampaign']);
     Route::post('/get-all-campaigns', [CampaignController::class, 'viewCampaigns']);
+    //brand view their campaigns
 });
 
 Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
@@ -79,6 +80,7 @@ Route::group(['prefix' => 'tasks'], function () {
     Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
 });
 
+//ifnluencer apply campaign and brand search 
 Route::post('/filter-campaign', [CampaignController::class, 'filter']);
 Route::post('/filter-influencer', [FilterInfluencerController::class, 'index']);
 
