@@ -14,7 +14,6 @@ class CampaignController extends Controller
     use ApiResponse;
     public function create(CampaignRequest $request)
     {
-
         $campaign = new Campaign([
             'brand_id' => $request->brand_id,
             'campaign_status' => Campaign::STATUS_APPLY,
@@ -137,10 +136,11 @@ class CampaignController extends Controller
             ->keyword($request)
             ->industry($request)
             ->minCast($request)
-            ->maxCast($request);
+            ->maxCast($request)
+            ->where('campaign_status',Campaign::STATUS_APPLY);
 
         if (!$campaigns->exists()) {
-            return $this->commonResponse([], "There are no campaings that match your search", 404);
+            return $this->commonResponse([], "There are no campaigns that match your search", 404);
         }
 
         return $this->commonResponse($campaigns->get());

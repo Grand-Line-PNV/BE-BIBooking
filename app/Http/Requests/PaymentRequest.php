@@ -25,13 +25,8 @@ class PaymentRequest extends FormRequest
     {
         return [
             'booking_id' => 'required|integer',
-            'name' => 'required|string',
-            'tranfer_type' => 'required|string',
             'description' => 'required|string',
-            'bank_account' => 'required|integer|numeric',
-            'date' => 'required|date',
-            'number' => 'required|numeric',
-            'evidence' =>'required'
+            'bank_name' => 'required|string',
         ];
     }
 }

@@ -63,7 +63,7 @@
         <p>We have paid for this campaign to your bank account, please check the message from your bank.</p>
         <p>Thank you for choosing our Platform.</p>
         <p>Please let us know if you have received this message within <strong style = "font-style: italic">7 </strong>days <br>
-        <p>If you have any questions, please feel free to contact us at 0398 715 511 or abc@gmial.com.</p>
+        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..</p>
       </div>
       <div class="footer">
         <p>Sincerely,</p>

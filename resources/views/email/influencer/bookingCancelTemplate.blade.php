@@ -58,7 +58,7 @@
           <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
         </ul>
         <p>Thank you for choosing our Platform.</p>
-        <p>If you have any questions, please feel free to contact us at 0398 715 511 or abc@gmial.com.</p>
+        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..</p>
       </div>
       <div class="footer">
         <p>Sincerely,</p>

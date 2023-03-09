@@ -73,8 +73,6 @@ Route::group(['prefix' => 'bookings'], function () {
     Route::delete('/delete/{bookingId}', [BookingController::class, 'destroy']);
 });
 
-Route::post('/create-payment', [PaymentController::class, 'store']);
-
 Route::group(['prefix' => 'tasks'], function () {
     Route::post('/create', [TasksLinkController::class, 'store']);
     Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
@@ -85,9 +83,19 @@ Route::post('/filter-campaign', [CampaignController::class, 'filter']);
 Route::post('/filter-influencer', [FilterInfluencerController::class, 'index']);
 
 Route::group(
-    ['prefix' => 'feedback'], function () {
+    ['prefix' => 'feedback'],
+    function () {
         Route::post('/create', [FeedbackController::class, 'store']);
         Route::post('/update/{id}', [FeedbackController::class, 'edit'])->name('feedback.update');
         Route::delete('/delete/{id}', [FeedbackController::class, 'destroy']);
+    }
+);
+
+//payment controller
+Route::group(
+    ['prefix' => 'payment'],
+    function () {
+        Route::post('/create-payment', [PaymentController::class, 'create']);
+        Route::post('/vnpay/{id}', [PaymentController::class, 'vnpay']);
     }
 );

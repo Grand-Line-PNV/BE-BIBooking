@@ -14,16 +14,10 @@ class Campaign extends Model
     use HasFactory;
 
     public const STATUS_APPLY = 'apply';
-    public const STATUS_APPROVE = 'approve';
-    public const STATUS_SUBMIT = 'submit';
-    public const STATUS_EVALUATE = 'evaluate';
     public const STATUS_CLOSED = 'closed';
 
     public const CAMPAIGN_STATUS = [
         self::STATUS_APPLY,
-        self::STATUS_APPROVE,
-        self::STATUS_SUBMIT,
-        self::STATUS_EVALUATE,
         self::STATUS_CLOSED,
     ];
 
@@ -54,7 +48,7 @@ class Campaign extends Model
     public function scopeIndustry($query, $request)
     {
         if ($request->has('industry')) {
-            $query->where('industry', $request->industry);
+            $query->orWhere('industry', $request->industry);
         }
         return $query;
     }
@@ -62,7 +56,7 @@ class Campaign extends Model
     public function scopeMinCast($query, $request)
     {
         if ($request->has('minCast')) {
-            $query->where('price', '>=', $request->minCast);
+            $query->orWhere('price', '>=', $request->minCast);
         }
         return $query;
     }
@@ -70,7 +64,7 @@ class Campaign extends Model
     public function scopeMaxCast($query, $request)
     {
         if ($request->has('maxCast')) {
-            $query->where('price', '<=', $request->maxCast);
+            $query->orWhere('price', '<=', $request->maxCast);
         }
         return $query;
     }

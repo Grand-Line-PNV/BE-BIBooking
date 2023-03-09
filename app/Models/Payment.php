@@ -9,13 +9,8 @@ class Payment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'tranfer_type', 'description', 'booking_id', 'bank_account', 'date', 'number'
+        'description', 'booking_id', 'bank_name', 'date', 'number'
     ];
-
-    public function files()
-    {
-        return $this->hasMany(\App\Models\File::class);
-    }
 
     public function booking()
     {

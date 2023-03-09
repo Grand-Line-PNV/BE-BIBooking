@@ -110,7 +110,7 @@ class Account extends Authenticatable implements JWTSubject
     public function scopeKeyword($query, $request)
     {
         if ($request->has('keyword')) {
-            $query->Where('username', 'LIKE', '%' . $request->keyword . '%');
+            $query->orWhere('username', 'LIKE', '%' . $request->keyword . '%');
         }
         return $query;
     }

@@ -55,15 +55,15 @@
         <p>Congratulations your campaign has been completed by the influencer.</p>
         <p>Please find the order information details below:</p>
         <ul>
-          <li><strong>Influencer ID:</strong> {{$booking->brand_id}}</li>
+          <li><strong>Influencer ID:</strong> {{$campaign->brand_id}}</li>
           <li><strong>Campaign ID:</strong> {{$booking->campaign_id}}</li>
           <li><strong>Started date:</strong> {{$booking->started_date}}</li>
           <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
         </ul>
-        <p>We have paid for this campaign to your bank account, please check the message from your bank.</p><br>
+        <!-- <p>We have paid for this campaign to your bank account, please check the message from your bank.</p><br> -->
         <p>Thank you for choosing our Platform.</p><br>
         <p>Please let us know if you have received this message within <strong style = "font-style: italic">7 </strong>days <br>
-        <p>If you have any questions, please feel free to contact us at 0398 715 511 or abc@gmial.com.</p>
+        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..</p>
       </div>
       <div class="footer">
         <p>Sincerely,</p>

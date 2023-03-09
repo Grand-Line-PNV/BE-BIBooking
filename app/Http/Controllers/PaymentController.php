@@ -7,50 +7,115 @@ use App\Models\Payment;
 use App\Helpers\FileHelper;
 use App\Models\Booking;
 use App\Events\BookingActions;
-use App\Events\BookingNotifications;
 use App\Models\Account;
 use App\Models\Campaign;
-use App\Helpers\NotificationHelper;
 use Carbon\Carbon;
-
+use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function store(PaymentRequest $request)
+
+    //step 1: Just pass booking_id, enter description, bank_name (ncb) --> save these info to payments table -> sucess -> move to step 2
+    //step 2: Direct to VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
+
+    public function create(PaymentRequest $request)
     {
+        $booking = Booking::findOrFail($request->booking_id);
+        $campaign = Campaign::findOrFail($booking->campaign_id);
+
         $payment = Payment::create([
             'booking_id' => $request->booking_id,
-            'name' => $request->name,
-            'tranfer_type' => $request->tranfer_type,
             'description' => $request->description,
-            'bank_account' => $request->bank_account,
-            'number' => $request->number,
-            'date' => $request->date
+            'number' => $campaign->price,
+            'date' => Carbon::now(),
+            'bank_name' => $request->bank_name,
         ]);
 
-        $paymentImage = FileHelper::uploadFileToS3($request->evidence, 'payments');
-        $paymentImage->payment_id = $payment->id;
-        $paymentImage->save();
+        return $this->commonResponse($payment);
+    }
 
+    public function vnpay($id)
+    {
+        $payment = Payment::findOrFail($id);
+
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = "https://localhost/vnpay_php/vnpay_return.php";
+        $vnp_TmnCode = "RTADUOL4";
+        $vnp_HashSecret = "PBYUFFVCSWTBBTTNZUQWZUCSOHUUPCRE";
+
+        $vnp_TxnRef = $payment->booking_id;
+        $vnp_OrderInfo = $payment->description;
+        $vnp_OrderType = "billpayment";
+        $vnp_Amount = $payment->number * 100;
+        $vnp_Locale = "en";
+        $vnp_BankCode = $payment->bank_name;
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+
+        // if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+        //     $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        // }
+
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+        $returnData = array(
+            'code' => '00', 'message' => 'success', 'data' => $vnp_Url
+        );
+        // if (isset($_POST['redirect'])) {
+        header('Location: ' . $vnp_Url);
+        // die();
+        // } else {
+        //     echo json_encode($returnData);
+        // }
+        // return redirect($vnp_Url);
+
+        //Change the booking status
         $booking = Booking::find($payment->booking_id);
         $booking->update([
             'payment_status' => 1,
             'status' => Booking::STATUS_PAID,
         ]);
 
-        //send email and notification - paid status 
+        //send email
         event(new BookingActions($booking));
 
         $influencer = Account::find($booking->influencer_id);
         $campaign = Campaign::find($booking->campaign_id);
-
-        $influencerNotifyContent = 'Hi @' . $influencer->username . ', your booking is in the #' . $booking->status . ' state now!';
+        $influencerNotifyContent = "Hi @" . $influencer->username . ", brand have alreadly paid the money for the campaign! Let's do your tasks!";
         $this->sendNotification($influencer->id, $influencerNotifyContent);
-
-        $brand = Account::where(['id' => $campaign->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
-        $brandNotifyContent = 'Hi @' . $brand->username . ', your campaign has been booked by @' . $influencer->username . ' and it is in the #' . $booking->status . ' state now!';
-        $this->sendNotification($brand->id, $brandNotifyContent);
-
-        return $this->commonResponse($payment);
     }
 }

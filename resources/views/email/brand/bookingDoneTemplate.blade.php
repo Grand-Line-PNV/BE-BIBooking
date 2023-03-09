@@ -60,7 +60,7 @@
           <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
         </ul>
         <p>Thank you for choosing our Platform.</p><br>
-        <p>If you have any questions, please feel free to contact us at 0398 715 511 or abc@gmial.com.</p>
+        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..com.</p>
       </div>
       <div class="footer">
         <p>Sincerely,</p>
