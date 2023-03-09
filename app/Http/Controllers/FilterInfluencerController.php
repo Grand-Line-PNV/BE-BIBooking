@@ -11,7 +11,7 @@ class FilterInfluencerController extends Controller
     {
         $influencers = Account::with('credential')
             ->where('role_id', Account::ROLE_INFLUENCER)
-                ->keyword($request)
+            ->keyword($request)
             ->whereHas('credential', function ($query) use ($request) {
                 $query->gender($request)
                     ->job($request)
@@ -19,8 +19,8 @@ class FilterInfluencerController extends Controller
                     ->maxCast($request)
                     ->keyword($request);
             });
-            
-        if(!$influencers->exists()) {
+
+        if (!$influencers->exists()) {
             return $this->commonResponse([], "There are no influencers that match your search", 404);
         }
 
