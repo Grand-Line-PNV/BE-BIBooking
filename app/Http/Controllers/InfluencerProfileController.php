@@ -46,28 +46,30 @@ class InfluencerProfileController extends Controller
         if ($request->hasfile('influencerImages')) {
             foreach ($request->file('influencerImages') as $file) {
                 $influencerImage = FileHelper::uploadFileToS3($file, 'influencers');
-                $influencerImage->account_id ??= $request->account_id;
+                $influencerImage->account_id = $request->account_id;
                 $influencerImage->save();
             }
         }
         return $this->commonResponse($credential);
     }
 
-    // public function createSocialMediaData(SocialMediaRequest $request)
-    // {
-    //     $socialMedia = new SocialInfo([
-    //         'account_id' => $request->account_id,
-    //         'name' => $request->name,
-    //         'username' => $request->username,
-    //         'fullname' => $request->fullname,
-    //         'avg_interactions' => $request->avg_interactions,
-    //         'subcribes' => $request->subscribers,
-    //         'link' => $request->link,
+    public function createSocialMediaData(SocialMediaRequest $request)
+    {
+        $socials = $request->get('socials');
+        foreach($socials as $socical) {
+            SocialInfo::create([
+                'account_id' => $socical["account_id"],
+                'name' => $socical["name"],
+                'username' => $socical["username"],
+                'fullname' => $socical["fullname"],
+                'avg_interactions' => $socical["avg_interactions"],
+                'subcribers' => $socical["subcribers"],
+                'link' => $socical["link"],
+            ]);
+        }
 
-    //     ]);
-    //     $socialMedia->save();
-    //     return $this->responseSuccess();
-    // }
+        return $this->responseSuccess();
+    }
 
     // public function createGenderRatio(GenderRatioRequest $request)
     // {
@@ -117,15 +119,15 @@ class InfluencerProfileController extends Controller
     //     return $this->responseSuccess();
     // }
 
-    // public function view($account_id)
-    // {
-    //     $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id', $account_id)->get()->first();
-    //     return $this->responseSuccessWithData($credential->toArray());
-    // }
+    public function view($account_id)
+    {
+        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id', $account_id)->get()->first();
+        return $this->responseSuccessWithData($credential->toArray());
+    }
 
-    // public function viewAccount($account_id)
-    // {
-    //     $account = DB::table('accounts')->where('id', $account_id)->get();
-    //     return $this->responseSuccessWithData($account->toArray());
-    // }
+    public function viewAccount($account_id)
+    {
+        $account = DB::table('accounts')->where('id', $account_id)->get();
+        return $this->responseSuccessWithData($account->toArray());
+    }
 }
