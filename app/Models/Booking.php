@@ -54,6 +54,6 @@ class Booking extends Model
 
     public function tasksLinks()
     {
-        return $this->hasMany(\App\Models\TaskLink::class);
+        return $this->hasMany(\App\Models\TasksLink::class);
     }
 }

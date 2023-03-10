@@ -101,6 +101,12 @@ class BookingController extends Controller
             $item->delete();
         }
 
+        $booking->load(['tasksLinks']);
+
+        foreach ($booking->tasksLinks as $item) {
+            $item->delete();
+        }
+
         $booking->delete();
 
         $this->commonResponse([], "Booking has deleted success.");
