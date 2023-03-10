@@ -33,9 +33,7 @@ class InfluencerProfileController extends Controller
             'job' => $request->job,
             'title_for_job' => $request->title_for_job,
             'description' => $request->description,
-            'experiences' => $request->experiences,
             'content_topic' => $request->content_topic,
-            'booking_price' => $request->booking_price,
             'address_line1' => $request->address_line1,
             'address_line2' => $request->address_line2,
             'address_line3' => $request->address_line3,
@@ -56,7 +54,7 @@ class InfluencerProfileController extends Controller
     public function createSocialMediaData(SocialMediaRequest $request)
     {
         $socials = $request->get('socials');
-        foreach($socials as $socical) {
+        foreach ($socials as $socical) {
             SocialInfo::create([
                 'account_id' => $socical["account_id"],
                 'name' => $socical["name"],
@@ -71,53 +69,48 @@ class InfluencerProfileController extends Controller
         return $this->responseSuccess();
     }
 
-    // public function createGenderRatio(GenderRatioRequest $request)
-    // {
-    //     $topGenderRatio = new GenderRatio([
-    //         'account_id' => $request->account_id,
-    //         'male' => $request->male,
-    //         'female' => $request->female,
-    //         'others' => $request->others
-    //     ]);
-    //     $topGenderRatio->save();
-    //     return $this->responseSuccess();
-    // }
-    // public function createTopAge(TopAgeRequest $request)
-    // {
-    //     $topAge = new TopAge([
-    //         'account_id' => $request->account_id,
-    //         'level1' => $request->level1,
-    //         'level2' => $request->level2,
-    //         'level3' => $request->level3,
-    //         'others' => $request->others
-    //     ]);
-    //     $topAge->save();
-    //     return $this->responseSuccess();
-    // }
+    public function createGenderRatio(GenderRatioRequest $request)
+    {
+        $topGenderRatio = new GenderRatio([
+            'account_id' => $request->account_id,
+            'male' => $request->male,
+            'female' => $request->female,
+            'others' => $request->others
+        ]);
+        $topGenderRatio->save();
+        $topAge = new TopAge([
+            'account_id' => $request->account_id,
+            'level1' => $request->level1,
+            'level2' => $request->level2,
+            'level3' => $request->level3,
+            'others' => $request->others
+        ]);
+        $topAge->save();
+        $topCity = new CityInfo([
+            'account_id' => $request->account_id,
+            'city1' => $request->city1,
+            'city2' => $request->city2,
+            'city3' => $request->city3,
+            'others' => $request->others,
+        ]);
+        $topCity->save();
+        return $this->responseSuccess();
+    }
 
-    // public function createTopCity(TopCityRequest $request)
-    // {
-    //     $topCity = new CityInfo([
-    //         'account_id' => $request->account_id,
-    //         'city1' => $request->city1,
-    //         'city2' => $request->city2,
-    //         'city3' => $request->city3,
-    //         'others' => $request->others,
-    //     ]);
-    //     $topCity->save();
-    //     return $this->responseSuccess();
-    // }
 
-    // public function createServices(ServicesRequest $request)
-    // {
-    //     $services = new Services([
-    //         'account_id' => $request->account_id,
-    //         'name' => $request->name,
-    //         'description' => $request->description,
-    //     ]);
-    //     $services->save();
-    //     return $this->responseSuccess();
-    // }
+    public function createServices(ServicesRequest $request)
+    {
+        $services = $request->get('services');
+        foreach ($services as $service) {
+            Services::create([
+                'account_id' => $service["account_id"],
+                'name' => $service["name"],
+                'description' => $service["description"],
+                
+            ]);
+        }
+        return $this->responseSuccess();
+    }
 
     public function view($account_id)
     {
