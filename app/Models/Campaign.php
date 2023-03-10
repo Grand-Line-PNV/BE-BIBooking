@@ -31,9 +31,9 @@ class Campaign extends Model
         return $this->hasMany(\App\Models\File::class);
     }
 
-    public function booking()
+    public function bookings()
     {
-        return $this->hasOne(\App\Models\Booking::class);
+        return $this->hasMany(\App\Models\Booking::class);
     }
 
     public function scopeKeyword($query, $request)

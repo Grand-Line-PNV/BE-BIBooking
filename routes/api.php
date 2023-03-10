@@ -10,6 +10,7 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingHistoryController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FilterCampaignController;
 use App\Http\Controllers\FilterInfluencerController;
@@ -45,6 +46,9 @@ Route::group(['prefix' => 'influencer'], function () {
     Route::post('/create-info', [InfluencerProfileController::class, 'createInfluencerProfile']);
     Route::get('/view-myinfo/{account_id}', [InfluencerProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
+    // Influencer 
+    Route::post('/booking-history', [BookingHistoryController::class, 'viewAllForInfluencer']);
+    Route::get('/booking-history-detail/{id}', [BookingHistoryController::class, 'viewDetail']);
 });
 
 Route::group(['prefix' => 'brand'], function () {
@@ -58,6 +62,10 @@ Route::group(['prefix' => 'brand'], function () {
     Route::get('/get-detail-campaign/{campaignId}', [CampaignController::class, 'viewDetailCampaign']);
     Route::post('/get-all-campaigns', [CampaignController::class, 'viewCampaigns']);
     //brand view their campaigns
+    //booking history for brands
+    Route::post('/booking-history', [BookingHistoryController::class, 'viewAllForBrand']);
+    Route::get('/booking-history-detail/{id}', [BookingHistoryController::class, 'viewDetail']);
+
 });
 
 Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
