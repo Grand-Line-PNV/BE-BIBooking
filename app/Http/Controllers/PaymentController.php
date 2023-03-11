@@ -20,8 +20,14 @@ class PaymentController extends Controller
 
     public function create(PaymentRequest $request)
     {
-        $booking = Booking::findOrFail($request->booking_id);
+        $booking = Booking::find($request->booking_id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist!", 404);
+        }
         $campaign = Campaign::findOrFail($booking->campaign_id);
+        if (empty($campaign)) {
+            return $this->commonResponse([], "Campaign does not exist!", 404);
+        }
 
         $payment = Payment::create([
             'booking_id' => $request->booking_id,
