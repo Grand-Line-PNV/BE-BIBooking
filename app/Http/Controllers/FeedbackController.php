@@ -40,7 +40,10 @@ class FeedbackController extends Controller
 
     public function edit(FeedbackRequest $request, $id)
     {
-        $feedback = Feedback::findOrFail($id);
+        $feedback = Feedback::find($id);
+        if (empty($feedback)) {
+            return $this->commonResponse([], "Feedback does not exist!", 404);
+        }
         $feedback->update([
             'content' => $request->content,
         ]);
@@ -50,7 +53,10 @@ class FeedbackController extends Controller
 
     public function destroy($id)
     {
-        $feedback = Feedback::findOrFail($id);
+        $feedback = Feedback::find($id);
+        if (empty($feedback)) {
+            return $this->commonResponse([], "Feedback does not exist!", 404);
+        }
         $feedback->delete();
 
         return $this->commonResponse([], "Feedback has deleted successfully.");
