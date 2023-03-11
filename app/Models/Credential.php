@@ -9,10 +9,10 @@ class Credential extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'account_id', 'nickname', 'dob','fullname',
-        'booking_price', 'industry', 'content_topic', 'experiences','website',
+        'account_id', 'nickname', 'dob', 'fullname',
+        'booking_price', 'industry', 'content_topic', 'experiences', 'website',
         'phone_number', 'gender', 'address_line1', 'address_line2', 'address_line3', 
-        'address_line4','job','description','title_for_job','brand_name'
+        'address_line4','job', 'description', 'title_for_job', 'brand_name', 'ward_code'
     ];
 
     public function account()

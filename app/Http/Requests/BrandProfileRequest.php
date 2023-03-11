@@ -41,6 +41,7 @@ class BrandProfileRequest extends FormRequest
             'address_line2' => 'required|string|max:255',
             'address_line3' => 'required|string|max:255',
             'address_line4' => 'required|string|max:255',
+            'ward_code' => 'required|numeric',
             'description' => 'required|string',
             'nickname' => 'required|string',
         ];
