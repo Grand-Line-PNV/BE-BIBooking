@@ -54,7 +54,7 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($campaignId);
         if (empty($campaign)) {
-            return $this->responseError('Campaign does not exist!');
+            return $this->commonResponse([], "Campaign does not exits!", 404);
         }
 
         $campaign->update([
@@ -100,7 +100,7 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($campaignId);
         if (empty($campaign)) {
-            return $this->responseError('Campaign does not exist!');
+            return $this->commonResponse([], "Campaign does not exits!", 404);
         }
 
         $campaign = Campaign::with('files')->where('id', $campaignId)->first();
@@ -118,7 +118,7 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($campaignId);
         if (empty($campaign)) {
-            return $this->responseError('Campaign does not exist!');
+            return $this->commonResponse([], "Campaign does not exits!", 404);
         }
         $campaign = Campaign::with('files')->where('id', $campaignId)->first();
         return $this->commonResponse($campaign);
@@ -129,7 +129,7 @@ class CampaignController extends Controller
         $campaigns = Campaign::with('files')->where('brand_id', $request->brand_id)->get();
 
         if (empty($campaigns)) {
-            return $this->responseError('Brand does not have any campaign!');
+            return $this->commonResponse([], "Brand does not have any campaigns!", 404);
         }
 
         return $this->commonResponse($campaigns);

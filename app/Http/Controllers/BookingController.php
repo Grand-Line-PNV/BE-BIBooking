@@ -53,7 +53,10 @@ class BookingController extends Controller
 
     public function show($id)
     {
-        $booking = Booking::with(['feedbacks'])->findOrFail($id);
+        $booking = Booking::with(['feedbacks'])->find($id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist.", 404);
+        }
         return $this->commonResponse($booking);
     }
 
@@ -61,7 +64,11 @@ class BookingController extends Controller
     public function update(BookingRequest $request, $id)
     {
 
-        $booking = Booking::findOrFail($id);
+        $booking = Booking::find($id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist.", 404);
+        }
+         
         $booking->update([
             'status' => $request->status ?? $booking->status,
             'started_date' => $request->started_date ?? $booking->started_date ?? null,
@@ -94,7 +101,10 @@ class BookingController extends Controller
 
     public function destroy($id)
     {
-        $booking = Booking::findOrFail($id);
+        $booking = Booking::find($id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist.", 404);
+        }
         $booking->load(['feedbacks']);
 
         foreach ($booking->feedbacks as $item) {
