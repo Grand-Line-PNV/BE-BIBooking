@@ -45,6 +45,11 @@ Route::group(['prefix' => 'influencer'], function () {
     Route::post('/create-info', [InfluencerProfileController::class, 'createInfluencerProfile']);
     Route::post('/social-media-info',[InfluencerProfileController::class, 'createSocialMediaData']);
     Route::post('/service-info',[InfluencerProfileController::class, 'createServices']);
+    Route::post('/audience-data',[InfluencerProfileController::class, 'createAudienceData']);
+
+    Route::post('/edit-info/{id}',[InfluencerProfileController::class, 'updateInfluencerProfile']);
+    Route::post('/edit-social-media-info/{userId}',[InfluencerProfileController::class, 'updateSocialMeidaData'])->name('socials.update');
+
 
     Route::get('/view-myinfo/{account_id}', [InfluencerProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
