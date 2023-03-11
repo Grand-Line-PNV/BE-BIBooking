@@ -4,14 +4,15 @@ namespace App\Traits;
 
 trait ApiResponse
 {
-    public function response(array $data = [], string $message = "", int $status = 200)
+    public function response(array $data = [], string $message = "", int $statusCode = 200)
     {
         return response()->json(
             [
                 'data' => $data,
-                'status' =>$status,
+                'status' =>$statusCode,
                 'message' => $message,
-            ], 
+            ],
+            $statusCode
         );
     }
 

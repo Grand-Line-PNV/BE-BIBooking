@@ -36,7 +36,11 @@ class PaymentController extends Controller
 
     public function vnpay($id)
     {
-        $payment = Payment::findOrFail($id);
+        $payment = Payment::find($id);
+
+        if (empty($payment)) {
+            return $this->commonResponse([], "Payment does not exist!", 404);
+        }
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "https://localhost/vnpay_php/vnpay_return.php";

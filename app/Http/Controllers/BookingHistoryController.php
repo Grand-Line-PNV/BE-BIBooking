@@ -42,7 +42,8 @@ class BookingHistoryController extends Controller
         $bookings = Booking::where('influencer_id', $request->influencerId)->get();
 
         if (empty($bookings->toArray())) {
-            return $this->responseError('Influencer does not have any campaign!');
+            return $this->commonResponse([], "Influencer does not have any campaign!", 404);
+
         }
 
         return $this->commonResponse($bookings);
