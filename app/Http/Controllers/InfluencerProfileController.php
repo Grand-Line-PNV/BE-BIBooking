@@ -113,13 +113,13 @@ class InfluencerProfileController extends Controller
         return $this->responseSuccess();
     }
 
-    public function updateSocialMeidaData(SocialMediaRequest $request, $userId) 
+    public function updateSocialMeidaData(SocialMediaRequest $request, $userId)
     {
         $account = Account::firstWhere(['id' => $userId, 'role_id' => Account::ROLE_INFLUENCER]);
         if (empty($account)) {
             return $this->responseError('User does not exist!');
         }
-    
+
         $socials = $request->get('socials');
         foreach ($socials as $socialData) {
             $social = SocialInfo::firstWhere(['id' => $socialData['social_id'], 'account_id' => $userId]);
@@ -139,35 +139,85 @@ class InfluencerProfileController extends Controller
 
         return $this->responseSuccess();
     }
-    
+
 
     public function createAudienceData(AudienceRequest $request)
     {
-        $audienceData = new AudienceData([
-            'account_id' => $request->account_id,
-            'male' => $request->male,
-            'female' => $request->female,
-            'others' => $request->others,
-            'age1' => $request->age1,
-            'age2' => $request->age2,
-            'age3' => $request->age3,
-            'age4' => $request->age4,
-            'city1' => $request->city1,
-            'city2' => $request->city2,
-            'city3' => $request->city3,
-            'city4' => $request->city4,
+        if (($request->male + $request->female + $request->others) == 100) {
+            if (($request->age1 + $request->age2 + $request->age3 + $request->age4) == 100) {
+                if (($request->city1 + $request->city2 + $request->city3 + $request->city4) == 100) {
+                    $audienceData = new AudienceData([
+                        'account_id' => $request->account_id,
+                        'male' => $request->male,
+                        'female' => $request->female,
+                        'others' => $request->others,
+                        'age1' => $request->age1,
+                        'age2' => $request->age2,
+                        'age3' => $request->age3,
+                        'age4' => $request->age4,
+                        'city1' => $request->city1,
+                        'city2' => $request->city2,
+                        'city3' => $request->city3,
+                        'city4' => $request->city4,
+                    ]);
+                } else {
+                    return $this->responseError('Total city percentage must be 100%');
+                }
+            } else {
+                return $this->responseError('Total age percentage must be 100%');
+            }
+        } else {
+            return $this->responseError('Total gender percentage must be 100%');
+        }
 
-
-        ]);
         $audienceData->save();
         return $this->responseSuccess();
     }
+    public function updateAudience(AudienceRequest $request, $userId)
+    {
+        $audienceData = AudienceData::where('account_id', $userId)->first();
+        if (empty($audienceData)) {
+            return $this->responseError('Influencer does not exist!');
+        }
+        if (($request->male + $request->female + $request->others) == 100) {
+            if (($request->age1 + $request->age2 + $request->age3 + $request->age4) == 100) {
+                if (($request->city1 + $request->city2 + $request->city3 + $request->city4) == 100) {
+                    $audienceData->update([
+                        'male' => $request->male,
+                        'female' => $request->female,
+                        'others' => $request->others,
+                        'age1' => $request->age1,
+                        'age2' => $request->age2,
+                        'age3' => $request->age3,
+                        'age4' => $request->age4,
+                        'city1' => $request->city1,
+                        'city2' => $request->city2,
+                        'city3' => $request->city3,
+                        'city4' => $request->city4,
+                    ]);
+                } else {
+                    return $this->responseError('Total city percentage must be 100%');
+                }
+            } else {
+                return $this->responseError('Total age percentage must be 100%');
+            }
+        } else {
+            return $this->responseError('Total gender percentage must be 100%');
+        }
 
+        return $this->responseSuccess();
+    }
 
     public function createServices(ServicesRequest $request)
     {
         $services = $request->get('services');
+
+
         foreach ($services as $service) {
+            $account = Account::firstWhere(['id' => $service['account_id'], 'role_id' => Account::ROLE_INFLUENCER]);
+            if (empty($account)) {
+                return $this->responseError('User does not exist!');
+            }
             Services::create([
                 'account_id' => $service["account_id"],
                 'name' => $service["name"],
@@ -175,6 +225,29 @@ class InfluencerProfileController extends Controller
 
             ]);
         }
+        return $this->responseSuccess();
+    }
+    public function updateServices(ServicesRequest $request, $userId)
+    {
+        $account = Account::firstWhere(['id' => $userId, 'role_id' => Account::ROLE_INFLUENCER]);
+        if (empty($account)) {
+            return $this->responseError('User does not exist!');
+        }
+
+        $services = $request->get('services');
+        foreach ($services as $serviceData) {
+            $service = Services::firstWhere(['id' => $serviceData['service_id'], 'account_id' => $userId]);
+            if (empty($service)) {
+                return $this->responseError('Service info does not exist!');
+            }
+
+            $service->update([
+                'name' => $serviceData["name"],
+                'description' => $serviceData["description"],
+
+            ]);
+        }
+
         return $this->responseSuccess();
     }
 

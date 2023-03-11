@@ -23,9 +23,13 @@ class ServicesRequest extends FormRequest
      */
     public function rules()
     {
+        $requirable = 'nullable';
+        if ($this->routeIs('services.update')) {
+            $requirable = 'required';
+        }
         return [
             'services.*.name' => 'required|string',
-            'services.*.description' => 'required|string',            
+            'services.*.description' => $requirable . '|string',            
         ];
     }
 }
