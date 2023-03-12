@@ -143,69 +143,87 @@ class InfluencerProfileController extends Controller
 
     public function createAudienceData(AudienceRequest $request)
     {
-        if (($request->male + $request->female + $request->others) == 100) {
-            if (($request->age1 + $request->age2 + $request->age3 + $request->age4) == 100) {
-                if (($request->city1 + $request->city2 + $request->city3 + $request->city4) == 100) {
-                    $audienceData = new AudienceData([
-                        'account_id' => $request->account_id,
-                        'male' => $request->male,
-                        'female' => $request->female,
-                        'others' => $request->others,
-                        'age1' => $request->age1,
-                        'age2' => $request->age2,
-                        'age3' => $request->age3,
-                        'age4' => $request->age4,
-                        'city1' => $request->city1,
-                        'city2' => $request->city2,
-                        'city3' => $request->city3,
-                        'city4' => $request->city4,
-                    ]);
-                } else {
-                    return $this->responseError('Total city percentage must be 100%');
-                }
-            } else {
-                return $this->responseError('Total age percentage must be 100%');
-            }
-        } else {
-            return $this->responseError('Total gender percentage must be 100%');
-        }
+        $this->audienceDataCheck($request);
 
-        $audienceData->save();
+        AudienceData::create([
+            'account_id' => $request->account_id,
+            'male' => $request->male,
+            'female' => $request->female,
+            'others' => $request->others,
+            'age1' => $request->age1,
+            'age2' => $request->age2,
+            'age3' => $request->age3,
+            'age4' => $request->age4,
+            'city1' => $request->city1,
+            'city2' => $request->city2,
+            'city3' => $request->city3,
+            'city4' => $request->city4,
+        ]);
+
         return $this->responseSuccess();
     }
+
     public function updateAudience(AudienceRequest $request, $userId)
     {
-        $audienceData = AudienceData::where('account_id', $userId)->first();
+        $audienceData = AudienceData::firstWhere('account_id', $userId);
         if (empty($audienceData)) {
-            return $this->responseError('Influencer does not exist!');
-        }
-        if (($request->male + $request->female + $request->others) == 100) {
-            if (($request->age1 + $request->age2 + $request->age3 + $request->age4) == 100) {
-                if (($request->city1 + $request->city2 + $request->city3 + $request->city4) == 100) {
-                    $audienceData->update([
-                        'male' => $request->male,
-                        'female' => $request->female,
-                        'others' => $request->others,
-                        'age1' => $request->age1,
-                        'age2' => $request->age2,
-                        'age3' => $request->age3,
-                        'age4' => $request->age4,
-                        'city1' => $request->city1,
-                        'city2' => $request->city2,
-                        'city3' => $request->city3,
-                        'city4' => $request->city4,
-                    ]);
-                } else {
-                    return $this->responseError('Total city percentage must be 100%');
-                }
-            } else {
-                return $this->responseError('Total age percentage must be 100%');
-            }
-        } else {
-            return $this->responseError('Total gender percentage must be 100%');
+            return $this->responseError('Audience does not exist!');
         }
 
+        $this->audienceDataCheck($request);
+
+        $audienceData->update([
+            'male' => $request->male,
+            'female' => $request->female,
+            'others' => $request->others,
+            'age1' => $request->age1,
+            'age2' => $request->age2,
+            'age3' => $request->age3,
+            'age4' => $request->age4,
+            'city1' => $request->city1,
+            'city2' => $request->city2,
+            'city3' => $request->city3,
+            'city4' => $request->city4,
+        ]);
+
         return $this->responseSuccess();
+    }
+
+    private function audienceDataCheck($request)
+    {
+        $genderPercentage = $request->male + $request->female + $request->others;        
+        $this->checkAudienceDataPercentage($genderPercentage, 'gender');
+
+        $agePercentage = $request->age1 + $request->age2 + $request->age3 + $request->age4;
+        $this->checkAudienceDataPercentage($agePercentage, 'age');
+
+        $cityPercentage = $request->city1 + $request->city2 + $request->city3 + $request->city4;
+        $this->checkAudienceDataPercentage($cityPercentage, 'city');
+    }
+
+    private function checkAudienceDataPercentage($data, $type)
+    {
+        $message = "";
+        switch ($type) {
+            case 'gender':
+                $message = 'The total gender percentage must be equal 100%';
+                break;
+            case 'age':
+                $message = 'The total age percentage must be equal 100%';
+                break;
+            case 'city':
+                $message = 'The total city percentage must be equal 100%';
+                break;
+            default:
+                $message;
+        }
+
+        if ($data !== 100) {
+            return response()->json([
+                'success' => false,
+                'message' => $message,
+            ], 422)->throwResponse();
+        }
     }
 
     public function createServices(ServicesRequest $request)
