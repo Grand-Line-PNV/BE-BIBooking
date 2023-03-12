@@ -77,7 +77,7 @@ class BookingController extends Controller
 
         //get campaing and influencer info
         $campaign = Campaign::find($booking->campaign_id);
-        $influencer = Account::find($request->influencer_id);
+        $influencer = Account::find($booking->influencer_id);
 
         //update applied_number of each campaigns
         if ($booking->status == Booking::STATUS_CONFIRMED) {
@@ -85,7 +85,7 @@ class BookingController extends Controller
                 'applied_number' => $campaign->applied_number + 1
             ]);
         }
-        
+              
         //send emails and notifications for both brands and influencera
         event(new BookingActions($booking));
 
@@ -105,14 +105,13 @@ class BookingController extends Controller
         if (empty($booking)) {
             return $this->commonResponse([], "Booking does not exist.", 404);
         }
+        
         $booking->load(['feedbacks']);
-
         foreach ($booking->feedbacks as $item) {
             $item->delete();
         }
 
         $booking->load(['tasksLinks']);
-
         foreach ($booking->tasksLinks as $item) {
             $item->delete();
         }

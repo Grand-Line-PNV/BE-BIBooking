@@ -17,8 +17,8 @@ class BookingHistoryController extends Controller
         $bookings = [];
 
         foreach ($campaigns as $campaign) {
-            $booking = Booking::where('campaign_id', $campaign->id)->get();
-            array_push($bookings, $booking);
+            $booking = Booking::where('campaign_id', $campaign->id)->get()->toArray();
+            $bookings = $bookings + $booking;
         }
 
         if (empty($bookings)) {
