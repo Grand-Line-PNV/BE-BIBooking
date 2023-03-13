@@ -24,7 +24,7 @@ class EditAccountController extends Controller
         $user  = Account::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
 
         if ($user) {
-            return $this->commonResponse('You have changed your password successfully');
+            return $this->commonResponse([], 'You have changed your password successfully');
         }
         return $this->commonResponse([], 'Can not update your password, please try again!', 401);
     }

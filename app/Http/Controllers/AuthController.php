@@ -58,6 +58,6 @@ class AuthController extends Controller
 
     public function logout() {
         auth()->logout();
-        return $this->commonResponse("Logout successfully!");
+        return $this->commonResponse([], "Logout successfully!");
     }
 }
