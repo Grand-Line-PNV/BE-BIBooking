@@ -269,10 +269,10 @@ class InfluencerProfileController extends Controller
         return $this->responseSuccess();
     }
 
-    public function view($account_id)
+    public function view($userId)
     {
-        $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id', $account_id)->get()->first();
-        return $this->responseSuccessWithData($credential->toArray());
+        $credential = Account::with('credential', 'files')->where('id', $userId)->first();
+        return $this->commonResponse($credential);
     }
 
     public function viewAccount($account_id)
