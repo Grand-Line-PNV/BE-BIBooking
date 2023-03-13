@@ -16,7 +16,7 @@ class PaymentController extends Controller
 {
 
     //step 1: Just pass booking_id, enter description, bank_name (ncb) --> save these info to payments table -> sucess -> move to step 2
-    //step 2: Direct to VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
+    //step 2: Direct to 1 VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
 
     public function create(PaymentRequest $request)
     {
@@ -36,6 +36,7 @@ class PaymentController extends Controller
             'date' => Carbon::now(),
             'bank_name' => $request->bank_name,
         ]);
+    //step 2: Direct to 1 VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
 
         return $this->commonResponse($payment);
     }

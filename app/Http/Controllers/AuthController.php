@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         $account->save();
         VerificationController::sendEmailToConfirmAccount($account, VerificationController::generateOtp());
-        return $this->responseSuccess();
+        return $this->commonResponse($account);
     }
 
     public function login(LoginRequest $request)
@@ -39,8 +39,7 @@ class AuthController extends Controller
         $user = Account::where('email', $request->email)->first();
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+            return $this->commonResponse([], 'Your email or password is wrong!', 401);        }
 
         if ($user['verified'] == true) {
             $userData = [
@@ -53,12 +52,12 @@ class AuthController extends Controller
             return $this->commonResponse($userData, "Login successfully!");
         }
         else {
-            return $this->responseErrorWithData(["message" => 'Invalid'], 401);
+            return $this->commonResponse([], 'Your account has not been activated!', 401);
         }
     }
 
     public function logout() {
         auth()->logout();
-        return $this->responseSuccess('logout successfully');
+        return $this->commonResponse("Logout successfully!");
     }
 }

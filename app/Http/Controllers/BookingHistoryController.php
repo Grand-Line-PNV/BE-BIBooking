@@ -11,13 +11,13 @@ class BookingHistoryController extends Controller
 {
 
     //will list all the bookings that have the passed brandId,
-    public function viewAllForBrand(Request $request)
+    public function viewAllForBrand($brandId)
     {
-        $campaigns = Campaign::where('brand_id', $request->brandId)->get();
+        $campaigns = Campaign::where('brand_id', $brandId)->get();
         $bookings = [];
 
         foreach ($campaigns as $campaign) {
-            $booking = Booking::where('campaign_id', $campaign->id)->get()->toArray();
+            $booking = Booking::with(['influencer', 'influencer.credential', 'campaign', 'feedbacks'])->where('campaign_id', $campaign->id)->get()->toArray();
             $bookings = $bookings + $booking;
         }
 
@@ -41,9 +41,9 @@ class BookingHistoryController extends Controller
 
     // view all the list of bookings that influncer are doing, done, ....
     // when they click on each booking 
-    public function viewAllForInfluencer(Request $request)
+    public function viewAllForInfluencer($influencerId)
     {
-        $bookings = Booking::where('influencer_id', $request->influencerId)->get();
+        $bookings = Booking::with(['campaign', 'campaign.brand', 'feedbacks'])->where('influencer_id', $influencerId)->get();
 
         if (empty($bookings->toArray())) {
             return $this->commonResponse([], "Influencer does not have any campaign!", 404);
