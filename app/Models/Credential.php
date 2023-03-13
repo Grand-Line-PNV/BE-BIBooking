@@ -38,7 +38,7 @@ class Credential extends Model
     public function scopeGender($query, $request)
     {
         if ($request->has('gender')) {
-            $query->where('gender', $request->gender);
+            $query->orWhere('gender', $request->gender);
         }
 
         return $query;
