@@ -32,7 +32,7 @@ class Booking extends Model
         'influencer_id', 'status', 'campaign_id', 'started_date', 'ended_date', 'payment_status'
     ];
 
-    public function account()
+    public function influencer()
     {
         return $this->belongsTo(\App\Models\Account::class, 'influencer_id');
     }

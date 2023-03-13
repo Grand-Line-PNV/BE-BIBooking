@@ -21,9 +21,9 @@ class Campaign extends Model
         self::STATUS_CLOSED,
     ];
 
-    public function account()
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\Account::class);
+        return $this->belongsTo(\App\Models\Account::class, 'brand_id');
     }
 
     public function files()

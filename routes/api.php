@@ -56,7 +56,7 @@ Route::group(['prefix' => 'influencer'], function () {
     Route::get('/view-myinfo/{account_id}', [InfluencerProfileController::class, 'view']);
     Route::get('/view-myaccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
     // Influencer 
-    Route::post('/booking-history', [BookingHistoryController::class, 'viewAllForInfluencer']);
+    Route::get('/booking-history/{influencerId}', [BookingHistoryController::class, 'viewAllForInfluencer']);
     Route::get('/booking-history-detail/{id}', [BookingHistoryController::class, 'viewDetail']);
 });
 
@@ -72,7 +72,7 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('/get-all-campaigns', [CampaignController::class, 'viewCampaigns']);
     //brand view their campaigns
     //booking history for brands
-    Route::post('/booking-history', [BookingHistoryController::class, 'viewAllForBrand']);
+    Route::get('/booking-history/{brandId}', [BookingHistoryController::class, 'viewAllForBrand']);
     Route::get('/booking-history-detail/{id}', [BookingHistoryController::class, 'viewDetail']);
 
 });
