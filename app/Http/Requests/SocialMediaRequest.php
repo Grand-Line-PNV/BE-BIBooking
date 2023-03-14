@@ -23,13 +23,9 @@ class SocialMediaRequest extends FormRequest
      */
     public function rules()
     {
-        $requirable = 'nullable';
-        if ($this->routeIs('socials.update')) {
-            $requirable = 'required';
-        }
         return [
-            'socials' => 'required',
-            'socials.*.social_id' => $requirable . '|integer',
+            'socials' => 'required|array',
+            'socials.*.id' => 'nullable|integer',
             'socials.*.name' => 'required|string',
             'socials.*.username' => 'required|string',
             'socials.*.fullname' => 'required|string',
