@@ -124,9 +124,9 @@ class CampaignController extends Controller
         return $this->commonResponse($campaign);
     }
 
-    public function viewCampaigns(Request $request)
+    public function viewCampaigns($brandId)
     {
-        $campaigns = Campaign::with('files')->where('brand_id', $request->brand_id)->get();
+        $campaigns = Campaign::with('files')->where('brand_id', $brandId)->get();
 
         if (empty($campaigns)) {
             return $this->commonResponse([], "Brand does not have any campaigns!", 404);

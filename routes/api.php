@@ -69,7 +69,7 @@ Route::group(['prefix' => 'brand'], function () {
     Route::delete('/delete-campaign/{campaignId}', [CampaignController::class, 'destroy']);
     Route::post('/edit-campaign/{campaignId}', [CampaignController::class, 'update'])->name('campaign.update');
     Route::get('/get-detail-campaign/{campaignId}', [CampaignController::class, 'viewDetailCampaign']);
-    Route::post('/get-all-campaigns', [CampaignController::class, 'viewCampaigns']);
+    Route::get('/get-all-campaigns/{brandId}', [CampaignController::class, 'viewCampaigns']);
     //brand view their campaigns
     //booking history for brands
     Route::get('/booking-history/{brandId}', [BookingHistoryController::class, 'viewAllForBrand']);
@@ -92,7 +92,8 @@ Route::group(['prefix' => 'bookings'], function () {
 
 Route::group(['prefix' => 'tasks'], function () {
     Route::post('/create', [TasksLinkController::class, 'store']);
-    Route::get('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
+    Route::post('/update', [TasksLinkController::class, 'edit'])->name('tasksLinks.update');
+    Route::delete('/delete/{id}', [TasksLinkController::class, 'destroy']);
 });
 
 //ifnluencer apply campaign and brand search 
