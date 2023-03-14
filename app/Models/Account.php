@@ -61,19 +61,9 @@ class Account extends Authenticatable implements JWTSubject
         return $this->hasMany(\App\Models\SocialInfo::class);
     }
 
-    public function topAges()
+    public function audienceData()
     {
-        return $this->hasMany(\App\Models\TopAge::class);
-    }
-
-    public function genderRatios()
-    {
-        return $this->hasMany(\App\Models\GenderRatio::class);
-    }
-
-    public function cityInfos()
-    {
-        return $this->hasmany(\App\Models\CityInfo::class);
+        return $this->hasOne(\App\Models\AudienceData::class);
     }
   
     /**

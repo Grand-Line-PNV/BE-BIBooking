@@ -122,19 +122,31 @@ class InfluencerProfileController extends Controller
 
         $socials = $request->get('socials');
         foreach ($socials as $socialData) {
-            $social = SocialInfo::firstWhere(['id' => $socialData['social_id'], 'account_id' => $userId]);
-            if (empty($social)) {
-                return $this->responseError('Social info does not exist!');
-            }
+            if (empty($socialData['id'])) {
+                SocialInfo::create([
+                    'account_id' => $account->id,
+                    'name' => $socialData["name"],
+                    'username' => $socialData["username"],
+                    'fullname' => $socialData["fullname"],
+                    'avg_interactions' => $socialData["avg_interactions"],
+                    'subcribers' => $socialData["subcribers"],
+                    'link' => $socialData["link"],
+                ]);
+            } else {
+                $social = SocialInfo::firstWhere(['id' => $socialData['id'], 'account_id' => $userId]);
+                if (empty($social)) {
+                    return $this->responseError('Social info does not exist!');
+                }
 
-            $social->update([
-                'name' => $socialData["name"],
-                'username' => $socialData["username"],
-                'fullname' => $socialData["fullname"],
-                'avg_interactions' => $socialData["avg_interactions"],
-                'subcribers' => $socialData["subcribers"],
-                'link' => $socialData["link"],
-            ]);
+                $social->update([
+                    'name' => $socialData["name"],
+                    'username' => $socialData["username"],
+                    'fullname' => $socialData["fullname"],
+                    'avg_interactions' => $socialData["avg_interactions"],
+                    'subcribers' => $socialData["subcribers"],
+                    'link' => $socialData["link"],
+                ]);
+            }
         }
 
         return $this->responseSuccess();
@@ -159,7 +171,6 @@ class InfluencerProfileController extends Controller
             'city3' => $request->city3,
             'city4' => $request->city4,
         ]);
-
         return $this->responseSuccess();
     }
 
@@ -191,7 +202,7 @@ class InfluencerProfileController extends Controller
 
     private function audienceDataCheck($request)
     {
-        $genderPercentage = $request->male + $request->female + $request->others;        
+        $genderPercentage = $request->male + $request->female + $request->others;
         $this->checkAudienceDataPercentage($genderPercentage, 'gender');
 
         $agePercentage = $request->age1 + $request->age2 + $request->age3 + $request->age4;
@@ -271,7 +282,13 @@ class InfluencerProfileController extends Controller
 
     public function view($userId)
     {
-        $credential = Account::with('credential', 'files')->where('id', $userId)->first();
+        $credential = Account::with('credential', 'files', 'audienceData', 'socialInfo')->firstWhere('id', $userId);
+        return $this->commonResponse($credential);
+    }
+
+    public function viewAudience($userId)
+    {
+        $credential = Account::with('audienceData')->where('id', $userId)->first();
         return $this->commonResponse($credential);
     }
 
