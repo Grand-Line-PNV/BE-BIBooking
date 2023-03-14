@@ -70,6 +70,7 @@ Route::group(['prefix' => 'brand'], function () {
     Route::post('/edit-campaign/{campaignId}', [CampaignController::class, 'update'])->name('campaign.update');
     Route::get('/get-detail-campaign/{campaignId}', [CampaignController::class, 'viewDetailCampaign']);
     Route::get('/get-all-campaigns/{brandId}', [CampaignController::class, 'viewCampaigns']);
+    Route::post('/change-campaign-status/{campaignId}', [CampaignController::class, 'changeCampaignStatus']);
     //brand view their campaigns
     //booking history for brands
     Route::get('/booking-history/{brandId}', [BookingHistoryController::class, 'viewAllForBrand']);
