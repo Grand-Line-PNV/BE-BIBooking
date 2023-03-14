@@ -9,10 +9,16 @@ class FilterInfluencerController extends Controller
 {
     public function index(FilterRequest $request)
     {
+        
+        if (!($request->has('keyword') and ($request->has('keyword')) and ($request->has('keyword')) and ($request->has('keyword')) and ($request->has('keyword'))))
+        {
+            $influencers = Account::with('credential');
+            return $this->commonResponse($influencers->get());
+        }
         $influencers = Account::with('credential')
             ->has('credential')
             ->where('role_id', Account::ROLE_INFLUENCER)
-            ->keyword($request)
+            ->keyword($request) 
             ->credential($request);
 
         if (!$influencers->exists()) {
