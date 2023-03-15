@@ -33,9 +33,11 @@ class InfluencerProfileController extends Controller
             'dob' => $request->dob,
             'phone_number' => $request->phone_number,
             'gender' => $request->gender,
+
             'job' => $request->job,
             'title_for_job' => $request->title_for_job,
             'description' => $request->description,
+            'ward_code' => $request->ward_code,
             'content_topic' => $request->content_topic,
             'address_line1' => $request->address_line1,
             'address_line2' => $request->address_line2,
@@ -51,6 +53,8 @@ class InfluencerProfileController extends Controller
                 $influencerImage->save();
             }
         }
+        $influencerAvatar = FileHelper::uploadFileToS3($request->avatar, 'avatars'); $influencerAvatar->account_id = $credential->account_id; 
+        $influencerAvatar->save();
         return $this->commonResponse($credential);
     }
     public function updateInfluencerProfile(InfluProfileRequest $request, $id)

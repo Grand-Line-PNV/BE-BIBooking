@@ -14,11 +14,12 @@ class BookingHistoryController extends Controller
     public function viewAllForBrand($brandId)
     {
         $campaigns = Campaign::where('brand_id', $brandId)->get();
+
         $bookings = [];
 
         foreach ($campaigns as $campaign) {
             $booking = Booking::with(['influencer', 'influencer.credential', 'campaign', 'feedbacks'])->where('campaign_id', $campaign->id)->get()->toArray();
-            $bookings = $bookings + $booking;
+            $bookings = array_merge($bookings, $booking);
         }
 
         if (empty($bookings)) {
