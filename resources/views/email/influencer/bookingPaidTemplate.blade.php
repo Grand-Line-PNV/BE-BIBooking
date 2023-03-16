@@ -55,7 +55,7 @@
         <p>Congratulations on successfully completing your mission in this campaign. We really appreciate your ability.</p>
         <p>Please find the order information details below:</p>
         <ul>
-          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$booking->brand_id}}</li>
+          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$brand->id}}</li>
           <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
           <li><strong>Started date:</strong> {{$booking->started_date}}</li>
           <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
