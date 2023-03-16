@@ -32,7 +32,7 @@ class BookingHistoryController extends Controller
     //when brand click on detail booking, they can view the booking with tasklinks, each booking 
     public function viewDetail($id)
     {
-        $booking = Booking::with('tasksLinks')->find($id);
+        $booking = Booking::with('tasksLinks', 'influencer.credential', 'campaign')->find($id);
         if (empty($booking)) {
             return $this->commonResponse([], "Booking does not exist!", 404);
 
