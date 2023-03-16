@@ -14,7 +14,7 @@ class RevenueController extends Controller
      */
     public function index()
     {
-        return view('admin.report.index');
+        return view('admin.revenue.index');
     }
 
     /**
