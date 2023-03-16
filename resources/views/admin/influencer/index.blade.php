@@ -18,6 +18,42 @@
                 </ul>
             </nav>
         </div>
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Manager Influencer</h4>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> No </th>
+                                        <th> Customer name
+                                        </th>
+                                        <th> Phone </th>
+                                        <th> Email
+                                        </th>
+                                        <th> Type </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td> managerCthanh tu</td>
+                                        <td>345345345345</td>
+                                        <td>email</td>
+                                        <td>
+                                            <p class="btn btn-warning">contact</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <!-- Order -->

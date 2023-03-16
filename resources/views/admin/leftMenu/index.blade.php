@@ -47,12 +47,6 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/apply">
-                <span class="menu-title">Apply Management</span>
-                <i class="mdi mdi-clipboard-check menu-icon"></i>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="/admin/revenue">
                 <span class="menu-title">Revenue Management</span>
                 <i class="mdi mdi-contacts menu-icon"></i>

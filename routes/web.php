@@ -41,9 +41,6 @@ Route::group([
         Route::get('/', [BookingController::class, "index"])->name('booking.index');
     });
 
-    Route::group(["prefix" => "apply"], function () {
-        Route::get('/', [ApplyController::class, "index"])->name('apply.index');
-    });
 
     Route::group(["prefix" => "revenue"], function () {
         Route::get('/', [RevenueController::class, "index"])->name('revenue.index');
