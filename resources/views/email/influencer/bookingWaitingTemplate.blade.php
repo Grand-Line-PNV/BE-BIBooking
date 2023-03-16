@@ -55,8 +55,8 @@
         <p>Thank you for applying the campaign on our platform.</p>
         <p>Your campaign apply request has been sent to Brand. Please wait for their response within <strong style = "font-style: italic">7 </strong>days</p>
         <ul>
-          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$booking->brand_id}}</li>
-          <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
+          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$brand->id}}</li>
+          <li><strong>For campaign with ID:</strong> {{$bookibookingbookingng->campaign_id}}</li>
           <li><strong>Booking status:</strong> {{$booking->status}}</li>
         </ul>
         <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..</p>
