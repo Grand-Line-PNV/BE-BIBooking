@@ -33,7 +33,7 @@ class BookingHistoryController extends Controller
     public function viewDetail($id)
     {
         $booking = Booking::with('tasksLinks')->find($id);
-        if (empty($bookings)) {
+        if (empty($booking)) {
             return $this->commonResponse([], "Booking does not exist!", 404);
 
         }
