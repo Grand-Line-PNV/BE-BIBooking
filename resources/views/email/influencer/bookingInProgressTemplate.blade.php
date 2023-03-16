@@ -57,7 +57,7 @@
           We will let you know the results if you match our requirements within <strong style = "font-style: italic">7 </strong>days.</p>
         <p>Please find the order information details below:</p>
         <ul>
-          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$booking->brand_id}}</li>
+          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$brand->id}}</li>
           <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
         </ul>
         <p>Thank you for choosing our Platform.</p>
