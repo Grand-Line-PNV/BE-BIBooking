@@ -12,8 +12,7 @@
             <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span></span>Brand <i
-                            class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                        <span></span>Brand <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                     </li>
                 </ul>
             </nav>
@@ -28,25 +27,55 @@
                                 <thead>
                                     <tr>
                                         <th> No </th>
-                                        <th> Customer name
-                                        </th>
-                                        <th> Phone </th>
-                                        <th> Email
-                                        </th>
-                                        <th> Type </th>
-
+                                        <th> Brand ID </th>
+                                        <th> Username </th>
+                                        <th> Email </th>
+                                        <th> Fullname </th>
+                                        <th> Nickname </th>
+                                        <th> Gender </th>
+                                        <th> Industry </th>
+                                        <th> Website </th>
+                                        <th> DOB </th>
+                                        <th> Brand name</th>
+                                        <th> Action </th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                    $id = 0;
+                                    @endphp
+                                    @if ($brands->isEmpty())
                                     <tr>
-                                        <td>1</td>
-                                        <td> managerCthanh tu</td>
-                                        <td>345345345345</td>
-                                        <td>email</td>
-                                        <td>
-                                            <p class="btn btn-warning">contact</p>
+                                        <td colspan="9" class="text-center">
+                                            No data has found!
                                         </td>
                                     </tr>
+                                    @else
+                                    @foreach ($brands as $brand)
+                                    @php
+                                    $id += 1;
+                                    @endphp
+
+                                    <tr>
+                                        <td>{{ $id }}</td>
+                                        <td>{{ $brand->id }}</td>
+                                        <td>{{ $brand->username }}</td>
+                                        <td>{{ $brand->email }}</td>
+                                        <td>{{ $brand['credential']['fullname'] }}</td>
+                                        <td>{{ $brand['credential']['nickname']}}</td>
+                                        <td>{{ $brand['credential']['gender']}}</td>
+                                        <td>{{ $brand['credential']['industry']}}</td>
+                                        <td>{{ $brand['credential']['website']}}</td>
+                                        <td>{{ $brand['credential']['dob']}}</td>
+                                        <td>{{ $brand['credential']['brand_name']}}</td>
+                                        <td>
+                                            <a href="#" onclick="myFunction(this)">
+                                                <i style="font-size:24px" class="mdi mdi-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -56,6 +85,11 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script>
+        function myFunction(x) {
+            x.classList.toggle("mdi mdi-eye-off");
+        }
+    </script>
     <!-- Order -->
     <!-- User -->
 

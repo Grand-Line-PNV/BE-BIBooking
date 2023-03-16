@@ -7,12 +7,12 @@
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
                     <i class="mdi mdi-view-dashboard menu-icon"></i>
-                </span> Revenue
+                </span> Feedback
             </h3>
             <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span></span>Revenue <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                        <span></span>Feedback <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                     </li>
                 </ul>
             </nav>
@@ -21,51 +21,54 @@
             <div class="col-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Revenues </h4>
+                        <h4 class="card-title">Feedback </h4>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th> ID </th>
-                                        <th> Payment ID </th>
+                                        <th> No </th>
+                                        <th> Feeback ID </th>
                                         <th> Booking ID </th>
-                                        <th> Bank Name </th>
+                                        <th> From account ID </th>
+                                        <th> Username </th>
+                                        <th> Role </th>
+                                        <th> Content </th>
                                         <th> Date </th>
-                                        <th> Money </th>
+                                        <th> Action </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                    $total = 0;
+                                    $id = 0;
                                     @endphp
-                                    @if ($payments->isEmpty())
+                                    @if ($feedbacks->isEmpty())
                                     <tr>
                                         <td colspan="9" class="text-center">
                                             No data has found!
                                         </td>
                                     </tr>
                                     @else
-                                    @foreach ($payments as $payment)
+                                    @foreach ($feedbacks as $feedback)
                                     @php
-                                    $total = $total + $payment->number;
+                                    $id += 1;
                                     @endphp
                                     <tr>
-                                        <td>{{ $payment->id }}</td>
-                                        <td>{{ $payment ->id }}</td>
-                                        <td>{{ $payment->booking_id }}</td>
-                                        <td>{{ $payment->bank_name }}</td>
-                                        <td>{{ $payment ->date }}</td>
-                                        <td>{{ $payment->number }}</td>
+                                        <td>{{ $id }}</td>
+                                        <td>{{ $feedback->id }}</td>
+                                        <td>{{ $feedback->booking_id }}</td>
+                                        <td>{{ $feedback->from_account_id}}</td>
+                                        <td>{{ $feedback['account']['username']}}</td>
+                                        <td>{{ $feedback['account']['role']['name'] }}</td>
+                                        <td>{{ $feedback->content}}</td>
+                                        <td>{{ $feedback->created_at}}</td>
+                                        <td>
+                                            <a href="/admin/feedback/delete/{{ $feedback->id }}" onclick="return confirm('Do you want to delete this feedback!')"><i class="mdi mdi-delete"></i></a>
+                                        </td>
+
                                     </tr>
                                     @endforeach
                                     @endif
                                 </tbody>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th>Total</th>
-                                <th>{{$total}}</th>
                             </table>
                         </div>
                     </div>

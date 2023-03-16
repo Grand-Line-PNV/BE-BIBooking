@@ -20,8 +20,9 @@ class Feedback extends Model
         return $this->belongsTo(\App\Models\Booking::class);
     }
 
-    public function file()
+    public function account()
     {
-        return $this->hasMany(\App\Models\File::class);
+        return $this->belongsTo(\App\Models\Account::class, 'from_account_id');
     }
+
 }
