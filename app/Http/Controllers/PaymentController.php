@@ -32,7 +32,7 @@ class PaymentController extends Controller
         $payment = Payment::create([
             'booking_id' => $request->booking_id,
             'description' => $request->description,
-            'number' => $campaign->price,
+            'number' => ($campaign->price)*1.1,
             'date' => Carbon::now(),
             'bank_name' => $request->bank_name,
         ]);
