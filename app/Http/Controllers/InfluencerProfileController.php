@@ -33,7 +33,6 @@ class InfluencerProfileController extends Controller
             'dob' => $request->dob,
             'phone_number' => $request->phone_number,
             'gender' => $request->gender,
-
             'job' => $request->job,
             'title_for_job' => $request->title_for_job,
             'description' => $request->description,
@@ -53,7 +52,7 @@ class InfluencerProfileController extends Controller
                 $influencerImage->save();
             }
         }
-        $influencerAvatar = FileHelper::uploadFileToS3($request->avatar, 'avatars'); $influencerAvatar->account_id = $credential->account_id; 
+        $influencerAvatar = FileHelper::uploadFileToS3($request->avatarImages, 'avatars'); $influencerAvatar->account_id = $credential->account_id; 
         $influencerAvatar->save();
         return $this->commonResponse($credential);
     }
@@ -73,6 +72,7 @@ class InfluencerProfileController extends Controller
             'job' => $request->job,
             'title_for_job' => $request->title_for_job,
             'description' => $request->description,
+            'ward_code' => $request->ward_code,
             'content_topic' => $request->content_topic,
             'address_line1' => $request->address_line1,
             'address_line2' => $request->address_line2,
@@ -80,18 +80,22 @@ class InfluencerProfileController extends Controller
             'address_line4' => $request->address_line4,
         ]);
         // $credential->save();
-        $file = Account::with('files')->where('id', $id)->first();
-        FileHelper::removeFileFromS3($file);
-        $file->files()->delete();
+        // $file = Account::with('files')->where('id', $id)->first();
+        $accountFiles = Account::with('files')->find($id);
+        foreach ($accountFiles->files as $file) {
+            FileHelper::removeFileFromS3($file);
+            $file->delete();
+        }
 
         if ($request->hasfile('influencerImages')) {
             foreach ($request->file('influencerImages') as $file) {
                 $influencerImage = FileHelper::uploadFileToS3($file, 'influencers');
-                $influencerImage->account_id = $request->account_id;
+                $influencerImage->account_id = $id;
                 $influencerImage->save();
             }
         }
-
+        $influencerAvatar = FileHelper::uploadFileToS3($request->avatarImages, 'avatars'); $influencerAvatar->account_id = $credential->account_id; 
+        $influencerAvatar->save();
         return $this->responseSuccess();
     }
     public function createSocialMediaData(SocialMediaRequest $request)
