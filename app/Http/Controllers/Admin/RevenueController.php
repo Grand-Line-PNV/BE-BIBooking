@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class RevenueController extends Controller
@@ -14,7 +15,9 @@ class RevenueController extends Controller
      */
     public function index()
     {
-        return view('admin.revenue.index');
+        $payments = Payment::all();
+
+        return view('admin.revenue.index', compact('payments'));
     }
 
     /**

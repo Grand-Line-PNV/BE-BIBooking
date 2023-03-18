@@ -31,9 +31,14 @@ class Account extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    public function feedbacks()
+    {
+        return $this->hasMany(\App\Models\Feedback::class, 'from_account_id');
+    }
+
     public function role()
     {
-        return $this->hasOne(\App\Models\Role::class);
+        return $this->belongsTo(\App\Models\Role::class);
     }
     
     public function credential()

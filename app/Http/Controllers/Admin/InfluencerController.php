@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Account;
 
 class InfluencerController extends Controller
 {
@@ -14,7 +15,11 @@ class InfluencerController extends Controller
      */
     public function index()
     {
-        return view('admin.influencer.index');
+        $influencers = Account::with('credential')
+        ->has('credential')
+        ->where('role_id', Account::ROLE_INFLUENCER)
+        ->get();
+        return view('admin.influencer.index', compact('influencers'));
     }
 
     /**
@@ -22,10 +27,6 @@ class InfluencerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
