@@ -38,14 +38,15 @@ class AuthController extends Controller
         $credentials = request(['email', 'password', 'role_id']);
         $user = Account::where('email', $request->email)->first();
 
-        if (!$token = auth()->attempt($credentials)) {
-            return $this->commonResponse([], 'Your email or password is wrong!', 401);        }
+        if (!auth()->attempt($credentials)) {
+            return $this->commonResponse([], 'Your email or password is wrong!', 401);
+        }
 
         if ($user['verified'] == true) {
             $userData = [
-                'access_token' => $token,
+                'access_token' => $user->createToken('b&i-booking')->plainTextToken,
                 'token_type' => 'Bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60,
+                // 'expires_in' => auth()->factory()->getTTL() * 60,
                 'account' => auth()->user()
             ];
 
