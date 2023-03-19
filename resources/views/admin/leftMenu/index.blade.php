@@ -53,8 +53,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/report">
-                <span class="menu-title">Report Management</span>
+            <a class="nav-link" href="/admin/feedback">
+                <span class="menu-title">Feedback Management</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
             </a>
         </li>

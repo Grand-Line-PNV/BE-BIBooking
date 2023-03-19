@@ -11,11 +11,11 @@ class Booking extends Model
 
     public const STATUS_WAITING = 'waiting';
     public const STATUS_CONFIRMED = 'confirmed';
+    public const STATUS_PAID = 'paid';
     public const STATUS_DOING = 'in_progress';
     public const STATUS_DONE = 'done';
     public const STATUS_CANCEL = 'cancel';
     public const STATUS_REJECT = 'reject';
-    public const STATUS_PAID = 'paid';
 
     public const BOOKING_STATUS = [
         self::STATUS_WAITING,

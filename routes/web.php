@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\InfluencerController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ApplyController;
+use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -46,9 +47,11 @@ Route::group([
         Route::get('/', [RevenueController::class, "index"])->name('revenue.index');
     });
 
-    Route::group(["prefix" => "report"], function () {
-        Route::get('/', [ReportController::class, "index"])->name('report.index');
+    Route::group(["prefix" => "feedback"], function () {
+        Route::get('/', [FeedbackController::class, "index"])->name('feedback.index');
+        Route::get('/delete/{id}', [FeedbackController::class, "delete"]);
     });
+
 });
 
 Route::get('/', function () {

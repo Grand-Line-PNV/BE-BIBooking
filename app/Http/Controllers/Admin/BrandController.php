@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Account;
 
 class BrandController extends Controller
 {
@@ -14,7 +15,11 @@ class BrandController extends Controller
      */
     public function index()
     {
-        return view('admin.brand.index');
+        $brands = Account::with('credential')
+        ->has('credential')
+        ->where('role_id', Account::ROLE_BRAND)
+        ->get();
+        return view('admin.brand.index', compact('brands'));
     }
 
     /**
