@@ -13,12 +13,12 @@ class FilterInfluencerController extends Controller
         if (!$request->has('keyword') and !$request->has('gender') and  !$request->has('job')
         and !$request->has('minCast') and !$request->has('maxCast'))
         {
-            $influencers = Account::with('credential')
+            $influencers = Account::with('credential', 'files')
             ->has('credential')
             ->where('role_id', Account::ROLE_INFLUENCER);
             return $this->commonResponse($influencers->get());
         }
-        $influencers = Account::with('credential')
+        $influencers = Account::with('credential', 'files')
             ->has('credential')
             ->where('role_id', Account::ROLE_INFLUENCER)
             ->keyword($request) 

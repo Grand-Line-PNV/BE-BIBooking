@@ -12,7 +12,7 @@ class BookingController extends Controller
 {
     public function index()
     {
-        $bookings = Booking::with('feedbacks')->get();
+        $bookings = Booking::with('feedbacks.account.credential')->get();
         return $this->commonResponse($bookings);
     }
 
@@ -53,7 +53,7 @@ class BookingController extends Controller
 
     public function show($id)
     {
-        $booking = Booking::with(['feedbacks'])->find($id);
+        $booking = Booking::with(['feedbacks.account.credential'])->find($id);
         if (empty($booking)) {
             return $this->commonResponse([], "Booking does not exist.", 404);
         }
