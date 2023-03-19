@@ -290,7 +290,7 @@ class InfluencerProfileController extends Controller
 
     public function view($userId)
     {
-        $credential = Account::with('credential', 'files', 'audienceData', 'socialInfo')->firstWhere('id', $userId);
+        $credential = Account::with('credential', 'files', 'audienceData', 'socialInfo','services')->firstWhere('id', $userId);
         return $this->commonResponse($credential);
     }
 
