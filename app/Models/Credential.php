@@ -28,8 +28,9 @@ class Credential extends Model
     public function scopeKeyword($query, $request)
     {
         if ($request->has('keyword')) {
-            $query->orWhere('nickname', 'LIKE', '%' . $request->keyword . '%')
-                ->orWhere('fullname', 'LIKE', '%' . $request->keyword . '%');
+            $query->Where('nickname', 'LIKE', '%' . $request->keyword . '%')
+                ->orWhere('fullname', 'LIKE', '%' . $request->keyword . '%')
+                ;
         }
 
         return $query;
@@ -38,7 +39,7 @@ class Credential extends Model
     public function scopeGender($query, $request)
     {
         if ($request->has('gender')) {
-            $query->orWhere('gender', $request->gender);
+            $query->where('gender', $request->gender);
         }
 
         return $query;
@@ -47,7 +48,7 @@ class Credential extends Model
     public function scopeJob($query, $request)
     {
         if ($request->has('job')) {
-            $query->orWhere('job', $request->job);
+            $query->Where('job', $request->job);
         }
 
         return $query;
@@ -56,7 +57,7 @@ class Credential extends Model
     public function scopeMinCast($query, $request)
     {
         if ($request->has('minCast')) {
-            $query->orWhere('booking_price', '>=', $request->minCast);
+            $query->Where('booking_price', '>=', $request->minCast);
         }
 
         return $query;
@@ -65,7 +66,7 @@ class Credential extends Model
     public function scopeMaxCast($query, $request)
     {
         if ($request->has('maxCast')) {
-            $query->orWhere('booking_price', '<=', $request->maxCast);
+            $query->where('booking_price', '<=', $request->maxCast);
         }
 
         return $query;

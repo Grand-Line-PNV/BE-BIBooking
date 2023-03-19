@@ -18,7 +18,6 @@ class FilterInfluencerController extends Controller
             ->where('role_id', Account::ROLE_INFLUENCER);
             return $this->commonResponse($influencers->get());
         }
-        else
         $influencers = Account::with('credential')
             ->has('credential')
             ->where('role_id', Account::ROLE_INFLUENCER)

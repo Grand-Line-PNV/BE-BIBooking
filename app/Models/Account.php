@@ -116,7 +116,7 @@ class Account extends Authenticatable implements JWTSubject
     public function scopeCredential($query, $request)
     {
         return $query->whereHas('credential', function($q) use($request) {
-            $q->where('id', '!==', null)
+            $q
                 ->gender($request)
                 ->job($request)
                 ->minCast($request)
