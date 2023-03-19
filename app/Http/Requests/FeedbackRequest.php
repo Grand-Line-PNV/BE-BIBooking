@@ -29,7 +29,7 @@ class FeedbackRequest extends FormRequest
         }
         return [
             'booking_id' => $requirable . '|integer',
-            'role_id' => $requirable . '|integer',
+            // 'role_id' => $requirable . '|integer',
             'account_id' => $requirable . '|integer',
             'content' => 'required|string',
         ];

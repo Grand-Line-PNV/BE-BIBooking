@@ -18,7 +18,7 @@ class BookingHistoryController extends Controller
         $bookings = [];
 
         foreach ($campaigns as $campaign) {
-            $booking = Booking::with(['influencer', 'influencer.credential', 'campaign', 'feedbacks'])->where('campaign_id', $campaign->id)->get()->toArray();
+            $booking = Booking::with(['influencer', 'influencer.credential', 'campaign', 'feedbacks.account.credential'])->where('campaign_id', $campaign->id)->get()->toArray();
             $bookings = array_merge($bookings, $booking);
         }
 
@@ -44,7 +44,7 @@ class BookingHistoryController extends Controller
     // when they click on each booking 
     public function viewAllForInfluencer($influencerId)
     {
-        $bookings = Booking::with(['campaign', 'campaign.brand', 'feedbacks'])->where('influencer_id', $influencerId)->get();
+        $bookings = Booking::with(['campaign', 'campaign.brand', 'feedbacks.account.credential'])->where('influencer_id', $influencerId)->get();
 
         if (empty($bookings->toArray())) {
             return $this->commonResponse([], "Influencer does not have any campaign!", 404);
