@@ -43,7 +43,11 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (AuthenticationException $e, $request) {
-            // 
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Not authenticated'
+                ], 401);
+            }
         });
     }
 
