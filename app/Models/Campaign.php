@@ -48,7 +48,7 @@ class Campaign extends Model
     public function scopeIndustry($query, $request)
     {
         if ($request->has('industry')) {
-            $query->Where('industry', $request->industry);
+            $query->where('industry', $request->industry);
         }
         return $query;
     }
@@ -56,7 +56,7 @@ class Campaign extends Model
     public function scopeMinCast($query, $request)
     {
         if ($request->has('minCast')) {
-            $query->Where('price', '>=', $request->minCast);
+            $query->where('price', '>=', $request->minCast);
         }
         return $query;
     }
@@ -64,7 +64,7 @@ class Campaign extends Model
     public function scopeMaxCast($query, $request)
     {
         if ($request->has('maxCast')) {
-            $query->Where('price', '<=', $request->maxCast);
+            $query->where('price', '<=', $request->maxCast);
         }
         return $query;
     }
