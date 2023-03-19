@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
-    
+
     public function register(RegisterRequest $request)
     {
         $account = new Account([
@@ -51,13 +51,13 @@ class AuthController extends Controller
             ];
 
             return $this->commonResponse($userData, "Login successfully!");
-        }
-        else {
+        } else {
             return $this->commonResponse([], 'Your account has not been activated!', 401);
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
         return $this->commonResponse([], "Logout successfully!");
     }

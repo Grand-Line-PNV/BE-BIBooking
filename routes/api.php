@@ -82,7 +82,7 @@ Route::middleware('cors')->group(function () {
         Route::get('/districts/{province_code}', [AddressController::class, 'loaddistrict'])->name('address.districts');
         Route::get('/wards/{district_code}', [AddressController::class, 'loadward'])->name('address.wards');
         Route::get('/locations/{user_id}/{ward_code}', [AddressController::class, 'loaduserlocation'])->name('address.userlocation');
-        
+
         Route::group(['prefix' => 'bookings'], function () {
             Route::post('/create', [BookingController::class, 'store']);
             Route::get('/get-detail/{bookingId}', [BookingController::class, 'show']);
