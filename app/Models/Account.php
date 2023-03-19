@@ -70,7 +70,10 @@ class Account extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(\App\Models\AudienceData::class);
     }
-  
+    public function services()
+    {
+        return $this->hasMany(\App\Models\Services::class);
+    }
     /**
      * @param string|array $roles
      */
