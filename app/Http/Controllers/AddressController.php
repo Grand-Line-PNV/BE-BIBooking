@@ -14,9 +14,9 @@ class AddressController extends Controller
 {
     public function loadProvince()
     {
-        $districts = Province::select('code', 'full_name AS name')->get();
+        $provinces = Province::select('code', 'full_name AS name')->get();
 
-        return new AddressResource($districts);
+        return new AddressResource($provinces);
     }
 
     public function loadDistrict(string $code)
@@ -37,11 +37,11 @@ class AddressController extends Controller
     {
         $ward = Ward::with(['district', 'district.province'])->firstWhere('code', $wardCode);
         $location = Credential::select(
-                'address_line4 AS provinceCode',
-                'address_line3 AS districtCode',
-                'ward_code AS wardCode',
-                'address_line1 AS houseNumber',
-            )
+            'address_line4 AS provinceCode',
+            'address_line3 AS districtCode',
+            'ward_code AS wardCode',
+            'address_line1 AS houseNumber',
+        )
             ->firstWhere([
                 'account_id' => $userId,
                 'ward_code' => $wardCode

@@ -78,10 +78,10 @@ Route::middleware('cors')->group(function () {
             Route::get('/booking-history-detail/{id}', [BookingHistoryController::class, 'viewDetail']);
         });
 
-        Route::get('/provinces', [AddressController::class, 'loadprovince'])->name('address.provinces');
-        Route::get('/districts/{province_code}', [AddressController::class, 'loaddistrict'])->name('address.districts');
-        Route::get('/wards/{district_code}', [AddressController::class, 'loadward'])->name('address.wards');
-        Route::get('/locations/{user_id}/{ward_code}', [AddressController::class, 'loaduserlocation'])->name('address.userlocation');
+        Route::get('/provinces', [AddressController::class, 'loadProvince'])->name('address.provinces');
+        Route::get('/districts/{province_code}', [AddressController::class, 'loadDistrict'])->name('address.districts');
+        Route::get('/wards/{district_code}', [AddressController::class, 'loadWard'])->name('address.wards');
+        Route::get('/locations/{user_id}/{ward_code}', [AddressController::class, 'loadUserLocation'])->name('address.userlocation');
 
         Route::group(['prefix' => 'bookings'], function () {
             Route::post('/create', [BookingController::class, 'store']);
