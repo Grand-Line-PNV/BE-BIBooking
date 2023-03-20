@@ -55,6 +55,7 @@ Route::middleware('cors')->group(function () {
             Route::post('/edit-audience-data-info/{userId}', [InfluencerProfileController::class, 'updateAudience'])->name('audienceData.update');
 
             Route::get('/view-myinfo/{id}', [InfluencerProfileController::class, 'view']);
+
             Route::get('/view-myaccount/{account_id}', [InfluencerProfileController::class, 'viewAccount']);
             // Influencer 
             Route::get('/booking-history/{influencerId}', [BookingHistoryController::class, 'viewAllForInfluencer']);

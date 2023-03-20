@@ -15,6 +15,7 @@ use App\Http\Requests\TopAgeRequest;
 use App\Http\Requests\TopCityRequest;
 use App\Models\Account;
 use App\Models\AudienceData;
+use App\Models\Booking;
 use App\Models\CityInfo;
 use App\Models\GenderRatio;
 use App\Models\Services;
@@ -290,15 +291,10 @@ class InfluencerProfileController extends Controller
 
     public function view($userId)
     {
-        $credential = Account::with('credential', 'files', 'audienceData', 'socialInfo','services')->firstWhere('id', $userId);
+        $credential = Account::with('credential', 'files', 'audienceData', 'socialInfo', 'services', 'bookings', 'feedbacks')->firstWhere('id', $userId);
         return $this->commonResponse($credential);
     }
 
-    public function viewAudience($userId)
-    {
-        $credential = Account::with('audienceData')->where('id', $userId)->first();
-        return $this->commonResponse($credential);
-    }
 
     public function viewAccount($account_id)
     {
