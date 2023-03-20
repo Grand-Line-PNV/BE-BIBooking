@@ -12,7 +12,7 @@ class Feedback extends Model
     protected $table = 'feedbacks';
 
     protected $fillable = [
-        'from_type', 'account_id', 'content', 'booking_id',
+        'from_type', 'from_account_id', 'content', 'booking_id', 'to_account_id',
     ];
 
     public function booking()

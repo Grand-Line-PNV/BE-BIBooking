@@ -29,8 +29,8 @@ class FeedbackRequest extends FormRequest
         }
         return [
             'booking_id' => $requirable . '|integer',
-            // 'role_id' => $requirable . '|integer',
-            'account_id' => $requirable . '|integer',
+            'from_account_id' => $requirable . '|integer',
+            'to_account_id' => $requirable . '|integer',
             'content' => 'required|string',
         ];
     }

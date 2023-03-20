@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('feedbacks', function (Blueprint $table) {
-            $table->unsignedInteger('account_id');
-            $table->foreign('account_id')->references('id')->on('feedbacks')->onUpdate('cascade')->onDelete('cascade');
+            $table->dropForeign(['from_account_id']);
+        });
+        Schema::table('feedbacks', function (Blueprint $table) {
+            $table->unsignedInteger('to_account_id')->nullable();
+            $table->foreign('to_account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
