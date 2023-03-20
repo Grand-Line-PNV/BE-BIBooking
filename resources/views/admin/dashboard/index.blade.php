@@ -53,11 +53,9 @@
     let massPopChart2 = new Chart(myChart2, {
         type: 'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
         data: {
-            labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',
-                'New Bedford'
-            ],
+            labels: ['1 - 5 days', '5 - 10 days', '10 - 15 days', '15 - 20 days', '20 - 25 days', ' > 25 days'],
             datasets: [{
-                label: 'Population',
+                label: 'Number',
                 data: [
                     617594,
                     181045,
@@ -120,9 +118,9 @@
     let massPopChart = new Chart(myChart, {
         type: 'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
         data: {
-            labels: ['1 - 2', '3 - 4', '6 - 7', '6 - 7', '6 - 7', '6 - 7'],
+            labels: ['1 - 2', '3 - 4', '4 - 5', '5 - 6', '6 - 7', '7 - 8'],
             datasets: [{
-                label: 'Population',
+                label: 'Jobs',
                 data: [
                     50,
                     70,
