@@ -12,7 +12,7 @@ class Feedback extends Model
     protected $table = 'feedbacks';
 
     protected $fillable = [
-        'from_type', 'from_account_id', 'content', 'booking_id','to_account_id',
+        'from_type', 'from_account_id', 'content', 'booking_id', 'to_account_id',
     ];
 
     public function booking()
@@ -22,7 +22,7 @@ class Feedback extends Model
 
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'from_account_id');
+        return $this->belongsTo(\App\Models\Account::class);
     }
 
 }

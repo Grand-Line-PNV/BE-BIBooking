@@ -11,16 +11,17 @@ use App\Models\Feedback;
 
 class FeedbackController extends Controller
 {
-    public function store(FeedbackRequest $request)
+    public function store(FeedbackRequest $request, $accountId)
     {
-        $account = Account::find($request->account_id);
+        $account = Account::find($request->from_account_id);
         if (empty($account)) {
             return $this->commonResponse([], "Account does not exist!", 404);
         };
         $feedback = Feedback::create([
             'booking_id' => $request->booking_id,
             'from_type' => $account->role_id,
-            'from_account_id' => $request->account_id,
+            'from_account_id' => $request->from_account_id,
+            'to_account_id' => $accountId,
             'content' => $request->content,
         ]);
 
