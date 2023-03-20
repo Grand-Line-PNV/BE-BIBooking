@@ -33,7 +33,7 @@ class Account extends Authenticatable implements JWTSubject
 
     public function feedbacks()
     {
-        return $this->hasMany(\App\Models\Feedback::class, 'from_account_id');
+        return $this->hasMany(\App\Models\Feedback::class, 'to_account_id');
     }
 
     public function role()
@@ -74,6 +74,8 @@ class Account extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(\App\Models\Services::class);
     }
+
+   
     /**
      * @param string|array $roles
      */
