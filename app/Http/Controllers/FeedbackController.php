@@ -20,7 +20,7 @@ class FeedbackController extends Controller
         $feedback = Feedback::create([
             'booking_id' => $request->booking_id,
             'from_type' => $account->role_id,
-            'from_account_id' => $request->account_id,
+            'account_id' => $request->account_id,
             'content' => $request->content,
         ]);
 
