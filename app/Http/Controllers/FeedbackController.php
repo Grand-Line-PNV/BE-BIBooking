@@ -13,7 +13,7 @@ class FeedbackController extends Controller
 {
     public function store(FeedbackRequest $request, $accountId)
     {
-        $account = Account::find($accountId);
+        $account = Account::find($request->from_account_id);
         if (empty($account)) {
             return $this->commonResponse([], "Account does not exist!", 404);
         };
