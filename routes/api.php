@@ -104,7 +104,7 @@ Route::middleware('cors')->group(function () {
         Route::group(
             ['prefix' => 'feedback'],
             function () {
-                Route::post('/create', [FeedbackController::class, 'store']);
+                Route::post('/create/{accountID}', [FeedbackController::class, 'store']);
                 Route::post('/update/{id}', [FeedbackController::class, 'edit'])->name('feedback.update');
                 Route::delete('/delete/{id}', [FeedbackController::class, 'destroy']);
             }
