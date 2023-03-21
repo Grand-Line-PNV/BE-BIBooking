@@ -55,14 +55,14 @@
         data: {
             labels: ['1 - 5 days', '5 - 10 days', '10 - 15 days', '15 - 20 days', '20 - 25 days', ' > 25 days'],
             datasets: [{
-                label: 'Number',
+                label: 'Influencers',
                 data: [
-                    617594,
-                    181045,
-                    153060,
-                    106519,
-                    105162,
-                    95072
+                    50,
+                    45,
+                    30,
+                    60,
+                    20,
+                    30
                 ],
                 //backgroundColor:'green',
                 backgroundColor: [
@@ -122,11 +122,12 @@
             datasets: [{
                 label: 'Jobs',
                 data: [
-                    50,
-                    70,
-                    30,
-                    100,
-                    0, 100,
+                    51,
+                    20,
+                    32,
+                    98,
+                    2, 
+                    45,
                 ],
                 //backgroundColor:'green',
                 backgroundColor: [

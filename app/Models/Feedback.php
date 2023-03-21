@@ -22,7 +22,7 @@ class Feedback extends Model
 
     public function account()
     {
-        return $this->belongsTo(\App\Models\Account::class);
+        return $this->belongsTo(\App\Models\Account::class, 'to_account_id');
     }
 
 }

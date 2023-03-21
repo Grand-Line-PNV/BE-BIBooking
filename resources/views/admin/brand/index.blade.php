@@ -37,7 +37,6 @@
                                         <th> Website </th>
                                         <th> DOB </th>
                                         <th> Brand name</th>
-                                        <th> Action </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,11 +67,6 @@
                                         <td>{{ $brand['credential']['website']}}</td>
                                         <td>{{ $brand['credential']['dob']}}</td>
                                         <td>{{ $brand['credential']['brand_name']}}</td>
-                                        <td>
-                                            <a href="#" onclick="myFunction(this)">
-                                                <i style="font-size:24px" class="mdi mdi-eye"></i>
-                                            </a>
-                                        </td>
                                     </tr>
                                     @endforeach
                                     @endif
@@ -85,9 +79,13 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <a href="#" onclick="myFunction(this)">
+        <i style="font-size:24px" class="mdi mdi-eye"></i>
+    </a>
+    </td>
     <script>
-        function myFunction(x) {
-            x.classList.toggle("mdi mdi-eye-off");
+        const myFunction = (icon) => {
+            icon.classList.toggle("mdi mdi-eyeUnactive");
         }
     </script>
     <!-- Order -->
