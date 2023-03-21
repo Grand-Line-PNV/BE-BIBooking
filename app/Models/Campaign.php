@@ -21,9 +21,9 @@ class Campaign extends Model
         self::STATUS_CLOSED,
     ];
 
-    public function account()
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\Account::class);
+        return $this->belongsTo(\App\Models\Account::class, 'brand_id');
     }
 
     public function files()
@@ -31,9 +31,9 @@ class Campaign extends Model
         return $this->hasMany(\App\Models\File::class);
     }
 
-    public function booking()
+    public function bookings()
     {
-        return $this->hasOne(\App\Models\Booking::class);
+        return $this->hasMany(\App\Models\Booking::class);
     }
 
     public function scopeKeyword($query, $request)
@@ -48,7 +48,7 @@ class Campaign extends Model
     public function scopeIndustry($query, $request)
     {
         if ($request->has('industry')) {
-            $query->orWhere('industry', $request->industry);
+            $query->where('industry', $request->industry);
         }
         return $query;
     }
@@ -56,7 +56,7 @@ class Campaign extends Model
     public function scopeMinCast($query, $request)
     {
         if ($request->has('minCast')) {
-            $query->orWhere('price', '>=', $request->minCast);
+            $query->where('price', '>=', $request->minCast);
         }
         return $query;
     }
@@ -64,7 +64,7 @@ class Campaign extends Model
     public function scopeMaxCast($query, $request)
     {
         if ($request->has('maxCast')) {
-            $query->orWhere('price', '<=', $request->maxCast);
+            $query->where('price', '<=', $request->maxCast);
         }
         return $query;
     }

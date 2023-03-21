@@ -9,10 +9,10 @@ class Credential extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'account_id', 'nickname', 'dob','fullname',
-        'booking_price', 'industry', 'content_topic', 'experiences','website',
+        'account_id', 'nickname', 'dob', 'fullname',
+        'booking_price', 'industry', 'content_topic', 'experiences', 'website',
         'phone_number', 'gender', 'address_line1', 'address_line2', 'address_line3', 
-        'address_line4','job','description','title_for_job','brand_name'
+        'address_line4','job', 'description', 'title_for_job', 'brand_name', 'ward_code'
     ];
 
     public function account()
@@ -28,8 +28,9 @@ class Credential extends Model
     public function scopeKeyword($query, $request)
     {
         if ($request->has('keyword')) {
-            $query->orWhere('nickname', 'LIKE', '%' . $request->keyword . '%')
-                ->orWhere('fullname', 'LIKE', '%' . $request->keyword . '%');
+            $query->Where('nickname', 'LIKE', '%' . $request->keyword . '%')
+                ->orWhere('fullname', 'LIKE', '%' . $request->keyword . '%')
+                ;
         }
 
         return $query;
@@ -47,7 +48,7 @@ class Credential extends Model
     public function scopeJob($query, $request)
     {
         if ($request->has('job')) {
-            $query->orWhere('job', $request->job);
+            $query->Where('job', $request->job);
         }
 
         return $query;
@@ -56,7 +57,7 @@ class Credential extends Model
     public function scopeMinCast($query, $request)
     {
         if ($request->has('minCast')) {
-            $query->orWhere('booking_price', '>=', $request->minCast);
+            $query->Where('booking_price', '>=', $request->minCast);
         }
 
         return $query;
@@ -65,7 +66,7 @@ class Credential extends Model
     public function scopeMaxCast($query, $request)
     {
         if ($request->has('maxCast')) {
-            $query->orWhere('booking_price', '<=', $request->maxCast);
+            $query->where('booking_price', '<=', $request->maxCast);
         }
 
         return $query;

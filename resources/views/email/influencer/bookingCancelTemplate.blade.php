@@ -54,7 +54,7 @@
         <p>Dear {{$influencer->username}},</p>
         <p>You have successfully canceled your campaign applying of {{$brand->username}} Brand. Please find the order information details below:</p>
         <ul>
-          <li><strong>You have apply a campaign from {{$brand->username}} with ID:</strong> {{$booking->brand_id}}</li>
+          <li><strong>You have apply a campaign from {{$brand->username}} with ID:</strong> {{$brand->id}}</li>
           <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
         </ul>
         <p>Thank you for choosing our Platform.</p>

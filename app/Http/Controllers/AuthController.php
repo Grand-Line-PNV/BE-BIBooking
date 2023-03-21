@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
-    
+
     public function register(RegisterRequest $request)
     {
         $account = new Account([
@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         $account->save();
         VerificationController::sendEmailToConfirmAccount($account, VerificationController::generateOtp());
-        return $this->responseSuccess();
+        return $this->commonResponse($account);
     }
 
     public function login(LoginRequest $request)
@@ -38,27 +38,27 @@ class AuthController extends Controller
         $credentials = request(['email', 'password', 'role_id']);
         $user = Account::where('email', $request->email)->first();
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!auth()->attempt($credentials)) {
+            return $this->commonResponse([], 'Your email or password is wrong!', 401);
         }
 
         if ($user['verified'] == true) {
             $userData = [
-                'access_token' => $token,
+                'access_token' => $user->createToken('b&i-booking')->plainTextToken,
                 'token_type' => 'Bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60,
+                // 'expires_in' => auth()->factory()->getTTL() * 60,
                 'account' => auth()->user()
             ];
 
             return $this->commonResponse($userData, "Login successfully!");
-        }
-        else {
-            return $this->responseErrorWithData(["message" => 'Invalid'], 401);
+        } else {
+            return $this->commonResponse([], 'Your account has not been activated!', 401);
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
-        return $this->responseSuccess('logout successfully');
+        return $this->commonResponse([], "Logout successfully!");
     }
 }

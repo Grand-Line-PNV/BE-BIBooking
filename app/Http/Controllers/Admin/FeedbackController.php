@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
-class ApplyController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class ApplyController extends Controller
      */
     public function index()
     {
-        return view('admin.apply.index');
+        $feedbacks = Feedback::with('account.role')->get();
+        return view('admin.feedback.index', compact('feedbacks'));
     }
 
     /**
@@ -78,8 +80,10 @@ class ApplyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $feedback = Feedback::find($id);
+        $feedback->delete();
+        return redirect()->route('feedback.index')->with('thành công', 'bạn đã xoa thành công');
     }
 }

@@ -13,7 +13,7 @@ class BrandProfileController extends Controller
     use ApiResponse;
     public function create(BrandProfileRequest $request)
     {
-        $credential = new Credential(
+        $credential = Credential::create(
             [
                 'account_id' => $request->account_id,
                 'gender' => $request->gender,
@@ -22,6 +22,7 @@ class BrandProfileController extends Controller
                 'address_line2' => $request->address_line2,
                 'address_line3' => $request->address_line3,
                 'address_line4' => $request->address_line4,
+                'ward_code' => $request->ward_code,
                 'nickname' => $request->nickname,
                 'dob' => $request->dob,
                 'industry' => $request->industry,
@@ -31,7 +32,6 @@ class BrandProfileController extends Controller
                 'brand_name' => $request->brand_name,
             ]
         );
-        $credential->save();
 
         $brandImage = FileHelper::uploadFileToS3($request->image, 'brands');
         $brandImage->account_id = $credential->account_id;
@@ -43,7 +43,7 @@ class BrandProfileController extends Controller
     {
         $credential = Credential::where('account_id', $id)->first();
         if (empty($credential)) {
-            return $this->responseError('Brand does not exist!');
+            return $this->commonResponse([], "Brand does not exist!", 404);
         }
 
         $credential->update([
@@ -53,6 +53,7 @@ class BrandProfileController extends Controller
             'address_line2' => $request->address_line2,
             'address_line3' => $request->address_line3,
             'address_line4' => $request->address_line4,
+            'ward_code' => $request->ward_code,
             'nickname' => $request->nickname,
             'dob' => $request->dob,
             'industry' => $request->industry,
@@ -61,7 +62,7 @@ class BrandProfileController extends Controller
             'description' => $request->description,
             'brand_name' => $request->brand_name,
         ]);
-        // $credential->save();
+        
         $file = Account::with('files')->where('id', $id)->first();
         FileHelper::removeFileFromS3($file);
         $file->files()->delete();

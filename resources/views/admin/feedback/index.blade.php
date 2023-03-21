@@ -7,12 +7,12 @@
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
                     <i class="mdi mdi-view-dashboard menu-icon"></i>
-                </span> Influencer
+                </span> Feedback
             </h3>
             <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span></span>Influencer <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                        <span></span>Feedback <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                     </li>
                 </ul>
             </nav>
@@ -21,51 +21,52 @@
             <div class="col-12 grid-margin">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Influencers</h4>
+                        <h4 class="card-title">Feedback </h4>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th> No </th>
-                                        <th> Influencer ID </th>
+                                        <th> Feeback ID </th>
+                                        <th> Booking ID </th>
+                                        <th> From account ID </th>
+                                        <th> To Account ID </th>
                                         <th> Username </th>
-                                        <th> Email </th>
-                                        <th> Fullname </th>
-                                        <th> Nickname </th>
-                                        <th> Gender </th>
-                                        <th> Job </th>
-                                        <th> Booking price </th>
-                                        <th> DOB </th>
-                                        <th> Year experiences </th>
+                                        <th> Role </th>
+                                        <th> Content </th>
+                                        <th> Date </th>
+                                        <th> Action </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                     $id = 0;
                                     @endphp
-                                    @if ($influencers->isEmpty())
+                                    @if ($feedbacks->isEmpty())
                                     <tr>
                                         <td colspan="9" class="text-center">
                                             No data has found!
                                         </td>
                                     </tr>
                                     @else
-                                    @foreach ($influencers as $influencer)
+                                    @foreach ($feedbacks as $feedback)
                                     @php
                                     $id += 1;
                                     @endphp
                                     <tr>
                                         <td>{{ $id }}</td>
-                                        <td>{{ $influencer->id }}</td>
-                                        <td>{{ $influencer->username }}</td>
-                                        <td>{{ $influencer->email }}</td>
-                                        <td>{{ $influencer['credential']['fullname'] }}</td>
-                                        <td>{{ $influencer['credential']['nickname']}}</td>
-                                        <td>{{ $influencer['credential']['gender']}}</td>
-                                        <td>{{ $influencer['credential']['job']}}</td>
-                                        <td>{{ $influencer['credential']['booking_price']}}</td>
-                                        <td>{{ $influencer['credential']['dob']}}</td>
-                                        <td>{{ $influencer['credential']['experiences']}}</td>
+                                        <td>{{ $feedback->id }}</td>
+                                        <td>{{ $feedback->booking_id }}</td>
+                                        <td>{{ $feedback->from_account_id}}</td>
+                                        <td>{{ $feedback['to_account_id']}}</td>
+                                        <td>{{ $feedback['account']['username']}}</td>
+                                        <td>{{ $feedback['account']['role']['name'] }}</td>
+                                        <td>{{ $feedback->content}}</td>
+                                        <td>{{ $feedback->created_at}}</td>
+                                        <td>
+                                            <a href="/admin/feedback/delete/{{ $feedback->id }}" onclick="return confirm('Do you want to delete this feedback!')"><i class="mdi mdi-delete"></i></a>
+                                        </td>
+
                                     </tr>
                                     @endforeach
                                     @endif

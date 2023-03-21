@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\InfluencerController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\ApplyController;
+use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Route::group([
     "namespace" => "Admin",
@@ -41,21 +43,20 @@ Route::group([
         Route::get('/', [BookingController::class, "index"])->name('booking.index');
     });
 
-    Route::group(["prefix" => "apply"], function () {
-        Route::get('/', [ApplyController::class, "index"])->name('apply.index');
-    });
 
     Route::group(["prefix" => "revenue"], function () {
         Route::get('/', [RevenueController::class, "index"])->name('revenue.index');
     });
 
-    Route::group(["prefix" => "report"], function () {
-        Route::get('/', [ReportController::class, "index"])->name('report.index');
+    Route::group(["prefix" => "feedback"], function () {
+        Route::get('/', [FeedbackController::class, "index"])->name('feedback.index');
+        Route::get('/delete/{id}', [FeedbackController::class, "delete"]);
     });
+
 });
 
 Route::get('/', function () {
-    return view('admin.master');
+    return redirect()->route('dashboard.index');
 });
 
 Route::get('error', function () {

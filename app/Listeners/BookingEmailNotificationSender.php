@@ -36,7 +36,13 @@ class BookingEmailNotificationSender
         $influencer = Account::where(['id' => $booking->influencer_id, 'role_id' => Account::ROLE_INFLUENCER])->first();
         $brand = Account::where(['id' => $campain->brand_id, 'role_id' => Account::ROLE_BRAND])->first();
         
-        Mail::to($influencer->email)->send(new SendBookingActionEmailToInfluencer($booking,$influencer,$campain,$brand));
-        Mail::to($brand->email)->send(new SendBookingActionEmailToBrand($booking,$influencer,$campain,$brand));
+        if ($influencer) {
+            Mail::to($influencer->email)->send(new SendBookingActionEmailToInfluencer($booking,$influencer,$campain,$brand));
+        }
+    
+        if ($brand) {
+            $influencerForBrand = $influencer ?? new Account();
+            Mail::to($brand->email)->send(new SendBookingActionEmailToBrand($booking,$influencerForBrand,$campain,$brand));
+        }
     }
 }

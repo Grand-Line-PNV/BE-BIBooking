@@ -8,14 +8,15 @@ use App\Models\District;
 use App\Models\Ward;
 use App\Models\Account;
 use App\Http\Resources\Address as AddressResource;
+use App\Models\Credential;
 
 class AddressController extends Controller
 {
     public function loadProvince()
     {
-        $districts = Province::select('code', 'full_name AS name')->get();
+        $provinces = Province::select('code', 'full_name AS name')->get();
 
-        return new AddressResource($districts);
+        return new AddressResource($provinces);
     }
 
     public function loadDistrict(string $code)
@@ -35,16 +36,16 @@ class AddressController extends Controller
     public function loadUserLocation(int $userId, string $wardCode)
     {
         $ward = Ward::with(['district', 'district.province'])->firstWhere('code', $wardCode);
-
-        $location = Account::select(
+        $location = Credential::select(
             'address_line4 AS provinceCode',
             'address_line3 AS districtCode',
-            'address_line2 AS wardCode',
+            'ward_code AS wardCode',
             'address_line1 AS houseNumber',
-        )->where([
-            'id' => $userId,
-            'address_line2' => $wardCode
-        ])->first();
+        )
+            ->firstWhere([
+                'account_id' => $userId,
+                'ward_code' => $wardCode
+            ]);
 
         $locationInDetail = implode(", ", [$location->houseNumber, $ward->full_name, $ward->district->full_name, $ward->district->province->full_name]);
 

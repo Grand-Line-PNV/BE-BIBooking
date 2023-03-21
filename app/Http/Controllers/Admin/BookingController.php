@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Booking;
 
 class BookingController extends Controller
 {
@@ -14,7 +15,8 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return view('admin.booking.index');
+        $bookings = Booking::with(['influencer', 'influencer.credential', 'campaign', 'feedbacks', 'tasksLinks'])->get();
+        return view('admin.booking.index', compact('bookings'));
     }
 
     /**

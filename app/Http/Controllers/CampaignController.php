@@ -54,7 +54,7 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($campaignId);
         if (empty($campaign)) {
-            return $this->responseError('Campaign does not exist!');
+            return $this->commonResponse([], "Campaign does not exits!", 404);
         }
 
         $campaign->update([
@@ -100,7 +100,7 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($campaignId);
         if (empty($campaign)) {
-            return $this->responseError('Campaign does not exist!');
+            return $this->commonResponse([], "Campaign does not exits!", 404);
         }
 
         $campaign = Campaign::with('files')->where('id', $campaignId)->first();
@@ -118,18 +118,18 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($campaignId);
         if (empty($campaign)) {
-            return $this->responseError('Campaign does not exist!');
+            return $this->commonResponse([], "Campaign does not exits!", 404);
         }
         $campaign = Campaign::with('files')->where('id', $campaignId)->first();
         return $this->commonResponse($campaign);
     }
 
-    public function viewCampaigns(Request $request)
+    public function viewCampaigns($brandId)
     {
-        $campaigns = Campaign::with('files')->where('brand_id', $request->brand_id)->get();
+        $campaigns = Campaign::with('files')->where('brand_id', $brandId)->get();
 
         if (empty($campaigns)) {
-            return $this->responseError('Brand does not have any campaign!');
+            return $this->commonResponse([], "Brand does not have any campaigns!", 404);
         }
 
         return $this->commonResponse($campaigns);
@@ -142,12 +142,28 @@ class CampaignController extends Controller
             ->industry($request)
             ->minCast($request)
             ->maxCast($request)
-            ->where('campaign_status',Campaign::STATUS_APPLY);
+            ->where('campaign_status', Campaign::STATUS_APPLY);
 
         if (!$campaigns->exists()) {
             return $this->commonResponse([], "There are no campaigns that match your search", 404);
         }
 
         return $this->commonResponse($campaigns->get());
+    }
+
+    public function changeCampaignStatus($campaignId)
+    {
+        $campaign = Campaign::find($campaignId);
+        if (empty($campaign)) {
+            return $this->commonResponse([], "Campaign does not exits!", 404);
+        }
+        if ($campaign->campaign_status == Campaign::STATUS_APPLY) {
+            $campaign->campaign_status = Campaign::STATUS_CLOSED;
+        } else {
+            $campaign->campaign_status = Campaign::STATUS_APPLY;
+        }
+        $campaign->save();
+
+        return $this->commonResponse($campaign);
     }
 }

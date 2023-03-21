@@ -16,27 +16,38 @@ class PaymentController extends Controller
 {
 
     //step 1: Just pass booking_id, enter description, bank_name (ncb) --> save these info to payments table -> sucess -> move to step 2
-    //step 2: Direct to VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
+    //step 2: Direct to 1 VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
 
     public function create(PaymentRequest $request)
     {
-        $booking = Booking::findOrFail($request->booking_id);
+        $booking = Booking::find($request->booking_id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist!", 404);
+        }
         $campaign = Campaign::findOrFail($booking->campaign_id);
+        if (empty($campaign)) {
+            return $this->commonResponse([], "Campaign does not exist!", 404);
+        }
 
         $payment = Payment::create([
             'booking_id' => $request->booking_id,
             'description' => $request->description,
-            'number' => $campaign->price,
+            'number' => ($campaign->price) * 1.1,
             'date' => Carbon::now(),
             'bank_name' => $request->bank_name,
         ]);
+        //step 2: Direct to 1 VNpay UI --> Enter the name of bank_account, name, date  --> sucessfully
 
         return $this->commonResponse($payment);
     }
 
     public function vnpay($id)
     {
-        $payment = Payment::findOrFail($id);
+        $payment = Payment::find($id);
+
+        if (empty($payment)) {
+            return $this->commonResponse([], "Payment does not exist!", 404);
+        }
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "https://localhost/vnpay_php/vnpay_return.php";
@@ -96,12 +107,12 @@ class PaymentController extends Controller
             'code' => '00', 'message' => 'success', 'data' => $vnp_Url
         );
         // if (isset($_POST['redirect'])) {
-        header('Location: ' . $vnp_Url);
+        // header('Location: ' . $vnp_Url);
         // die();
         // } else {
         //     echo json_encode($returnData);
         // }
-        // return redirect($vnp_Url);
+        return redirect($vnp_Url);
 
         //Change the booking status
         $booking = Booking::find($payment->booking_id);

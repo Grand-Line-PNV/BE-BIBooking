@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FeedbackRequest extends FormRequest
+class ServicesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,13 @@ class FeedbackRequest extends FormRequest
      */
     public function rules()
     {
-        $requirable = 'required';
-        if ($this->routeIs('feedback.update')) {
-            $requirable = 'nullable';
+        $requirable = 'nullable';
+        if ($this->routeIs('services.update')) {
+            $requirable = 'required';
         }
         return [
-            'booking_id' => $requirable . '|integer',
-            'from_account_id' => $requirable . '|integer',
-            'to_account_id' => $requirable . '|integer',
-            'content' => 'required|string',
+            'services.*.name' => 'required|string',
+            'services.*.description' => $requirable . '|string',            
         ];
     }
 }

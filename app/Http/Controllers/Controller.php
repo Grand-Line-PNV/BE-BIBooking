@@ -10,6 +10,7 @@ use App\Traits\ApiResponse;
 use Carbon\Carbon;
 use App\Helpers\NotificationHelper;
 use App\Events\BookingNotifications;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -21,15 +22,30 @@ class Controller extends BaseController
             'code' => $code,
             'message' => $message,
             'data' => $data,
-        ]);
+        ], $code);
     }
+
+    // public function sendNotification($consumerId, $msgContent) {
+    //     NotificationHelper::saveNotification($consumerId, $msgContent);
+    //     event(new BookingNotifications([
+    //         'time' => Carbon::now(),
+    //         'message' => $msgContent,
+    //         'userId' => $consumerId,
+    //     ]));
+    // }
 
     public function sendNotification($consumerId, $msgContent) {
         NotificationHelper::saveNotification($consumerId, $msgContent);
-        event(new BookingNotifications([
-            'time' => Carbon::now(),
-            'message' => $msgContent,
-            'userId' => $consumerId,
-        ]));
+
+        try {
+            event(new BookingNotifications([
+                'time' => Carbon::now(),
+                'message' => $msgContent,
+                'userId' => $consumerId,
+            ]));
+        } catch (\Throwable $th) {
+            Log::error('Error QRcode event: ' . $th->getMessage());
+        }
+        
     }
 }

@@ -31,9 +31,14 @@ class Account extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    public function feedbacks()
+    {
+        return $this->hasMany(\App\Models\Feedback::class, 'to_account_id');
+    }
+
     public function role()
     {
-        return $this->hasOne(\App\Models\Role::class);
+        return $this->belongsTo(\App\Models\Role::class);
     }
     
     public function credential()
@@ -61,21 +66,16 @@ class Account extends Authenticatable implements JWTSubject
         return $this->hasMany(\App\Models\SocialInfo::class);
     }
 
-    public function topAges()
+    public function audienceData()
     {
-        return $this->hasMany(\App\Models\TopAge::class);
+        return $this->hasOne(\App\Models\AudienceData::class);
+    }
+    public function services()
+    {
+        return $this->hasMany(\App\Models\Services::class);
     }
 
-    public function genderRatios()
-    {
-        return $this->hasMany(\App\Models\GenderRatio::class);
-    }
-
-    public function cityInfos()
-    {
-        return $this->hasmany(\App\Models\CityInfo::class);
-    }
-  
+   
     /**
      * @param string|array $roles
      */
@@ -115,4 +115,15 @@ class Account extends Authenticatable implements JWTSubject
         return $query;
     }
 
+    public function scopeCredential($query, $request)
+    {
+        return $query->whereHas('credential', function($q) use($request) {
+            $q
+                ->gender($request)
+                ->job($request)
+                ->minCast($request)
+                ->maxCast($request)
+                ->keyword($request);
+        });
+    }
 }

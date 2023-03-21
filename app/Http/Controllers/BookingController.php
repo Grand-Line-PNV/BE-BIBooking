@@ -12,7 +12,7 @@ class BookingController extends Controller
 {
     public function index()
     {
-        $bookings = Booking::with('feedbacks')->get();
+        $bookings = Booking::with('feedbacks.account.credential')->get();
         return $this->commonResponse($bookings);
     }
 
@@ -53,7 +53,10 @@ class BookingController extends Controller
 
     public function show($id)
     {
-        $booking = Booking::with(['feedbacks'])->findOrFail($id);
+        $booking = Booking::with(['feedbacks.account.credential'])->find($id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist.", 404);
+        }
         return $this->commonResponse($booking);
     }
 
@@ -61,7 +64,11 @@ class BookingController extends Controller
     public function update(BookingRequest $request, $id)
     {
 
-        $booking = Booking::findOrFail($id);
+        $booking = Booking::find($id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist.", 404);
+        }
+         
         $booking->update([
             'status' => $request->status ?? $booking->status,
             'started_date' => $request->started_date ?? $booking->started_date ?? null,
@@ -70,7 +77,7 @@ class BookingController extends Controller
 
         //get campaing and influencer info
         $campaign = Campaign::find($booking->campaign_id);
-        $influencer = Account::find($request->influencer_id);
+        $influencer = Account::find($booking->influencer_id);
 
         //update applied_number of each campaigns
         if ($booking->status == Booking::STATUS_CONFIRMED) {
@@ -78,7 +85,7 @@ class BookingController extends Controller
                 'applied_number' => $campaign->applied_number + 1
             ]);
         }
-        
+              
         //send emails and notifications for both brands and influencera
         event(new BookingActions($booking));
 
@@ -94,10 +101,18 @@ class BookingController extends Controller
 
     public function destroy($id)
     {
-        $booking = Booking::findOrFail($id);
+        $booking = Booking::find($id);
+        if (empty($booking)) {
+            return $this->commonResponse([], "Booking does not exist.", 404);
+        }
+        
         $booking->load(['feedbacks']);
-
         foreach ($booking->feedbacks as $item) {
+            $item->delete();
+        }
+
+        $booking->load(['tasksLinks']);
+        foreach ($booking->tasksLinks as $item) {
             $item->delete();
         }
 

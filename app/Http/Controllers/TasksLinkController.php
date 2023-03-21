@@ -45,8 +45,10 @@ class TasksLinkController extends Controller
     }
     public function edit(TasksLinkRequest $request, $id)
     {
-        $tasksLink = TasksLink::findOrFail($id);
-
+        $tasksLink = TasksLink::find($id);
+        if (empty($tasksLink)) {
+            return $this->commonResponse([], "Task Link does not exist!", 404);
+        }
         $tasksLink->update([
             'link' => $request->link,
             'description' => $request->description,
@@ -58,7 +60,10 @@ class TasksLinkController extends Controller
 
     public function destroy($id)
     {
-        $tasksLink = TasksLink::findOrFail($id);
+        $tasksLink = TasksLink::find($id);
+        if (empty($tasksLink)) {
+            return $this->commonResponse([], "Task Link does not exist!", 404);
+        }
 
         $tasksLink->delete();
 

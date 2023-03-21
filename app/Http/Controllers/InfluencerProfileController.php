@@ -7,11 +7,15 @@ use App\Models\Credential;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\FileHelper;
+use App\Http\Requests\AudienceRequest;
 use App\Http\Requests\GenderRatioRequest;
 use App\Http\Requests\ServicesRequest;
 use App\Http\Requests\SocialMediaRequest;
 use App\Http\Requests\TopAgeRequest;
 use App\Http\Requests\TopCityRequest;
+use App\Models\Account;
+use App\Models\AudienceData;
+use App\Models\Booking;
 use App\Models\CityInfo;
 use App\Models\GenderRatio;
 use App\Models\Services;
@@ -33,9 +37,8 @@ class InfluencerProfileController extends Controller
             'job' => $request->job,
             'title_for_job' => $request->title_for_job,
             'description' => $request->description,
-            'experiences' => $request->experiences,
+            'ward_code' => $request->ward_code,
             'content_topic' => $request->content_topic,
-            'booking_price' => $request->booking_price,
             'address_line1' => $request->address_line1,
             'address_line2' => $request->address_line2,
             'address_line3' => $request->address_line3,
@@ -46,86 +49,256 @@ class InfluencerProfileController extends Controller
         if ($request->hasfile('influencerImages')) {
             foreach ($request->file('influencerImages') as $file) {
                 $influencerImage = FileHelper::uploadFileToS3($file, 'influencers');
-                $influencerImage->account_id ??= $request->account_id;
+                $influencerImage->account_id = $request->account_id;
                 $influencerImage->save();
             }
         }
+        $influencerAvatar = FileHelper::uploadFileToS3($request->avatarImages, 'avatars'); $influencerAvatar->account_id = $credential->account_id; 
+        $influencerAvatar->save();
+        return $this->commonResponse($credential);
+    }
+    public function updateInfluencerProfile(InfluProfileRequest $request, $id)
+    {
+        $credential = Credential::where('account_id', $id)->first();
+        if (empty($credential)) {
+            return $this->responseError('Influencer does not exist!');
+        }
+
+        $credential->update([
+            'nickname' => $request->nickname,
+            'fullname' => $request->fullname,
+            'dob' => $request->dob,
+            'phone_number' => $request->phone_number,
+            'gender' => $request->gender,
+            'job' => $request->job,
+            'title_for_job' => $request->title_for_job,
+            'description' => $request->description,
+            'ward_code' => $request->ward_code,
+            'content_topic' => $request->content_topic,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'address_line3' => $request->address_line3,
+            'address_line4' => $request->address_line4,
+        ]);
+        // $credential->save();
+        // $file = Account::with('files')->where('id', $id)->first();
+        $accountFiles = Account::with('files')->find($id);
+        foreach ($accountFiles->files as $file) {
+            FileHelper::removeFileFromS3($file);
+            $file->delete();
+        }
+
+        if ($request->hasfile('influencerImages')) {
+            foreach ($request->file('influencerImages') as $file) {
+                $influencerImage = FileHelper::uploadFileToS3($file, 'influencers');
+                $influencerImage->account_id = $id;
+                $influencerImage->save();
+            }
+        }
+        $influencerAvatar = FileHelper::uploadFileToS3($request->avatarImages, 'avatars'); $influencerAvatar->account_id = $credential->account_id; 
+        $influencerAvatar->save();
+        return $this->responseSuccess();
+    }
+    public function createSocialMediaData(SocialMediaRequest $request)
+    {
+        $socials = $request->get('socials');
+        foreach ($socials as $social) {
+            $account = Account::firstWhere(['id' => $social['account_id'], 'role_id' => Account::ROLE_INFLUENCER]);
+            if (empty($account)) {
+                return $this->responseError('User does not exist!');
+            }
+
+            SocialInfo::create([
+                'account_id' => $social["account_id"],
+                'name' => $social["name"],
+                'username' => $social["username"],
+                'fullname' => $social["fullname"],
+                'avg_interactions' => $social["avg_interactions"],
+                'subcribers' => $social["subcribers"],
+                'link' => $social["link"],
+            ]);
+        }
+
+        return $this->responseSuccess();
+    }
+
+    public function updateSocialMeidaData(SocialMediaRequest $request, $userId)
+    {
+        $account = Account::firstWhere(['id' => $userId, 'role_id' => Account::ROLE_INFLUENCER]);
+        if (empty($account)) {
+            return $this->responseError('User does not exist!');
+        }
+
+        $socials = $request->get('socials');
+        foreach ($socials as $socialData) {
+            if (empty($socialData['id'])) {
+                SocialInfo::create([
+                    'account_id' => $account->id,
+                    'name' => $socialData["name"],
+                    'username' => $socialData["username"],
+                    'fullname' => $socialData["fullname"],
+                    'avg_interactions' => $socialData["avg_interactions"],
+                    'subcribers' => $socialData["subcribers"],
+                    'link' => $socialData["link"],
+                ]);
+            } else {
+                $social = SocialInfo::firstWhere(['id' => $socialData['id'], 'account_id' => $userId]);
+                if (empty($social)) {
+                    return $this->responseError('Social info does not exist!');
+                }
+
+                $social->update([
+                    'name' => $socialData["name"],
+                    'username' => $socialData["username"],
+                    'fullname' => $socialData["fullname"],
+                    'avg_interactions' => $socialData["avg_interactions"],
+                    'subcribers' => $socialData["subcribers"],
+                    'link' => $socialData["link"],
+                ]);
+            }
+        }
+
+        return $this->responseSuccess();
+    }
+
+
+    public function createAudienceData(AudienceRequest $request)
+    {
+        $this->audienceDataCheck($request);
+
+        AudienceData::create([
+            'account_id' => $request->account_id,
+            'male' => $request->male,
+            'female' => $request->female,
+            'others' => $request->others,
+            'age1' => $request->age1,
+            'age2' => $request->age2,
+            'age3' => $request->age3,
+            'age4' => $request->age4,
+            'city1' => $request->city1,
+            'city2' => $request->city2,
+            'city3' => $request->city3,
+            'city4' => $request->city4,
+        ]);
+        return $this->responseSuccess();
+    }
+
+    public function updateAudience(AudienceRequest $request, $userId)
+    {
+        $audienceData = AudienceData::firstWhere('account_id', $userId);
+        if (empty($audienceData)) {
+            return $this->responseError('Audience does not exist!');
+        }
+
+        $this->audienceDataCheck($request);
+
+        $audienceData->update([
+            'male' => $request->male,
+            'female' => $request->female,
+            'others' => $request->others,
+            'age1' => $request->age1,
+            'age2' => $request->age2,
+            'age3' => $request->age3,
+            'age4' => $request->age4,
+            'city1' => $request->city1,
+            'city2' => $request->city2,
+            'city3' => $request->city3,
+            'city4' => $request->city4,
+        ]);
+
+        return $this->responseSuccess();
+    }
+
+    private function audienceDataCheck($request)
+    {
+        $genderPercentage = $request->male + $request->female + $request->others;
+        $this->checkAudienceDataPercentage($genderPercentage, 'gender');
+
+        $agePercentage = $request->age1 + $request->age2 + $request->age3 + $request->age4;
+        $this->checkAudienceDataPercentage($agePercentage, 'age');
+
+        $cityPercentage = $request->city1 + $request->city2 + $request->city3 + $request->city4;
+        $this->checkAudienceDataPercentage($cityPercentage, 'city');
+    }
+
+    private function checkAudienceDataPercentage($data, $type)
+    {
+        $message = "";
+        switch ($type) {
+            case 'gender':
+                $message = 'The total gender percentage must be equal 100%';
+                break;
+            case 'age':
+                $message = 'The total age percentage must be equal 100%';
+                break;
+            case 'city':
+                $message = 'The total city percentage must be equal 100%';
+                break;
+            default:
+                $message;
+        }
+
+        if ($data !== 100) {
+            return response()->json([
+                'success' => false,
+                'message' => $message,
+            ], 422)->throwResponse();
+        }
+    }
+
+    public function createServices(ServicesRequest $request)
+    {
+        $services = $request->get('services');
+
+
+        foreach ($services as $service) {
+            $account = Account::firstWhere(['id' => $service['account_id'], 'role_id' => Account::ROLE_INFLUENCER]);
+            if (empty($account)) {
+                return $this->responseError('User does not exist!');
+            }
+            Services::create([
+                'account_id' => $service["account_id"],
+                'name' => $service["name"],
+                'description' => $service["description"],
+
+            ]);
+        }
+        return $this->responseSuccess();
+    }
+    public function updateServices(ServicesRequest $request, $userId)
+    {
+        $account = Account::firstWhere(['id' => $userId, 'role_id' => Account::ROLE_INFLUENCER]);
+        if (empty($account)) {
+            return $this->responseError('User does not exist!');
+        }
+
+        $services = $request->get('services');
+        foreach ($services as $serviceData) {
+            $service = Services::firstWhere(['id' => $serviceData['service_id'], 'account_id' => $userId]);
+            if (empty($service)) {
+                return $this->responseError('Service info does not exist!');
+            }
+
+            $service->update([
+                'name' => $serviceData["name"],
+                'description' => $serviceData["description"],
+
+            ]);
+        }
+
+        return $this->responseSuccess();
+    }
+
+    public function view($userId)
+    {
+        $credential = Account::with('credential', 'files', 'audienceData', 'socialInfo', 'services', 'bookings', 'feedbacks')->firstWhere('id', $userId);
         return $this->commonResponse($credential);
     }
 
-    // public function createSocialMediaData(SocialMediaRequest $request)
-    // {
-    //     $socialMedia = new SocialInfo([
-    //         'account_id' => $request->account_id,
-    //         'name' => $request->name,
-    //         'username' => $request->username,
-    //         'fullname' => $request->fullname,
-    //         'avg_interactions' => $request->avg_interactions,
-    //         'subcribes' => $request->subscribers,
-    //         'link' => $request->link,
 
-    //     ]);
-    //     $socialMedia->save();
-    //     return $this->responseSuccess();
-    // }
-
-    // public function createGenderRatio(GenderRatioRequest $request)
-    // {
-    //     $topGenderRatio = new GenderRatio([
-    //         'account_id' => $request->account_id,
-    //         'male' => $request->male,
-    //         'female' => $request->female,
-    //         'others' => $request->others
-    //     ]);
-    //     $topGenderRatio->save();
-    //     return $this->responseSuccess();
-    // }
-    // public function createTopAge(TopAgeRequest $request)
-    // {
-    //     $topAge = new TopAge([
-    //         'account_id' => $request->account_id,
-    //         'level1' => $request->level1,
-    //         'level2' => $request->level2,
-    //         'level3' => $request->level3,
-    //         'others' => $request->others
-    //     ]);
-    //     $topAge->save();
-    //     return $this->responseSuccess();
-    // }
-
-    // public function createTopCity(TopCityRequest $request)
-    // {
-    //     $topCity = new CityInfo([
-    //         'account_id' => $request->account_id,
-    //         'city1' => $request->city1,
-    //         'city2' => $request->city2,
-    //         'city3' => $request->city3,
-    //         'others' => $request->others,
-    //     ]);
-    //     $topCity->save();
-    //     return $this->responseSuccess();
-    // }
-
-    // public function createServices(ServicesRequest $request)
-    // {
-    //     $services = new Services([
-    //         'account_id' => $request->account_id,
-    //         'name' => $request->name,
-    //         'description' => $request->description,
-    //     ]);
-    //     $services->save();
-    //     return $this->responseSuccess();
-    // }
-
-    // public function view($account_id)
-    // {
-    //     $credential = DB::table('accounts')->join('credentials', 'accounts.id', '=', 'credentials.account_id')->join('files', 'files.id', '=', 'credentials.file_id')->where('account_id', $account_id)->get()->first();
-    //     return $this->responseSuccessWithData($credential->toArray());
-    // }
-
-    // public function viewAccount($account_id)
-    // {
-    //     $account = DB::table('accounts')->where('id', $account_id)->get();
-    //     return $this->responseSuccessWithData($account->toArray());
-    // }
+    public function viewAccount($account_id)
+    {
+        $account = DB::table('accounts')->where('id', $account_id)->get();
+        return $this->responseSuccessWithData($account->toArray());
+    }
 }

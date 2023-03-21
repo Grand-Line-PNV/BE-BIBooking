@@ -11,11 +11,11 @@ class Booking extends Model
 
     public const STATUS_WAITING = 'waiting';
     public const STATUS_CONFIRMED = 'confirmed';
+    public const STATUS_PAID = 'paid';
     public const STATUS_DOING = 'in_progress';
     public const STATUS_DONE = 'done';
     public const STATUS_CANCEL = 'cancel';
     public const STATUS_REJECT = 'reject';
-    public const STATUS_PAID = 'paid';
 
     public const BOOKING_STATUS = [
         self::STATUS_WAITING,
@@ -32,7 +32,7 @@ class Booking extends Model
         'influencer_id', 'status', 'campaign_id', 'started_date', 'ended_date', 'payment_status'
     ];
 
-    public function account()
+    public function influencer()
     {
         return $this->belongsTo(\App\Models\Account::class, 'influencer_id');
     }
@@ -54,6 +54,6 @@ class Booking extends Model
 
     public function tasksLinks()
     {
-        return $this->hasMany(\App\Models\TaskLink::class);
+        return $this->hasMany(\App\Models\TasksLink::class);
     }
 }

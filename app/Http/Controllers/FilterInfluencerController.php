@@ -9,16 +9,20 @@ class FilterInfluencerController extends Controller
 {
     public function index(FilterRequest $request)
     {
-        $influencers = Account::with('credential')
+          
+        if (!$request->has('keyword') and !$request->has('gender') and  !$request->has('job')
+        and !$request->has('minCast') and !$request->has('maxCast'))
+        {
+            $influencers = Account::with('credential', 'files')
+            ->has('credential')
+            ->where('role_id', Account::ROLE_INFLUENCER);
+            return $this->commonResponse($influencers->get());
+        }
+        $influencers = Account::with('credential', 'files')
+            ->has('credential')
             ->where('role_id', Account::ROLE_INFLUENCER)
-            ->keyword($request)
-            ->whereHas('credential', function ($query) use ($request) {
-                $query->gender($request)
-                    ->job($request)
-                    ->minCast($request)
-                    ->maxCast($request)
-                    ->keyword($request);
-            });
+            ->keyword($request) 
+            ->credential($request);
 
         if (!$influencers->exists()) {
             return $this->commonResponse([], "There are no influencers that match your search", 404);
