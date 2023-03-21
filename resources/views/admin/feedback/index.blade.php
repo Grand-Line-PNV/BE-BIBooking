@@ -30,6 +30,7 @@
                                         <th> Feeback ID </th>
                                         <th> Booking ID </th>
                                         <th> From account ID </th>
+                                        <th> To Account ID </th>
                                         <th> Username </th>
                                         <th> Role </th>
                                         <th> Content </th>
@@ -57,6 +58,7 @@
                                         <td>{{ $feedback->id }}</td>
                                         <td>{{ $feedback->booking_id }}</td>
                                         <td>{{ $feedback->from_account_id}}</td>
+                                        <td>{{ $feedback['to_account_id']}}</td>
                                         <td>{{ $feedback['account']['username']}}</td>
                                         <td>{{ $feedback['account']['role']['name'] }}</td>
                                         <td>{{ $feedback->content}}</td>

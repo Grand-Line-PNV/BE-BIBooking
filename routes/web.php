@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::group([
     "namespace" => "Admin",
     "prefix" => "/admin"
@@ -55,7 +56,7 @@ Route::group([
 });
 
 Route::get('/', function () {
-    return view('admin.master');
+    return redirect()->route('dashboard.index');
 });
 
 Route::get('error', function () {
