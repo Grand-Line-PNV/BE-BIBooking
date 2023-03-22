@@ -1,7 +1,5 @@
-# Base image
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
-# Install dependencies
 RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     curl \
     gnupg \
@@ -9,34 +7,22 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     apt-transport-https \
     software-properties-common \
     nginx \
-    php8.2 \
-    php8.2-fpm \
-    php8.2-mysql \
-    php8.2-redis \
-    php8.2-mbstring \
-    php8.2-xml \
-    php8.2-zip \
-    php8.2-curl \
+    php8.0 \
+    php8.0-fpm \
+    php8.0-mysql \
+    php8.0-redis \
+    php8.0-mbstring \
+    php8.0-xml \
+    php8.0-zip \
+    php8.0-curl \
     mysql-client \
-    redis \
-    supervisor && \
-    rm -rf /var/lib/apt/lists/*
+    redis-server \
+    supervisor
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# copy nginx.conf to container
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Configure Nginx
-COPY ./nginx.conf /etc/nginx/sites-available/default
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
+# create laravel log directory
+RUN mkdir /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage
 
-# Copy source code
-COPY . /var/www/html
-
-# Install dependencies
-RUN cd /var/www/html && composer install --no-dev --prefer-dist --optimize-autoloader
-
-# Expose ports
-EXPOSE 80
-
-# Run supervisor
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
