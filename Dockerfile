@@ -19,7 +19,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     php8.2-curl \
     mysql-client \
     redis \
-    supervisor
+    supervisor && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
