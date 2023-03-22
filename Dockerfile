@@ -1,8 +1,8 @@
 # Base image
 FROM ubuntu:latest
 
-# Update package lists and install necessary packages
-RUN apt-get update && apt-get install -y \
+# Install dependencies
+RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     curl \
     gnupg \
     ca-certificates \
@@ -15,31 +15,27 @@ RUN apt-get update && apt-get install -y \
     php8.2-redis \
     php8.2-mbstring \
     php8.2-xml \
+    php8.2-zip \
     php8.2-curl \
-    mysql-server \
-    redis-server \
+    mysql-client \
+    redis \
     supervisor
 
-# Install Composer
+# Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Set up Laravel app
-WORKDIR /var/www/html
-COPY . .
+# Configure Nginx
+COPY ./nginx.conf /etc/nginx/sites-available/default
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
+
+# Copy source code
+COPY . /var/www/html
 
 # Install dependencies
-RUN composer install --no-dev --no-interaction --no-progress
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN cd /var/www/html && composer install --no-dev --prefer-dist --optimize-autoloader
 
 # Expose ports
 EXPOSE 80
-EXPOSE 3306
-EXPOSE 6379
 
-# Copy the supervisor configuration file
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# Start supervisor
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Run supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
