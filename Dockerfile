@@ -27,14 +27,22 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy PHP configuration
 COPY php.ini /etc/php/8.2/fpm/php.ini
 
-# Create Laravel log directory
-RUN mkdir -p /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage
+COPY default /etc/nginx/sites-available/default
 
 # Set working directory
 WORKDIR /var/www/html
+
+# Create Laravel log directory
+RUN mkdir -p /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage
+
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+COPY . /var/www/html
 
 # Expose ports
 EXPOSE 80
 
 # Start Nginx and PHP-FPM
-CMD service php8.2-fpm start && service nginx start && tail -f /var/log/nginx/access.log
+# CMD service php8.2-fpm start && service nginx start && tail -f /var/log/nginx/access.log
+CMD service php8.2-fpm start && nginx -g "daemon off;"
