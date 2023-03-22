@@ -7,16 +7,16 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y \
     apt-transport-https \
     software-properties-common \
     nginx \
-    php8.0 \
-    php8.0-fpm \
-    php8.0-mysql \
-    php8.0-redis \
-    php8.0-mbstring \
-    php8.0-xml \
-    php8.0-zip \
-    php8.0-curl \
+    php7.4 \
+    php7.4-fpm \
+    php7.4-mysql \
+    php7.4-redis \
+    php7.4-mbstring \
+    php7.4-xml \
+    php7.4-zip \
+    php7.4-curl \
     mysql-client \
-    redis-server \
+    redis \
     supervisor
 
 # copy nginx.conf to container
