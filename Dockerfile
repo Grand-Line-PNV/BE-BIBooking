@@ -1,28 +1,40 @@
 FROM ubuntu:20.04
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y \
-    curl \
-    gnupg \
-    ca-certificates \
-    apt-transport-https \
-    software-properties-common \
-    nginx \
-    php7.4 \
-    php7.4-fpm \
-    php7.4-mysql \
-    php7.4-redis \
-    php7.4-mbstring \
-    php7.4-xml \
-    php7.4-zip \
-    php7.4-curl \
-    mysql-client \
-    redis \
-    supervisor
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get install -y curl gnupg ca-certificates apt-transport-https software-properties-common
 
-# copy nginx.conf to container
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# Install PHP 8.2
+RUN add-apt-repository -y ppa:ondrej/php && \
+    apt-get update && \
+    apt-get install -y php8.2 php8.2-fpm php8.2-mysql php8.2-redis php8.2-mbstring php8.2-xml php8.2-zip php8.2-curl
 
-# create laravel log directory
-RUN mkdir /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage
+# Install Redis
+RUN apt-get install -y redis-server
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# Install MySQL
+RUN apt-get install -y mysql-server
+
+# Install Nginx
+RUN apt-get install -y nginx
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy PHP configuration
+COPY php.ini /etc/php/8.2/fpm/php.ini
+
+# Create Laravel log directory
+RUN mkdir -p /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Expose ports
+EXPOSE 80
+
+# Start Nginx and PHP-FPM
+CMD service php8.2-fpm start && service nginx start && tail -f /var/log/nginx/access.log

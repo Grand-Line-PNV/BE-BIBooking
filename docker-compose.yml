@@ -1,4 +1,4 @@
-version: "3"
+version: '3.8'
 
 services:
   app:
@@ -12,17 +12,17 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html
-    depends_on:
-      - db
-      - redis
-    links:
-      - db
-      - redis
     environment:
       - DB_HOST=db
       - DB_PORT=3306
+      - DB_DATABASE=bi_bookings
+      - DB_USERNAME=bi_booking
+      - DB_PASSWORD=12345687
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+    depends_on:
+      - db
+      - redis
 
   db:
     image: mysql:latest
