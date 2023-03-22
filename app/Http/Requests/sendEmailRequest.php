@@ -24,8 +24,7 @@ class sendEmailRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|max:50',
-
+            'email' => 'required|email',
         ];
     }
 }
