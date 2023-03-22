@@ -21,6 +21,8 @@ RUN apt-get install -y nginx
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+COPY default /etc/nginx/sites-available/default
+
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
