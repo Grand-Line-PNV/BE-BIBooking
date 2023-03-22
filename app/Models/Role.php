@@ -13,16 +13,14 @@ class Role extends Model
         'name', 'description'
     ];
 
-    public const ROLE_ADMIN = 0;
-
     public const ROLE_BRAND = 1;
-    
     public const ROLE_INFLUENCER = 2;
+    public const ROLE_ADMIN = 3;
 
     public const ROLES = [
-        self::ROLE_ADMIN,
         self::ROLE_BRAND,
         self::ROLE_INFLUENCER,
+        self::ROLE_ADMIN,
     ];
 
     public function account()
