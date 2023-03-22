@@ -27,8 +27,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy PHP configuration
 COPY php.ini /etc/php/8.2/fpm/php.ini
 
-COPY default /etc/nginx/sites-available/default
-
 # Set working directory
 WORKDIR /var/www/html
 
