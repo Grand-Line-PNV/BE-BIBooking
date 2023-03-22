@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'username' => 'required|string|unique:accounts',
-            'email' => 'required|email|max:50|unique:accounts',
+            'email' => 'required|email|unique:accounts',
             'password' => 'required|min:8|max:50',
             'password_confirmation' => 'required|same:password',
             'role_id' => 'required|int|in:' . implode(',', Account::ROLES),

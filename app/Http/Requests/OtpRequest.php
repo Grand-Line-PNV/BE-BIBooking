@@ -24,7 +24,7 @@ class OtpRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|max:50',
+            'email' => 'required|email',
             'otp' => 'required|min:6|max:6'
         ];
     }
