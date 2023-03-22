@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   app:
@@ -8,58 +8,38 @@ services:
     image: bi-booking-app
     container_name: bi-booking-app
     restart: unless-stopped
+    ports:
+      - "80:80"
     volumes:
       - .:/var/www/html
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    ports:
-      - "8000:8000"
-    environment:
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_DATABASE=bi_bookings
-      - DB_USERNAME=bi_booking
-      - DB_PASSWORD=12345687
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - MAIL_DRIVER=smtp
-      - MAIL_HOST=smtp.gmail.com
-      - MAIL_PORT=587
-      - MAIL_USERNAME=hoaingodong1@gmail.com
-      - MAIL_PASSWORD=fxecmjpozhgxbxlt
-      - MAIL_ENCRYPTION=tls
-      - MAIL_FROM_ADDRESS=hoaingodong1@gmail.com
     depends_on:
       - db
       - redis
-      - mailhog
+    links:
+      - db
+      - redis
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
   db:
-    image: mysql:8.0
+    image: mysql:latest
     container_name: bi-booking-app-db
-    restart: unless-stopped
+    restart: always
     environment:
       - MYSQL_DATABASE=bi_bookings
       - MYSQL_USER=bi_booking
       - MYSQL_PASSWORD=12345687
       - MYSQL_ROOT_PASSWORD=12345687
     volumes:
-      - ./mysql/data:/var/lib/mysql
-    ports:
-      - "3306:3306"
+      - db_data:/var/lib/mysql
 
   redis:
-    image: redis:6-alpine
+    image: redis:latest
     container_name: bi-booking-app-redis
-    restart: unless-stopped
-    volumes:
-      - ./redis/data:/data
-    ports:
-      - "6379:6379"
+    restart: always
 
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: bi-booking-app-mailhog
-    restart: unless-stopped
-    ports:
-      - "1025:1025"
-      - "8025:8025"
+volumes:
+  db_data:
