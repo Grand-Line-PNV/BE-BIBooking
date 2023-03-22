@@ -21,8 +21,13 @@ services:
       - DB_PASSWORD=12345687
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - MAIL_HOST=mailhog
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=smtp.gmail.com
       - MAIL_PORT=587
+      - MAIL_USERNAME=hoaingodong1@gmail.com
+      - MAIL_PASSWORD=fxecmjpozhgxbxlt
+      - MAIL_ENCRYPTION=tls
+      - MAIL_FROM_ADDRESS=hoaingodong1@gmail.com
     depends_on:
       - db
       - redis
@@ -38,23 +43,23 @@ services:
       - MYSQL_PASSWORD=12345687
       - MYSQL_ROOT_PASSWORD=12345687
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./mysql/data:/var/lib/mysql
     ports:
       - "3306:3306"
 
   redis:
-    image: redis:6.0
+    image: redis:6-alpine
     container_name: bi-booking-app-redis
     restart: unless-stopped
     volumes:
-      - ./redis:/data
+      - ./redis/data:/data
     ports:
       - "6379:6379"
 
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:latest
     container_name: bi-booking-app-mailhog
     restart: unless-stopped
     ports:
-      - "8025:8025"
       - "1025:1025"
+      - "8025:8025"
