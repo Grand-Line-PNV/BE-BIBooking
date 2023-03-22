@@ -33,7 +33,11 @@ WORKDIR /var/www/html
 # Create Laravel log directory
 RUN mkdir -p /var/www/html/storage/logs && chmod -R 777 /var/www/html/storage
 
-COPY . /var/www/html
+COPY . .
+
+# Set permissions for www-data user
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache && \
+    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Expose ports
 EXPOSE 80
