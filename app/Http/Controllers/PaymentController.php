@@ -50,16 +50,16 @@ class PaymentController extends Controller
         }
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "https://localhost/vnpay_php/vnpay_return.php";
-        $vnp_TmnCode = "RTADUOL4";
-        $vnp_HashSecret = "PBYUFFVCSWTBBTTNZUQWZUCSOHUUPCRE";
+        $vnp_Returnurl = "https://bi-booking.netlify.app";
+        $vnp_TmnCode = "95DTYTTG";
+        $vnp_HashSecret = "ZEOFRPUZJPCYGFOMLJQZUVYPFUVMGJGY";
 
         $vnp_TxnRef = $payment->booking_id;
         $vnp_OrderInfo = $payment->description;
         $vnp_OrderType = "billpayment";
         $vnp_Amount = $payment->number * 100;
         $vnp_Locale = "en";
-        $vnp_BankCode = $payment->bank_name;
+        $vnp_BankCode = "NCB";
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
         $inputData = array(
             "vnp_Version" => "2.1.0",
@@ -103,16 +103,16 @@ class PaymentController extends Controller
             $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
+
         $returnData = array(
             'code' => '00', 'message' => 'success', 'data' => $vnp_Url
         );
-        // if (isset($_POST['redirect'])) {
-        // header('Location: ' . $vnp_Url);
-        // die();
-        // } else {
-        //     echo json_encode($returnData);
-        // }
-        return redirect($vnp_Url);
+        if (isset($_POST['redirect'])) {
+            header('Location: ' . $vnp_Url);
+            die();
+        } else {
+            return $this->commonResponse($returnData);
+        }
 
         //Change the booking status
         $booking = Booking::find($payment->booking_id);
@@ -128,5 +128,6 @@ class PaymentController extends Controller
         $campaign = Campaign::find($booking->campaign_id);
         $influencerNotifyContent = "Hi @" . $influencer->username . ", brand have alreadly paid the money for the campaign! Let's do your tasks!";
         $this->sendNotification($influencer->id, $influencerNotifyContent);
+        // return $this->commonResponse($returnData);
     }
 }
