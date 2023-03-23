@@ -59,13 +59,13 @@
                                         <td>{{ $influencer->id }}</td>
                                         <td>{{ $influencer->username }}</td>
                                         <td>{{ $influencer->email }}</td>
-                                        <td>{{ $influencer['credential']['fullname'] }}</td>
-                                        <td>{{ $influencer['credential']['nickname']}}</td>
-                                        <td>{{ $influencer['credential']['gender']}}</td>
-                                        <td>{{ $influencer['credential']['job']}}</td>
-                                        <td>{{ $influencer['credential']['booking_price']}}</td>
-                                        <td>{{ $influencer['credential']['dob']}}</td>
-                                        <td>{{ $influencer['credential']['experiences']}}</td>
+                                        <td>{{ $influencer['credential']['fullname'] ?? "-"}}</td>
+                                        <td>{{ $influencer['credential']['nickname'] ?? "-"}}</td>
+                                        <td>{{ $influencer['credential']['gender'] ?? "-"}}</td>
+                                        <td>{{ $influencer['credential']['job'] ?? "-"}}</td>
+                                        <td>{{ $influencer['credential']['booking_price'] ?? "-"}}</td>
+                                        <td>{{ $influencer['credential']['dob'] ?? "-"}}</td>
+                                        <td>{{ $influencer['credential']['experiences'] ?? "-"}}</td>
                                     </tr>
                                     @endforeach
                                     @endif

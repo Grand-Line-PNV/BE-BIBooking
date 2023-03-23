@@ -1,61 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Booking Confirmation</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        background-color: #f7f7f7;
-      }
 
-			.logo {
-        max-width: 400px;
-        text-align: center;
-        display: block;
-        margin-left: auto;
-        margin-right: auto
-			}
+<head>
+  <meta charset="utf-8">
+  <title>Booking Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background-color: #f7f7f7;
+    }
 
-      .container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-image: url(https://grand-line-storage-test.s3.ap-southeast-1.amazonaws.com/payments/fdaa33d9-ef5e-4f1c-a497-0fce96a730f4.png);				background-repeat: no-repeat;
-				background-size:cover;
-        margin: 0 auto;
-        padding: 80px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-				font-size: 16px;
-      }
-      
-      .header {
-        margin-bottom: 20px;
-      }
+    .logo {
+      max-width: 400px;
+      text-align: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto
+    }
 
-      .header h1 {
-        font-size: 30px;
-        margin-top: 0 30px;
-        font-style: italic;
-      }
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url(https://grand-line-storage-test.s3.ap-southeast-1.amazonaws.com/payments/fdaa33d9-ef5e-4f1c-a497-0fce96a730f4.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin: 0 auto;
+      padding: 80px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
 
-    </style>
+    .header {
+      margin-bottom: 20px;
+    }
 
-  </head>
-  <body>
-    <div class="container">
-      <div class="wrapper">
+    .header h1 {
+      font-size: 30px;
+      margin-top: 0 30px;
+      font-style: italic;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="wrapper">
       <img src="https://grand-line-storage-test.s3.ap-southeast-1.amazonaws.com/payments/5d57e91b-b3ab-4cd1-870e-e38a73e1d177.png" alt="logo" class="logo">
       <div class="booking-details">
         <p>Dear {{$brand->username}},</p>
         <p>Your campaign has been completed by {{$influencer->username}}. Please find the order information details below:</p>
         <ul>
-          <li><strong>Influencer ID:</strong> {{$booking->influencer_id}}</li>
-          <li><strong>Campaign ID:</strong> {{$booking->campaign_id}}</li>
+          <li><strong>Influencer name:</strong> {{$influencer->username}}</li>
+          <li><strong>Campaign name:</strong> {{$campaign->name}}</li>
           <li><strong>Started date:</strong> {{$booking->started_date}}</li>
           <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
         </ul>
@@ -66,7 +68,8 @@
         <p>Sincerely,</p>
         <p><strong>B&I Booking Platform</strong></p>
       </div>
-      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
