@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
 use App\Models\SocialInfo;
 use App\Models\AudienceData;
@@ -22,7 +23,7 @@ class CreateInfluencerData extends Seeder
             'account' => [
                 'role_id' => Account::ROLE_INFLUENCER,
                 'username' => 'ajinomotor',
-                'password' => '@bc12354',
+                'password' => Hash::make('@bc12354'),
                 'verified' => true,
             ],
             'credentials' => [
