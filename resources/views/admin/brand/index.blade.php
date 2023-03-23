@@ -60,13 +60,13 @@
                                         <td>{{ $brand->id }}</td>
                                         <td>{{ $brand->username }}</td>
                                         <td>{{ $brand->email}}</td>
-                                        <td>{{ $brand['credential']['fullname'] ?? "null" }}</td>
-                                        <td>{{ $brand['credential']['nickname'] ?? "null" }}</td>
-                                        <td>{{ $brand['credential']['gender'] ?? "null" }} </td>
-                                        <td>{{ $brand['credential']['industry'] ?? "null" }} </td>
-                                        <td>{{ $brand['credential']['website']}} ?? "null"</td>
-                                        <td>{{ $brand['credential']['dob'] ?? "null"}}</td>
-                                        <td>{{ $brand['credential']['brand_name'] ?? "null" }}</td>
+                                        <td>{{ $brand['credential']['fullname'] ?? "-" }}</td>
+                                        <td>{{ $brand['credential']['nickname'] ?? "-" }}</td>
+                                        <td>{{ $brand['credential']['gender'] ?? "-" }} </td>
+                                        <td>{{ $brand['credential']['industry'] ?? "-" }} </td>
+                                        <td>{{ $brand['credential']['website']}} ?? "-"</td>
+                                        <td>{{ $brand['credential']['dob'] ?? "-"}}</td>
+                                        <td>{{ $brand['credential']['brand_name'] ?? "-" }}</td>
                                     </tr>
                                     @endforeach
                                     @endif
