@@ -148,7 +148,7 @@
         options: {
             title: {
                 display: true,
-                text: 'Avarage jobs each influencer get per month',
+                text: 'Average jobs each influencer get per month',
                 fontSize: 25
             },
             legend: {
