@@ -54,14 +54,14 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $id }}</td>
-                                        <td>{{ $booking ->id }}</td>
-                                        <td>{{ $booking->influencer_id }}</td>
-                                        <td>{{ $booking['influencer']['credential']['fullname']}}</td>
+                                        <td>{{ $booking->id}}</td>
+                                        <td>{{ $booking->influencer_id}}</td>
+                                        <td>{{ $booking['influencer']['credential']['fullname'] ?? "null"}}</td>
                                         <td>{{ $booking->campaign_id }}</td>
-                                        <td>{{ $booking['campaign']['name'] }}</td>
-                                        <td>{{ $booking ->status }}</td>
-                                        <td>{{ $booking->started_date }}</td>
-                                        <td>{{ $booking->ended_date }}</td>
+                                        <td>{{ $booking['campaign']['name'] ?? "null"}}</td>
+                                        <td>{{ $booking->status}}</td>
+                                        <td>{{ $booking->started_date}}</td>
+                                        <td>{{ $booking->ended_date}}</td>
                                     </tr>
                                     @endforeach
                                     @endif

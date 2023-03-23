@@ -59,8 +59,8 @@
                                         <td>{{ $feedback->booking_id }}</td>
                                         <td>{{ $feedback->from_account_id}}</td>
                                         <td>{{ $feedback['to_account_id']}}</td>
-                                        <td>{{ $feedback['account']['username']}}</td>
-                                        <td>{{ $feedback['account']['role']['name'] }}</td>
+                                        <td>{{ $feedback['account']['username'] ?? null}}</td>
+                                        <td>{{ $feedback['account']['role']['name'] ?? null}}</td>
                                         <td>{{ $feedback->content}}</td>
                                         <td>{{ $feedback->created_at}}</td>
                                         <td>

@@ -55,10 +55,10 @@
         <p>You have successfully canceled your campaign applying of {{$brand->username}} Brand. Please find the order information details below:</p>
         <ul>
           <li><strong>You have apply a campaign from {{$brand->username}} with ID:</strong> {{$brand->id}}</li>
-          <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
+          <li><strong>For campaign:</strong> {{$campaign->name}}</li>
         </ul>
         <p>Thank you for choosing our Platform.</p>
-        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..</p>
+        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com.</p>
       </div>
       <div class="footer">
         <p>Sincerely,</p>

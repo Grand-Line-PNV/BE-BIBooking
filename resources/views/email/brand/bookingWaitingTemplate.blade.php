@@ -54,8 +54,8 @@
         <p>Dear {{$brand->username}},</p>
         <p>There is an influencer who has applied your campaign and they are waiting for your confirmation. Please find the information details below:</p>
         <ul>
-          <li><strong>Influencer ID:</strong> {{$booking->influencer_id}}</li>
-          <li><strong>Campaign ID:</strong> {{$booking->campaign_id}}</li>
+          <li><strong>Influencer name:</strong> {{$influencer->username}}</li>
+          <li><strong>Campaign name:</strong> {{$campaign->name}}</li>
         </ul>
         <p>Thank you for choosing our Platform.</p><br>
         Please confirm this booking within <strong style = "font-style: italic">7 </strong>days <br>
