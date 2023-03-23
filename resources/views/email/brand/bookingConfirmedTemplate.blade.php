@@ -54,8 +54,8 @@
         <p>Dear {{$brand->username}},</p>
         <p>You have confirmed successful influencer booking. Please find the order information details below:</p>
         <ul>
-          <li><strong>You have book an Influencer with ID:</strong> {{$booking->influencer_id}}</li>
-          <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
+          <li><strong>You have book an Influencer:</strong> {{$influencer->username}}</li>
+          <li><strong>For campaign:</strong> {{$campaign->name}}</li>
           <li><strong>Started date:</strong> {{$booking->started_date}}</li>
           <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
         </ul>

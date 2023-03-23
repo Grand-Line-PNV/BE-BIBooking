@@ -55,15 +55,15 @@
         <p>Congratulations on successfully completing your mission in this campaign. We really appreciate your ability.</p>
         <p>Please find the order information details below:</p>
         <ul>
-          <li><strong>You have apply a campaign from Brand with ID:</strong> {{$brand->id}}</li>
-          <li><strong>For campaign with ID:</strong> {{$booking->campaign_id}}</li>
+          <li><strong>You have apply a campaign from Brand:</strong> {{$brand->username}}</li>
+          <li><strong>For campaign:</strong> {{$campaign->name}}</li>
           <li><strong>Started date:</strong> {{$booking->started_date}}</li>
           <li><strong>Ended date:</strong> {{$booking->ended_date}}</li>
         </ul>
         <p>We have paid for this campaign to your bank account, please check the message from your bank.</p>
         <p>Thank you for choosing our Platform.</p>
         <p>Please let us know if you have received this message within <strong style = "font-style: italic">7 </strong>days <br>
-        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com..</p>
+        <p>If you have any questions, please feel free to contact us at 0398 715 511 or bibooking@gmail.com.</p>
       </div>
       <div class="footer">
         <p>Sincerely,</p>
