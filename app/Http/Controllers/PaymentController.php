@@ -109,25 +109,16 @@ class PaymentController extends Controller
         );
         if (isset($_POST['redirect'])) {
             header('Location: ' . $vnp_Url);
+                //Change the booking status
+                $booking = Booking::find($payment->booking_id);
+                $booking->update([
+                    'payment_status' => 1,
+                    'status' => Booking::STATUS_PAID,
+                ]);
             die();
         } else {
             return $this->commonResponse($returnData);
         }
-
-        //Change the booking status
-        $booking = Booking::find($payment->booking_id);
-        $booking->update([
-            'payment_status' => 1,
-            'status' => Booking::STATUS_PAID,
-        ]);
-
-        //send email
-        event(new BookingActions($booking));
-
-        $influencer = Account::find($booking->influencer_id);
-        $campaign = Campaign::find($booking->campaign_id);
-        $influencerNotifyContent = "Hi @" . $influencer->username . ", brand have alreadly paid the money for the campaign! Let's do your tasks!";
-        $this->sendNotification($influencer->id, $influencerNotifyContent);
         // return $this->commonResponse($returnData);
     }
 }
