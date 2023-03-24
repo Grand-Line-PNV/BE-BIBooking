@@ -129,6 +129,5 @@ class PaymentController extends Controller
         } else {
             return $this->commonResponse($returnData);
         }
-        // return $this->commonResponse($returnData);
     }
 }
